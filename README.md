@@ -17,6 +17,7 @@ title: Tutorials
 * [TUTORIAL: How to do a Spend Transaction in æternity Node CLI](spend-transaction-in-node-console.md)
 * [TUTORIAL: Operating Oracle Transactions using the æternity Node](oracle-workflow-in-node-console.md)
 * [TUTORIAL: How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md)
+* [TUTORIAL: How to Get Testnet Funds?](get-testnet-tokens.md)
 * [TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
 * [TUTORIAL: Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
 
