@@ -3,7 +3,7 @@
 ## Tutorial Overview
 This tutorial will walk teach you how one can access restrict a method to the deployer of the smart contract itself. This is a useful tool for defining critical business logic.
 ## Prerequisites
-- Installed Aeproject - For installation steps reffer to [this tutorial](https://github.com/aeternity/tutorials/blob/master/smart-contract-deployment-in-aeproject.md)
+- Installed Aeproject - For installation steps reffer to [this tutorial](smart-contract-deployment-in-aeproject.md)
 
 ## 1. Prepare your environment
 
