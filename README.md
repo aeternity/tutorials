@@ -19,6 +19,7 @@ title: Tutorials
 * [TUTORIAL: How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md)
 * [TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
 * [TUTORIAL: Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
+* [TUTORIAL: Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
