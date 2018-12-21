@@ -8,7 +8,7 @@ In the current state the æternity protocol only allows for names to end in ".te
 ## Prerequisites
 
  - up to date npm and nodejs installed
- - private and public key for an account with some balance ([create an account](account-creation-in-ae-cli.md); [get testnet tokens](http://get-testnet-tokens.md))
+ - private and public key for an account with some balance ([create an account](account-creation-in-ae-cli.md); [get testnet tokens](get-testnet-tokens.md))
 
 ## Setup
 
