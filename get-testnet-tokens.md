@@ -2,7 +2,7 @@
 ## Tutorial Overview
 In this tutorial we'll briefly explain æternity testnets – what they are, what they're used for, and how to get AE tokens from a faucet for testnets.
 ## Prerequisites
-- Please read our previous tutorial [How to Create an æternity Account With CLI?](https://hackmd.aepps.com/GbCMHYAYGMGYBMC0lwDZqICywEa0QByzQCmiUJkoqO8ArCQEx1A=?view) in order to better understand the next steps and to follow them.
+- Please read our previous tutorial [How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md) in order to better understand the next steps and to follow them.
 ## æternity test networks
 Testnets are copies of the æternity blockchain almost identical to the live network except the fact that their AE tokens are worthless.
 
