@@ -10,8 +10,6 @@ title: Tutorials
 * [TUTORIAL: How to Install Sophia Notepad++ Language Definition](sophia-language-definition-for-notepad++.md)
 * [TUTORIAL: Run an æternity Node on Ubuntu 18.04](run-node-on-ubuntu-1804.md)
 * [TUTORIAL: Run an æternity Node on macOS Mojave](run-node-on-macos-mojave.md)
-* [TUTORIAL: How to Run the æternity CPU Miner on Ubuntu 18.04](run-cpu-miner-on-ubuntu-1804.md)
-* [TUTORIAL: How to Run the æternity GPU Miner on Ubuntu 18.04](run-gpu-miner-on-ubuntu-1804.md)
 * [TUTORIAL: Register and Update a Name Using the æternity Node](naming-workflow-in-node-console.md)
 * [TUTORIAL: How to Register and Update a Name with the SDK in Javascript](naming-workflow-in-javascript-sdk.md)
 * [TUTORIAL: How to do a Spend Transaction in æternity Node CLI](spend-transaction-in-node-console.md)
