@@ -1,10 +1,10 @@
-# TUTORIAL: Creating your own Aeternity Paper Wallets
+# TUTORIAL: Creating æternity Paper Wallets
 
 ## Tutorial Overview
-This tutorial will walk you through the steps of creating your own Aeternity Paper Wallets. From generation of accounts through broadcasting multiple transactions at once and all the way down to generating the QR codes, this tutorial will guide you into the creation of your own AE Paper Wallets.
+This tutorial will walk you through the steps of creating your own æternity paper wallet(s), including generation of accounts, broadcasting multiple transactions at once and generating QR codes.
 
-## Wait... what is a Paper Wallet actually?
-Paper wallets are amazing tool for you to physically send AE around. It is literally printing QR code on paper and when this QR code is scanned a reward can be claimed. They are amazing for promotional campaigns, bounties or just creating physical versions of digital wallets.
+## Wait... what is a paper wallet?
+Paper wallets are useful tools for securing and sending AE tokens. A paper wallet is simply a pair of QR codes (a public and a private key) printed on a piece of paper that users can use to store and send AE tokens. It is possible to use a paper wallet to quickly claim a reward in AE tokens by simply scanning a QR code. As such, AE paper wallets can be used for various promotional campaigns, bounties, event-related usecases, or for simply storing your AE in secure, off-line environemnt.
 
 ## Prerequisites
 - Docker
@@ -23,10 +23,10 @@ mkdir data
 ```
 
 ## Step 2. Create funding account
-In order to create paper wallets we need account to fund these. Lets create a `sdk-testnet` account and get some test AE. Alternatively you can use your own testnet/mainnet accounts and skip this section.
+In order to create paper wallets we need an AE account to fund them. Lets create a `sdk-testnet` account and get some test AE. Alternatively you can use your own testnet/mainnet accounts and skip this section or ask for some actual AE in [the Forum](https://forum.aeternity.com/t/get-some-aettos-for-testing-purposes/1754): 
 
 ### 2.1 Generating the funding account
-The following command will create an account and save it in `sender.json` file inside `data`
+The following command will create an AE account and save it in `sender.json` file inside `data`
 ```
 aecli account create data/sender.json -P my_example_password
 ```
@@ -138,6 +138,6 @@ As this is only the frontside of the paper-wallets, you can find and the back-si
 In order to redeem a paper wallet you can head to https://redeem.aepps.com/#/ or use the AirGap Vault app. You will be asked to scan the QR code and following the instructions you will be able to redeem the paper wallet.
 
 ## Conclusion
-Paper wallets are an amazing tool to create physical wallets and use them for promotional, exchange our bounties purposes. Following this easy guide you can create your own unique usable AE paper wallets.
+Paper wallets are a great tool to create physical wallets (existing in the real world) and use them for promotional, exchange, bounty or security purposes. Following this easy guide you can create your own unique usable AE paper wallets. The æpps team plans to enable paper wallet generation and management in an æpp. If you want this to happen faster - your are interested in developing the æpps - get in touch by sending us a mail at info@aetenrity.com or send a DM to Edward from the æpps team in the [Forum](https://forum.aeternity.com/u/edward.dikgale/summary).
 
-*The æternity team will keep this tutorial updated with news. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).*
+*The æternity team will keep this tutorial updated. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).*
