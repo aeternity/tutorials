@@ -18,6 +18,7 @@ title: Tutorials
 * [TUTORIAL: How to Get Testnet Funds?](get-testnet-tokens.md)
 * [TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
 * [TUTORIAL: Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
+* [TUTORIAL:  Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
