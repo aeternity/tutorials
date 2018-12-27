@@ -346,16 +346,21 @@ Your deployment script finished successfully!
 ```
 
 Let's mint some tokens. Because the token contract is deployed with our wallet, we can call mint function. It looks for 2 parameters - the account that will receive the created tokens and the amount that will be created.
-aeternity command line interface accepts parameters of type address as hex string. So we have to change our public key e.g ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx to similar to this 105720992082684835281481646421090520095669015597626165047188317910087706486218 format.
-There are 3 steps to achieve the desired result:
-- get the byte array (by stripping the prefix and decoding the base58c string);
-- encode the byte array as a hex number (as a string);
-- use the hex string to construct the call data;
+aeternity command line interface accepts parameters of type address as hex string. So we have to change our public key e.g ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx to this 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 format.
 
-So we want to mint 100 tokens to 105720992082684835281481646421090520095669015597626165047188317910087706486218 address. Our mint function executed vie aecli looks like this:
+We will use the following command:
+
+```
+aecli crypto decode ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx
+Decoded address (hex): a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
+```
+
+And we will add a ```0x``` prefix.
+
+So we want to mint 100 tokens to 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 address. Our mint function executed vie aecli looks like this:
 ```
 aecli contract call ./my-ae-wallet --password 12345 
-mint bool 105720992082684835281481646421090520095669015597626165047188317910087706486218 100 
+mint bool 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 100 
 --contractAddress ct_uMXpUDFsGiWst7ohxKznszC8W3vaxZc3DeeJGy5L9ERpcy6Go 
 -u https://sdk-edgenet.aepps.com 
 --internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
@@ -371,6 +376,7 @@ Return value (encoded)___ cb_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEyukdn
 Return value (decoded)___ 1
 Return remote type_______ word
 ```
+
 Finally let we check the total supply of our fungible token contract:
 
 ```
