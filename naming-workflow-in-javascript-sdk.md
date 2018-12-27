@@ -8,7 +8,7 @@ In the current state the æternity protocol only allows for names to end in ".te
 ## Prerequisites
 
  - up to date npm and nodejs installed
- - private and public key for an account with some balance ([create an account](https://hackmd.aepps.com/GbCMHYAYGMGYBMC0lwDZqICywEa0QByzQCmiUJkoqO8ArCQEx1A=))
+ - private and public key for an account with some balance ([create an account](account-creation-in-ae-cli.md); [get testnet tokens](get-testnet-tokens.md))
 
 ## Setup
 
@@ -45,13 +45,13 @@ Inside the main function, to create the SDK client referencing a live æternity 
 const publicKey = 'REPLACE_WITH_PUBLIC_KEY';
 
 const client = await Universal({
-    url: 'http://52.56.252.75:3013',
-    internalUrl: 'http://52.56.252.75:3013',
+    url: 'https://sdk-testnet.aepps.com', //replace with https://sdk-mainnet.aepps.com for mainnet
+    internalUrl: 'https://sdk-testnet.aepps.com', //replace with https://sdk-mainnet.aepps.com for mainnet
     keypair: {
         publicKey: publicKey,
         secretKey: 'REPLACE_WITH_PRIVATE_KEY'
     },
-    networkId: 'ae_mainnet',
+    networkId: 'ae_uat', //replace with ae_mainnet for mainnet
     nativeMode: true
 });
 ```

@@ -1,7 +1,7 @@
 # TUTORIAL: How to Run the æternity GPU Miner on Ubuntu 18.04
 
 ## Assumptions
- The instructions below assume that you [installed and configured your node](https://hackmd.aepps.com/EYdgDAHALDCcC0ATAbLZ8oDMoCZ4EMJY9MQBTAVimTB2XxAGYg==), have an NVIDIA GPU that is [compatible](https://developer.nvidia.com/cuda-gpus) and has more than 4GB of memory, ideally 8GB.
+ The instructions below assume that you [installed and configured your node](run-node-on-ubuntu-1804.md), have an NVIDIA GPU that is [compatible](https://developer.nvidia.com/cuda-gpus) and has more than 4GB of memory, ideally 8GB.
 
 ## 1. Installing the CUDA toolkit
 ```bash

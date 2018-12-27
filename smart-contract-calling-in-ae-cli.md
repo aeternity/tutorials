@@ -3,9 +3,9 @@
 ## Tutorial Overview
 This tutorial will walk you through the process of calling a function of deployed contract.
 ## Prerequisites
-- We will reuse ExampleContract which was deployed in our previous tutorial [Deploying a Smart Contract on æternity with “aeproject”](https://hackmd.aepps.com/MwMwrATA7AhjAsBaADARgGwkfKAOApogEYAm4xAnMlBBCTOsiCUA?view)(ToDo: we have to add link to published tutorial) and we are going to call its main function.  
-- Account with testnet/edgenet funds ([How to Get Testnet Funds](https://hackmd.aepps.com/MYJgpgDBBmCsCGBaeAjWAWR6PUSgnCAOyISwgAmw6K6U+EQA?view) - referencing tutorial)
-- Installed **aecli** (take a look at [this tutorial](https://hackmd.aepps.com/GbCMHYAYGMGYBMC0lwDZqICywEa0QByzQCmiUJkoqO8ArCQEx1A=?view#Installing-aecli) to to remind yourself on installing the javascript version of aecli)
+- We will reuse ExampleContract which was deployed in our previous tutorial [Deploying a Smart Contract on æternity with “aeproject”](smart-contract-deployment-in-aeproject.md)(ToDo: we have to add link to published tutorial) and we are going to call its main function.  
+- Account with testnet/edgenet funds ([How to Get Testnet Funds](get-testnet-tokens.md) - referencing tutorial)
+- Installed **aecli** (take a look at [this tutorial](account-creation-in-ae-cli.md#installing-aecli) to to remind yourself on installing the javascript version of aecli)
 
 ## Checking if the preconditions have been fulfilled
 

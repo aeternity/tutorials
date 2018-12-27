@@ -2,16 +2,16 @@
 
 ## Assumptions
 
-The instructions below assume that you have installed and configured your node ([Ubuntu 18.04](https://hackmd.aepps.com/EYdgDAHALDCcC0ATAbLZ8oDMoCZ4EMJY9MQBTAVimTB2XxAGYg==?view) / [macOS Mojave](https://hackmd.aepps.com/KYDgzA7ARhBMAmBaADAYwKxUQFgGwENZER9kAzRWVYWWcseARnwE4g==?view)).
+The instructions below assume that you have installed and configured your node ([Ubuntu 18.04](run-node-on-ubuntu-1804.md) / [macOS Mojave](run-node-on-macos-mojave.md)).
 
 ## Run automatically
 Assuming that you have created and set up your `epoch.yaml` file:
 
 1. Under `mining` section, change the value of `autostart` to `true`
-2. Run your node ([Ubuntu 18.04](https://hackmd.aepps.com/EYdgDAHALDCcC0ATAbLZ8oDMoCZ4EMJY9MQBTAVimTB2XxAGYg==?view) / [macOS Mojave](https://hackmd.aepps.com/KYDgzA7ARhBMAmBaADAYwKxUQFgGwENZER9kAzRWVYWWcseARnwE4g==?view))
+2. Run your node ([Ubuntu 18.04](run-node-on-ubuntu-1804.md) / [macOS Mojave](run-node-on-macos-mojave.md))
 
 ## Run manually
-Assuming that you have ran your node ([Ubuntu 18.04](https://hackmd.aepps.com/EYdgDAHALDCcC0ATAbLZ8oDMoCZ4EMJY9MQBTAVimTB2XxAGYg==?view) / [macOS Mojave](https://hackmd.aepps.com/KYDgzA7ARhBMAmBaADAYwKxUQFgGwENZER9kAzRWVYWWcseARnwE4g==?view)):
+Assuming that you have ran your node ([Ubuntu 18.04](run-node-on-ubuntu-1804.md) / [macOS Mojave](run-node-on-macos-mojave.md)):
 
 1. Attach to your node, using the command `./bin/epoch attach`
 2. To start the mining process, type `aec_conductor:start_mining().` in the interactive console. You should see `ok` as a result from the command.
