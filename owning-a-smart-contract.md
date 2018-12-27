@@ -22,12 +22,12 @@ aeproject init
 Another thing we would require is a local working environment to develop against. Luckily `aeproject` gives us that out of the box. Just type in the following command
 
 ```
-aeproject epoch
+aeproject node
 ```
 
 You can later stop the local node by typing in 
 ```
-aeproject epoch --stop
+aeproject node --stop
 ```
 
 ## 2. Writing the contract without access restriction
