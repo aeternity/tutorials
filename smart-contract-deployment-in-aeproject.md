@@ -42,7 +42,7 @@ Commands:
   init [options]     Initialize aepp project
   compile [options]  Compile contracts
   test [options]     Running the tests
-  epoch [options]    Running the epoch. Without any argument epoch will be runned with --start argument
+  node [options]     Running a local node. Without any argument node will be runned with --start argument
   deploy [options]   Run deploy script
 ```
 
