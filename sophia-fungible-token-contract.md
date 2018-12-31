@@ -1,14 +1,14 @@
 # TUTORIAL: How to create a Sophia fungible token contract?
 ## Tutorial Overview
-This tutorial takes a look at tokens and explains the features and functions of fungible tokens, provides an understanding of what they are and how developers can work with them.
+This tutorial takes a look at tokens and explains the features and functions of fungible tokens, while provides an understanding of what they are and how developers can work with them.
 ## Prerequisites
 - Installed **aecli** (take a look at [this tutorial](https://github.com/aeternity/tutorials/blob/master/account-creation-in-ae-cli.md#installing-aecli) to to remind yourself on installing the javascript version of aecli)
 - Installed **aeproject** (take a look at [this section](https://github.com/aeternity/tutorials/blob/master/smart-contract-deployment-in-aeproject.md#installing-aeproject))
 - Account with testnet/edgenet funds ([How to Get Testnet Funds](https://github.com/aeternity/tutorials/blob/master/get-testnet-tokens.md) - referencing tutorial)
 ## Fungible token contract
 Any token contract is a smart contract that contains a map of account addresses and a number called balance. The balance represents a unit of value that is defined by the contract creator. One token contract might use balances to represent physical objects, while another might represent monetary value. Third one might even represent the holder’s reputation. The unit of this balance is commonly called a token.
-Fungible tokens, are such tokens that have one and the same value regardless of which instance of the token is used. AE is a fungible token, because if I give you 1 AE and you give me 1 AE, in essence no value was changed.
-Fungible token contracts come with a number of functions to allow users to find out the balances of accounts as well as to transfer them from one account to another under varying conditions.
+Fungible tokens, are such tokens that have one and the same value regardless of which instance of the token is used. AE is a fungible token - meaning that if I give you 1 AE and you give me 1 AE, in essence no value was exchanged.
+Fungible token contracts come with a number of functions to allow users to find out the balances of accounts, as well as to transfer them under varying conditions.
 
 ## Building Sophia fungible token contract
 
@@ -32,7 +32,7 @@ record state = {
 - _allowed - a map which holds the amount of tokens that an owner allowed to a spender
 
 In the next step we are going to write our contract *init()* function.
-The init function is pure and returns the initial state as its return value. At contract creation time, the init function is executed and its result is stored as the contract state.
+The init function is pure and returns the initial state as its return value. At contract creation time, the init function is executed and its result is stored as the contract state. You can look at the init function as a constructor. 
 
 ```
 public stateful function init() = {
@@ -42,7 +42,7 @@ public stateful function init() = {
     _allowed = {}}
 ```
 
-For now our Sophia contract code looks like this: 
+For now, our Sophia contract code looks like this: 
 ```
 contract FungibleToken =
   record state = {
@@ -60,16 +60,16 @@ contract FungibleToken =
 
 ### Helper functions
 
-We will write some private helper functions in order to make our contract easier to read:
+We will add some private helper functions in order to make our contract easier to read:
 
-- **require** - checks if the first parameter is true and reverts with the value of second parameter if it is not true;
+- **require** - evaluates the condition passed as first parameter and throws with the value of second parameter on false;
 ```
 private function require(b : bool, err : string) =
     if(!b)
       abort(err)
 ```
 
-- **add** - adds two unsigned integers and returns the result, trows on overflow;
+- **add** - returns the sum of two integers, throws on overflow;
 ```
 private function add(_a : int, _b : int) : int =
     let c : int = _a + _b
@@ -89,7 +89,7 @@ private function onlyOwner() =
       require(Call.caller == state._owner, "Only owner can mint!")
 ```
 
-- **lookupByAddress** - checks if a specific address(the first parameter) exists in second parameter of type map, if it doesn't the function returns the third parameter passed to it;
+- **lookupByAddress** - checks if a specific address (the first parameter) exists in second parameter of type map, if it doesn't the function returns the third parameter passed to it;
 ```
 private function lookupByAddress(k : address, m, v) =
   	switch(Map.lookup(k, m))
@@ -101,7 +101,7 @@ private function lookupByAddress(k : address, m, v) =
 
 We will write a number of functions which will allow us to find out the balances of accounts as well as to transfer them from one account to another under varying conditions. These functions are described below:
 
-- **balanceOf** - the function provides the number of tokens held by a given address. Note that anyone can query any address’ balance, as all data on the blockchain is public;
+- **balanceOf** - the function provides the number of tokens held by a given address. ***Note*** that anyone can query any address’ balance, as all data on the blockchain is public;
 
 ```
 public function balanceOf(who: address) : int = lookupByAddress(who, state._balances, 0)
@@ -112,7 +112,7 @@ public function balanceOf(who: address) : int = lookupByAddress(who, state._bala
 public function totalSupply() : int = state._totalSupply
 ```
 
-- **transfer** - the function transfers a number of tokens directly from the message sender to another address;
+- **transfer** - the function transfers a number of tokens directly from the caller to another address;
 ```
 public stateful function transfer(to: address, value: int) : bool =
     _transfer(Call.caller, to, value)
@@ -128,7 +128,7 @@ private stateful function _transfer(from: address, to: address, value: int) : bo
 
     true
 ```
-- **transferFrom** and **approve** - two functions that allow to transfer a number of tokens using a two-step process. In the first step a token holder gives another address approval to transfer up to a certain number of tokens, known as an allowance. The token holder uses approve() to provide this information;
+- **transferFrom** and **approve** - two functions that allow to transfer a number of tokens using a two-step process. In the first step a token holder gives another address approval to transfer up to a certain number of tokens from his balance to an address of their choice. This approved amount is known as an allowance. The token holder uses approve() to provide this information;
 ```
 public stateful function approve(spender: address, value: int) : bool =
     require(value > 0, "Value is sub zero")
@@ -177,7 +177,7 @@ public stateful function decreaseAllowance(spender: address, subtractedValue: in
     true
 ```
 
-- **mint** - the function that mints an amount of the token and assigns it to an account;
+- **mint** - this function mints `value` number of the token and assigns them to `account`;
 
 ```
 public stateful function mint(account: address, value: int) : bool =
@@ -190,7 +190,7 @@ public stateful function mint(account: address, value: int) : bool =
     true
 ```
 
-- **burn** - the function that burns an amount of the token of a given account;
+- **burn** - this function removes(known as burning) some number of tokens from the balance of a given account;
 
 ```
 public stateful function burn(value: int) : bool =
@@ -202,7 +202,7 @@ public stateful function burn(value: int) : bool =
     true
 ```
 
-And our Sophia fungible token is ready. The contract code:
+Our Sophia fungible token is ready. The contract code:
 
 ```javascript=
 contract FungibleToken =
@@ -345,8 +345,8 @@ And here is the expected output:
 Your deployment script finished successfully!
 ```
 
-Let's mint some tokens. Because the token contract is deployed with our wallet, we can call mint function. It looks for 2 parameters - the account that will receive the created tokens and the amount that will be created.
-aeternity command line interface accepts parameters of type address as hex string. So we have to change our public key e.g ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx to this 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 format.
+Let's mint some tokens. As the token contract is deployed with our wallet, we can successfully call mint function using it. Mint takes 2 parameters - the account that will receive the created tokens and the amount that will be created.
+aeternity command line interface accepts parameters of type address as hex string. So we have to change our public key e.g. ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx to this 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 format.
 
 We will use the following command:
 
@@ -355,9 +355,9 @@ aecli crypto decode ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx
 Decoded address (hex): a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
 ```
 
-And we will add a ```0x``` prefix.
+Note that we add the ```0x``` prefix to the new decoded address.
 
-So we want to mint 100 tokens to 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 address. Our mint function executed vie aecli looks like this:
+So we want to mint 100 tokens to 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 address. Our mint function executed with aecli looks like this:
 ```
 aecli contract call ./my-ae-wallet --password 12345 
 mint bool 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 100 
@@ -397,7 +397,7 @@ Return value (decoded)___ 100
 Return remote type_______ word
 ```
 
-And the returned value is 100 as much as we minted.
+The decoded returned value is 100 - as much as we minted.
 
 ## Conclusion
 Now you know how easy it is to create a Sophia fungible token contract. 
