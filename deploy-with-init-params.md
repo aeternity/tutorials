@@ -24,14 +24,13 @@ aeproject node --stop
 Lets add some state and init parameters to our example contract.
 ```
 contract ExampleContract =
-	record state = {
-		savedNumber : int}
+  record state = 
+    { savedNumber : int }
 
-	public stateful function init(num: int) = {
-		savedNumber = num
-		}
+  public stateful function init(num : int) = 
+    { savedNumber = num }
 
-	public function savedNumber() : int = state.savedNumber
+  public function savedNumber() : int = state.savedNumber
 ```
 
 As you can see the contract now has a state variable `savedNumber` of type int. The initial value will be passed by the init function. We've also added a read function for this value.
