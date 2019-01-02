@@ -145,12 +145,12 @@ public function totalSupply() : int = state.totalSupply
 - **transfer** - the function transfers a number of tokens directly from the caller to another address;
 ```
 public stateful function transfer(to: address, value: int) : bool =
-  _transfer(Call.caller, to, value)
+  transfer'(Call.caller, to, value)
     
-private stateful function _transfer(from: address, to: address, value: int) : bool =
+private stateful function transfer'(from: address, to: address, value: int) : bool =
   require(value > 0, "Value is sub zero")
   require(value =< balanceOf(from), "Not enough balance")
-  require(to != #0, "Invalid address")
+  require(to != #0, "Invalid address") // prevents burning of tokens by sending to address 0. Technically is a valid request
 
   put(state{
     balances[from] = sub(balanceOf(from), value),
@@ -174,7 +174,7 @@ public stateful function transferFrom(from: address, to: address, value: int) : 
   require(state.allowed[(from, Call.caller)] >= value, "Value is bigger than allowed")
 
   put(state{allowed[(from, Call.caller)] = sub(state.allowed[(from, Call.caller)], value)})
-  _transfer(from, to, value)
+  transfer'(from, to, value)
 
   true
 ```
@@ -252,8 +252,8 @@ contract FungibleToken =
 
   private function lookupByAddress(k : address, m, v) =
   	switch(Map.lookup(k, m))
-	  None    => v
-	  Some(x) => x
+	    None    => v
+	    Some(x) => x
 
   public function totalSupply() : int = state.totalSupply
 
@@ -261,11 +261,11 @@ contract FungibleToken =
 
   public function allowance(owner: address, spender: address) : int =
     switch(Map.lookup((owner, spender), state.allowed))
-	  None    => 0
-	  Some(x) => x
+	    None    => 0
+	    Some(x) => x
 
   public stateful function transfer(to: address, value: int) : bool =
-    _transfer(Call.caller, to, value)
+    transfer'(Call.caller, to, value)
 
   public stateful function approve(spender: address, value: int) : bool =
     require(value > 0, "Value is sub zero")
@@ -275,10 +275,10 @@ contract FungibleToken =
 
     true
 
-  private stateful function _transfer(from: address, to: address, value: int) : bool =
+  private stateful function transfer'(from: address, to: address, value: int) : bool =
     require(value > 0, "Value is sub zero")
     require(value =< balanceOf(from), "Not enough balance")
-    require(to != #0, "Invalid address")
+    require(to != #0, "Invalid address") // prevents burning of tokens by sending to address 0. Technically is a valid request
 
     put(state{
       balances[from] = sub(balanceOf(from), value),
@@ -290,7 +290,7 @@ contract FungibleToken =
     require(state.allowed[(from, Call.caller)] >= value, "Value is bigger than allowed")
 
     put(state{allowed[(from, Call.caller)] = sub(state.allowed[(from, Call.caller)], value)})
-    _transfer(from, to, value)
+    transfer'(from, to, value)
 
     true
 
