@@ -1,6 +1,6 @@
 # TUTORIAL: Smart Contract usage with the Javascript SDK
 
-This tutorial explains how to use the æternity javascrip SDK to create smart contracts and interact with them in the æternity network.
+This tutorial explains how to use the æternity javascript SDK to create smart contracts and interact with them in the æternity network.
 
 ## Prerequisites
 
@@ -9,56 +9,25 @@ This tutorial explains how to use the æternity javascrip SDK to create smart co
 
 ## Setup
 
-1. Create a directory for the project and initialize it with npm:
+Create a project directory
 
 ```
 mkdir aepp-smart-contract-usage-tutorial
 cd aepp-smart-contract-usage-tutorial
-npm init -y
-```
-
-2. Install the aepp-sdk dependency `npm install --save @aeternity/aepp-sdk`
-
-3. Create a example project file `index.js` in this directory
-
-4. Setup example code structure in `index.js`, this does require the SDK dependency and setup a sync function in which we can build the naming workflow
-```
-const fs = require('fs');
-const {Universal} = require('@aeternity/aepp-sdk');
-
-// function to hold all our example code
-const main = async (name) => {
-    // insert all the following here
-};
-```
-
-5. Defining helper functions to later catch possible errors in a developer friendly was, add after the `const main = async (name) => {` line:
-
-```
-// function to log any errors
-const logError = (error) => console.error(error);
-
-// function to decode errors from contract calling
-const decodeError = async (error) => {
-
-    // results from the node need to be decoded to be human readable
-    const decodedError = await client.contractDecodeData('string', error.returnValue).catch(logError);
-    console.error('error:', decodedError.value);
-};
 ```
 
 ## Define Example Contract
 
-We define an example contract which features functions that can reserve something if a minimum price is payed to the contract. The contract creator can later withdraw the payed tokens. Each line is commented with what it does. Sophia language defintion can be found in [the protocol repository](https://github.com/aeternity/protocol/blob/master/contracts/sophia.md).
+We define an example contract which features functions for reserving something if a minimum price is payed to the contract. The contract creator can later withdraw the payed tokens. Each line is commented with what it does. Sophia language definition can be found in [the protocol repository](https://github.com/aeternity/protocol/blob/master/contracts/sophia.md).
 
-Save this as `ExampleContract.aes` in the same directory as `index.js`.
+Save this as `ExampleContract.aes`.
 
 ```
 // contract definition
 contract ExampleContract =
 
 
-  // state definiton, with available count, set minimum price and the owner
+  // state definition, with available count, set minimum price and the owner
   record state = { available_count : int, min_price : int, owner : address }
 
 
@@ -105,6 +74,41 @@ contract ExampleContract =
     withdrawed_balance
 ```
 
+## Nodejs Environment
+
+1. Create a directory for the project and initialize it with npm `npm init -y`
+this
+2. Install the aepp-sdk dependency `npm install --save @aeternity/aepp-sdk`
+this
+3. Create an example entrypoint file `index.js`this in the directory. We will use this file later to run our code.
+
+4. Setup example code structure in `index.js`, this does require the SDK dependency and setup an async function in which we can build the naming workflow
+```
+const fs = require('fs');
+const {Universal} = require('@aeternity/aepp-sdk');
+
+// function to hold all our example code
+const main = async (name) => {
+    // insert all the following here
+};
+```
+
+5. Defining helper functions to later catch possible errors in a developer friendly was, add after the `const main = async (name) => {` line:
+
+```
+// function to log any errors
+const logError = (error) => console.error(error);
+
+// function to decode errors from contract calling
+const decodeError = async (error) => {
+
+    // results from the node need to be decoded to be human readable
+    const decodedError = await client.contractDecodeData('string', error.returnValue).catch(logError);
+    console.error('error:', decodedError.value);
+};
+```
+
+
 ## SDK Contracts Workflow
 
 
@@ -149,21 +153,21 @@ console.log('contract bytecode:', compiled.bytecode);
 
 ### 4. Deploying the contract bytecode to the blockchain
 
-To deploy the contract bytecode, add after the previously added lines:
+Having the compiled bytecode we can deploy the contract bytecode by adding this after the previously added lines:
 
 ```
 // use the client to deploy the contract bytecode to the blockchain, catching eventual errors
 // we have to pass the initState where we choose 10000 as the number of available count and 15 as minimum price per item
 const deployed = await client.contractDeploy(compiled.bytecode, 'sophia', {initState: '(10000, 15)'}).catch(logError);
 
-// logging the contract adddress to the console, this is later used to call function of the contract
+// logging the contract address to the console, this is later used to call function of the contract
 console.log('deployed contract address:', deployed.address);
 ```
 
 
 ### 5. Calling the contract functions
 
-To call the `reserve` function of the deployed contract. It can be called by anyone using the blockchain. Add after the previously added lines:
+To reserve an item in our contract we call the `reserve` function of the deployed contract. It can be called by anyone using the blockchain. Add after the previously added lines:
 
 ```
 // call the contract 'reserve' function using the deployed address, 'sophia-address' is used to indicate we are calling using the address
@@ -178,7 +182,7 @@ const calledReserve = await client.contractCall(deployed.address, 'sophia-addres
 console.log('reservation successful:', !!calledReserve);
 ```
 
-To static call the `available_count` function of the deployed contract, static calls are exectued on the connected node directly and don't require a transaction or any fee, but can only be used for functions that don't manipulate state. It can be called by anyone using the blockchain. Add after the previously added lines:
+Static calls are executed on the connected node directly and don't require a transaction or any fee, but can only be used for functions that won't manipulate state. It can be called by anyone using the blockchain. To static call the `available_count` function of the deployed contract, add after the previously added lines:
 
 ```
 // call the 'available_count' function without any arguments, so '()' is used
@@ -194,10 +198,10 @@ const decodedAvailableCount = await client.contractDecodeData('int', calledAvail
 console.log('available count decoded:', decodedAvailableCount.value);
 ```
 
-To call the `reserve` function of the deployed contract, which has to be called by the original owner, add after the previously added lines:
+Unlike `available_count`, `owner_withdraw` modifies the state and requires a normal call, which consumes fee. This function is restricted to only be called by the original deployer. Add this code after the previously added lines:
 
 ```
-// call the 'owner_withdraw' function ithout any arguments, so '()' is used, catch any possible errors
+// call the 'owner_withdraw' function without any arguments, so '()' is used, catch any possible errors
 const calledWithdraw = await client.contractCall(deployed.address, 'sophia-address', deployed.address, 'owner_withdraw', {args: '()'}).catch(decodeError);
 
 // log the bytecode result to the console
@@ -274,7 +278,7 @@ const main = async (name) => {
     // we have to pass the initState where we choose 10000 as the number of available count and 15 as minimum price per item
     const deployed = await client.contractDeploy(compiled.bytecode, 'sophia', {initState: '(10000, 15)'}).catch(logError);
 
-    // logging the contract adddress to the console, this is later used to call function of the contract
+    // logging the contract address to the console, this is later used to call function of the contract
     console.log('deployed contract address:', deployed.address);
 
 
@@ -303,7 +307,7 @@ const main = async (name) => {
     console.log('available count decoded:', decodedAvailableCount.value);
 
 
-    // call the 'owner_withdraw' function ithout any arguments, so '()' is used, catch any possible errors
+    // call the 'owner_withdraw' function without any arguments, so '()' is used, catch any possible errors
     const calledWithdraw = await client.contractCall(deployed.address, 'sophia-address', deployed.address, 'owner_withdraw', {args: '()'}).catch(decodeError);
 
     // log the bytecode result to the console
