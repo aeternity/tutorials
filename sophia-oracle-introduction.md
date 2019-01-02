@@ -1,4 +1,4 @@
-# TUTORIAL: Introduction to Sophia
+# TUTORIAL: Writing a greeter contract in Sophia using oracles - introduction
 
 ## Tutorial overview
 This tutorial aims to provide an introduction to Sophia's syntax and some of its features with a "Hello, world"-esque smart contract. Following this tutorial should give the reader an idea of the basic practices when writing Sophia smart contracts. The contract that we will be writing will enable its callers to send a greeting message to an oracle and reply to those messages on behalf of the oracle. Ideally, readers should have a basic understanding of how oracles work, if not, feel free to read [this document](https://github.com/aeternity/protocol/blob/master/oracles/oracles.md). Let's get into it!
