@@ -1,7 +1,11 @@
 # TUTORIAL: Writing a greeter contract in Sophia using oracles - introduction
 
 ## Tutorial overview
-This tutorial aims to provide an introduction to Sophia's syntax and some of its features with a "Hello, world"-esque smart contract. Following this tutorial should give the reader an idea of the basic practices when writing Sophia smart contracts. The contract that we will be writing will enable its callers to send a greeting message to an oracle and reply to those messages on behalf of the oracle. Ideally, readers should have a basic understanding of how oracles work, if not, feel free to read [this document](https://github.com/aeternity/protocol/blob/master/oracles/oracles.md). Let's get into it!
+This tutorial aims to provide an introduction to Sophia's syntax and some of its features with a "Hello, world"-esque smart contract featuring the aeternity oracle system. Following this tutorial should give the reader an idea of the basic practices when writing Sophia smart contracts. The contract that we will be writing will enable its callers to send a greeting message to an oracle and reply to those messages on behalf of the oracle. Ideally, readers should have a basic understanding of how oracles work, if not, feel free to read [this document](https://github.com/aeternity/protocol/blob/master/oracles/oracles.md).
+
+Related tutorials:
+[Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
+[Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
 
 ## Contract state and initialization
 While Sophia is a functional language, contracts (although optional) can hold mutable state. For our example, we will be storing a reference to the oracle that will handle messages and send out responses and all of the greeting messages that have been sent its way. Let's begin by defining our contract body, its state and the `init` function that will set the initial state of our contract when the `Create` transaction is executed.
@@ -16,10 +20,10 @@ contract Greeter =
 ```
 
 **What we have so far:**
-We started our contract definition and gave it an appropriate name. We have also defined what our state will look like -- it will be a `record`, which is a key-value data structure with fixed key names and typed values. This record has two fields -- `greeter_oracle` which will hold a reference to an oracle object and `greets` which is a list of oracle queries (in our case greeting messages). Keep in mind that we also have to specify the type of queries and responses for the oracle and its queries.
+We started our contract definition and gave it an appropriate name. We have also defined what our state will look like - it will be a `record`, which is a key-value data structure with fixed key names and typed values. This record has two fields, `greeter_oracle` which will hold a reference to an oracle object and `greets` which is a list of oracle queries (in our case greeting messages). Keep in mind that we also have to specify the type of queries and responses for the oracle and its queries.
 
 The state structure has been decided, but we also *need* to set the initial state of our contract.
-Every Sophia contract that intends to have some mutable state also has to implement an `init` function. In our case, we have to register the oracle and store it in the `greeter_oracle` field and also give the `greets` list some initial value -- an empty list being the obvious choice (`[]`).
+Every Sophia contract that intends to have some mutable state also has to implement an `init` function. In our case, we have to register the oracle and store it in the `greeter_oracle` field and also give the `greets` list some initial value - an empty list being the obvious choice (`[]`).
 
 **The return value of functions in Sophia is the last expression of the function. The return value of the `init` function should be the state you want to set.**
 
@@ -41,7 +45,7 @@ Alternatively, `Oracle.register(Contract.address, 10, RelativeTTL(200)) : oracle
 *   the other two parameters are query fee which specifies the amount that should paid to the oracle when querying and the TTL (time to live) of the oracle object. In this case, the TTL is relative, which means that the oracle will expire 200 generations after it has been registered.
 
 ## Interacting with the contract
-Hopefully the code we have so far will register our oracle, but we still can't interact with it. For this reason, we're going to write a function that sends a message of our choice to the oracle in the form of a query:
+The code we have so far will register our oracle, but we still can't interact with it. For this reason, we're going to write a function that sends a message of our choice to the oracle in the form of a query:
 
 ```
   public stateful function greet_oracle(message : string) =
@@ -61,17 +65,17 @@ Now that we are able to query our oracle, we should also add logic to respond to
 Let's start with the public function that will start the recursive calls:
 ```
 public stateful function respond_to_greets() =
-    _respond_to_greets(state.greets)
+    respond_to_greets'(state.greets)
 ```
 
-Pretty straightforward, calling this function will call `_respond_to_greets` (Sophia doesn't allow you to multiple functions with the same name) and will pass the `greets` that are in the state. Now for the recursive function:
+Pretty straightforward, calling this function will call `respond_to_greets'` (Sophia doesn't allow you to multiple functions with the same name) and will pass the `greets` that are in the state. Now for the recursive function:
 
 ```
-  private function _respond_to_greets(greets : list(oracle_query(string, string))) =
+  private function respond_to_greets'(greets : list(oracle_query(string, string))) =
     switch(greets)
       query :: rest =>
         respond_to_greet(query)
-        _respond_to_greets(rest)
+        respond_to_greets'(rest)
       [] =>
         0
 ```
@@ -112,13 +116,13 @@ contract Greeter =
     put(state{greets @ g = query :: g})
 
   public stateful function respond_to_greets() =
-    _respond_to_greets(state.greets)
+    respond_to_greets'(state.greets)
 
-  private function _respond_to_greets(greets : list(oracle_query(string, string))) =
+  private function respond_to_greets'(greets : list(oracle_query(string, string))) =
     switch(greets)
       query :: rest =>
         respond_to_greet(query)
-        _respond_to_greets(rest)
+        respond_to_greets'(rest)
       [] =>
         0
 
