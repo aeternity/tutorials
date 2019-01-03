@@ -19,6 +19,7 @@ title: Tutorials
 * [TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
 * [TUTORIAL: Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
 * [TUTORIAL:  Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
+* [TUTORIAL: How to create a Sophia fungible token contract?](sophia-fungible-token-contract.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
