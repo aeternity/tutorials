@@ -3,7 +3,8 @@
 This tutorial will walk you through the process of setting up a new æpp project using the aeproject tool. We will install **aeproject**, initialize an æpp and go through the folder structure. Once this is done we will deploy the æpp on the live network.
 ## Prerequisites
 - Installed aeternity node and npm (have a look [here](LINK) to learn how to install an æternity node)
-- The private key of an account that has AE tokens (*estimate tx cost/fee - 1671168 AET*)
+- Installed docker and docker-compose. Installation instructions can be found [here](https://docs.docker.com/compose/install/)
+- The private key of an account that has at least AE tokens (*estimate tx cost/fee - 1671168 AET*)
 ## Installing aeproject
 **aeproject** is an æternity framework which helps with setting up an æpp project. The framework makes the development of smart contracts in the æternity network very easy. It provides commands for compilation of smart contracts, running a local aeternity node, unit testing and deployment of smart contracts.
 
