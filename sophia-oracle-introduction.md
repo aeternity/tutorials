@@ -66,7 +66,7 @@ Now that we are able to query our oracle, we should also add logic to respond to
 
 Let's start with the public function that will start the recursive calls:
 ```
-public stateful function respond_to_greets() =
+public function respond_to_greets() =
     respond_to_greets'(state.greets)
 ```
 
@@ -119,7 +119,7 @@ contract Greeter =
       Oracle.query(state.greeter_oracle, message, 10, RelativeTTL(50), RelativeTTL(50))
     put(state{greets @ g = query :: g})
 
-  public stateful function respond_to_greets() =
+  public function respond_to_greets() =
     respond_to_greets'(state.greets)
 
   private function respond_to_greets'(greets : list(oracle_query(string, string))) =
