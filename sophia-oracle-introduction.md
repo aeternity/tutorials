@@ -12,7 +12,9 @@ While Sophia is a functional language, contracts (although optional) can hold mu
 
 ```
 contract Greeter =
-  record state = {greeter_oracle : oracle(string, string), greets: list(oracle_query(string, string))}
+  record state =
+    {greeter_oracle : oracle(string, string),
+     greets: list(oracle_query(string, string))}
 
   public function init() : state =
     let greeter_oracle : oracle(string, string) = register_oracle()
@@ -104,7 +106,9 @@ Here's what the contract looks like in the end:
 
 ```
 contract Greeter =
-  record state = {greeter_oracle : oracle(string, string), greets: list(oracle_query(string, string))}
+  record state =
+    {greeter_oracle : oracle(string, string),
+     greets: list(oracle_query(string, string))}
 
   public function init() : state =
     let greeter_oracle : oracle(string, string) = register_oracle()
