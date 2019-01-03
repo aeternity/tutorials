@@ -6,6 +6,7 @@ This tutorial aims to provide an introduction to Sophia's syntax and some of its
 Related tutorials:
 [Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
 [Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
+[Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
 
 ## Contract state and initialization
 While Sophia is a functional language, contracts (although optional) can hold mutable state. For our example, we will be storing a reference to the oracle that will handle messages and send out responses and all of the greeting messages that have been sent its way. Let's begin by defining our contract body, its state and the `init` function that will set the initial state of our contract when the `Create` transaction is executed.
