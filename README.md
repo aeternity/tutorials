@@ -23,6 +23,9 @@ title: Tutorials
 * [TUTORIAL: Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
 * [TUTORIAL: Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
 * [TUTORIAL: How to create a Sophia fungible token contract?](sophia-fungible-token-contract.md)
+* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 1](sophia-token-exchange-contract-1.md)
+* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 2](sophia-token-exchange-contract-2.md)
+* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 3](sophia-token-exchange-contract-3.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
