@@ -3,7 +3,7 @@
 ## Tutorial Overview
 This tutorial will walk you through the process of calling a function of deployed contract.
 ## Prerequisites
-- We will reuse ExampleContract which was deployed in our previous tutorial [Deploying a Smart Contract on æternity with “aeproject”](smart-contract-deployment-in-aeproject.md)(ToDo: we have to add link to published tutorial) and we are going to call its main function.  
+- We will reuse ExampleContract which was deployed in our previous tutorial [Deploying a Smart Contract on æternity with “forgae”](smart-contract-deployment-in-forgae.md)(ToDo: we have to add link to published tutorial) and we are going to call its main function.  
 - Account with testnet/edgenet funds ([How to Get Testnet Funds](get-testnet-tokens.md) - referencing tutorial)
 - Installed **aecli** (take a look at [this tutorial](account-creation-in-ae-cli.md#installing-aecli) to to remind yourself on installing the javascript version of aecli)
 
@@ -48,7 +48,7 @@ Your balance is: 250000000000000000000
 
 The command for depoying on the edgenet is:
 ```
-aeproject deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
+forgae deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
 ```
 
 And the expected result is:
