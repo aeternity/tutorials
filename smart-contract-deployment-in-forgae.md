@@ -1,39 +1,38 @@
-# TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"
+# TUTORIAL: Deploying a Smart Contract on æternity with "forgae"
 ## Tutorial Overview
-This tutorial will walk you through the process of setting up a new æpp project using the aeproject tool. We will install **aeproject**, initialize an æpp and go through the folder structure. Once this is done we will deploy the æpp on the live network.
+This tutorial will walk you through the process of setting up a new æpp project using the forgae tool. We will install **forgae**, initialize an æpp and go through the folder structure. Once this is done we will deploy the æpp on the live network.
 ## Prerequisites
 - Installed aeternity node and npm (have a look [here](LINK) to learn how to install an æternity node)
 - Installed docker and docker-compose. Installation instructions can be found [here](https://docs.docker.com/compose/install/)
 - The private key of an account that has at least AE tokens (*estimate tx cost/fee - 1671168 AET*)
-## Installing aeproject
-**aeproject** is an æternity framework which helps with setting up an æpp project. The framework makes the development of smart contracts in the æternity network very easy. It provides commands for compilation of smart contracts, running a local aeternity node, unit testing and deployment of smart contracts.
+## Installing forgae
+**forgae** is an æternity framework which helps with setting up an æpp project. The framework makes the development of smart contracts in the æternity network very easy. It provides commands for compilation of smart contracts, running a local aeternity node, unit testing and deployment of smart contracts.
+
+### From npm global repository (recommended)
+
+The package will soon be available for installation from the npm global repository. You will be able to install it via the following command:
+```
+npm i -g forgae
+```
 
 ### Install from source
 
 Currently, to use the framework, you must clone the repository and install it from source.
 ```
-git clone https://github.com/aeternity/aeproject.git
+git clone https://github.com/aeternity/forgae.git
 ```
-Get into the cloned repository with  ```cd aeproject```
+Get into the cloned repository with  ```cd forgae```
 
-Run ```npm link``` inside the ```aeproject``` folder (*If you have any folder permission issues, try running with sudo ```sudo npm link```*)
+Run ```npm link``` inside the ```forgae``` folder (*If you have any folder permission issues, try running with sudo ```sudo npm link```*)
 
-```npm link``` in the aeproject folder will create a symlink in the global folder {prefix}/lib/node_modules/aeproject that links to the package folder where the npm link command was executed.
-
-
-### From npm global repository (comming soon)
-
-The package will soon be available for installation from the npm global repository. You will be able to install it via the following command:
-```
-npm i -g aeproject
-```
+```npm link``` in the forgae folder will create a symlink in the global folder {prefix}/lib/node_modules/forgae that links to the package folder where the npm link command was executed.
 
 ### After install
-Now, you have a global command - ```aeproject```
-With ```aeproject -h``` command you have a quick reference list of all commands:
+Now, you have a global command - ```forgae```
+With ```forgae -h``` command you have a quick reference list of all commands:
 
 ```
-Usage: aeproject [options] [command]
+Usage: forgae [options] [command]
 
 Options:
   -V, --version      output the version number
@@ -59,7 +58,7 @@ mkdir ~/Development/myFirstAepp
 
 Go to a newly created folder ```cd ~/Development/myFirstAepp``` and initialize the æpp with:
 ```
-aeproject init
+forgae init
 ```
 The init command creates an æpp structure with several folders and scripts:
 
@@ -81,7 +80,7 @@ The init command creates an æpp structure with several folders and scripts:
 ## Deploying ExampleContract on the live æternity network
 The **deploy** command helps developers run their deployment scripts for their æpp. The sample deployment script is scaffolded in deployment folder.
 ```
-aeproject deploy [path] [network] [secretKey]
+forgae deploy [path] [network] [secretKey]
 ```
 - **-path** - path to a deployment file, default value is ```./deployment/deploy.js```
 - **-network** (**-n**) - specify the url to a node in this network (ex. https://sdk-mainnet.aepp.com)
@@ -89,13 +88,13 @@ aeproject deploy [path] [network] [secretKey]
 
 Deploy ExampleContract.aes on mainnet with the following command: 
 ```
-aeproject deploy -n https://sdk-mainnet.aepp.com  -s <secretKey>
+forgae deploy -n https://sdk-mainnet.aepp.com  -s <secretKey>
 ```
 
 ## Deploying ExampleContract on the sdk-edgenet
 The command for depoying on the edgenet is similar to the one above above, but with different ```--network``` paramerter:
 ```
-aeproject deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
+forgae deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
 ```
 
 ## Conclusion

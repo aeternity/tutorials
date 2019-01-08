@@ -3,7 +3,7 @@
 This tutorial takes a look at tokens and explains the features and functions of fungible tokens, while provides an understanding of what they are and how developers can work with them.
 ## Prerequisites
 - Installed **aecli** (take a look at [this tutorial](https://github.com/aeternity/tutorials/blob/master/account-creation-in-ae-cli.md#installing-aecli) to to remind yourself on installing the javascript version of aecli)
-- Installed **aeproject** (take a look at [this section](https://github.com/aeternity/tutorials/blob/master/smart-contract-deployment-in-aeproject.md#installing-aeproject))
+- Installed **forgae** (take a look at [this section](https://github.com/aeternity/tutorials/blob/master/smart-contract-deployment-in-forgae.md#installing-forgae))
 - Account with testnet/edgenet funds ([How to Get Testnet Funds](https://github.com/aeternity/tutorials/blob/master/get-testnet-tokens.md) - referencing tutorial)
 ## Fungible token contract
 Any token contract is a smart contract that contains a map of account addresses and a number called balance. The balance represents a unit of value that is defined by the contract creator. One token contract might use balances to represent physical objects, while another might represent monetary value. Third one might even represent the holder’s reputation. The unit of this balance is commonly called a token.
@@ -12,9 +12,9 @@ Fungible token contracts come with a number of functions to allow users to find 
 
 ## Content
 In this tutorial we will:
-- create a project folder and initialize its structure via *aeproject*;
+- create a project folder and initialize its structure via *forgae*;
 - write a Sophia fungible token contract on a step-by-step approach;
-- deploy a newly created contract to sdk-edgenet via *aeproject*;
+- deploy a newly created contract to sdk-edgenet via *forgae*;
 - test the execution of our contract functions through *aecli*;
 
 ## Building Sophia fungible token contract
@@ -30,7 +30,7 @@ mkdir ~/sophiaFungibleToken
 
 Go to a newly created folder ```cd ~/sophiaFungibleToken``` and initialize the æpp with:
 ```
-aeproject init
+forgae init
 ```
 
 The init command creates an æpp structure with several folders and scripts. 
@@ -343,11 +343,11 @@ contract FungibleToken =
 
 ## Deploying and testing 
 
-We will use aeproject to deploy our token to edgenet. The sample deployment script is scaffolded in deployment folder - deploy.js.
+We will use forgae to deploy our token to edgenet. The sample deployment script is scaffolded in deployment folder - deploy.js.
 Let's configure our deployment script. We have to change the contract path from ```./contracts/ExampleContract.aes``` to ```./contracts/FungibleToken.aes```.  The **deploy.js** file should look like this:
 
 ```
-const Deployer = require('aeproject').Deployer;
+const Deployer = require('forgae').Deployer;
 
 const deploy = async (network, privateKey) => {
 	let deployer = new Deployer(network, privateKey);
@@ -363,7 +363,7 @@ module.exports = {
 Next step is to run our deploy command with a secret parameter which is the private key of wallet with edgenet funds(see here - [how to get testnet funds](https://dev.aepps.com/tutorials/get-testnet-tokens.html)). The command for depoying on the edgenet is: 
 
 ```
-aeproject deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
+forgae deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
 ```
 
 In order to get the secret(private) key of your account you can use the following command:
@@ -385,7 +385,7 @@ Your private key is: 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d3238
 Our *secretKey* is ```195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7``` and the execution of the deploy command for our account looks like this:
 
 ```
-aeproject deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
+forgae deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
 ```
 *Plese replace the <secretKey> with the private(secret) key of your account.*
 
