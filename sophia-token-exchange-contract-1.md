@@ -42,8 +42,8 @@ forgae init
 
 ### Fungible token contract
 
-The init command creates an æpp structure with several directories and scripts. 
-Let's create a new file **FungibleToken.aes** in *contracts* directory. 
+The ```init``` command creates an æpp structure with several directories and scripts. 
+Let's create a new file **FungibleToken.aes** in the *contracts* directory. 
 
 ```
 touch ./contracts/FungibleToken.aes
@@ -53,7 +53,7 @@ Go to the [fungible token code](https://dev.aepps.com/tutorials/sophia-fungible-
 
 ### Fungible token exchange contract
 
-Let's create a new file ```ExchangeContract.aes``` in the`contracts` folder.
+Let's create a new file ```ExchangeContract.aes``` in the `contracts` folder.
 
 ```
 touch ./contracts/ExchangeContract.aes
@@ -61,7 +61,7 @@ touch ./contracts/ExchangeContract.aes
 
 *Keep in mind that the Sophia indentation should be using two spaces.*
 
-Firstly, we will create an interface for FungibleToken contract. It will allow us to perform the ```transfer``` and ```transferFrom``` functions. The interface contract includes the signatures of both functions:
+First, we will create an interface for the ```FungibleToken``` contract. It will allow us to perform the ```transfer``` and ```transferFrom``` functions. The interface contract includes the signatures of both functions:
 
 ```
 contract FungibleToken =
@@ -101,15 +101,15 @@ public function exchange(value: int) : bool =
 ```
 
 There are two ways to send tokens from one address to another: 
-- the transfer() function transfers a number of tokens directly from the message sender to another address;
-- approve() and transferFrom() are two functions that allow the transfer to work using a two-step process. In the first step a token holder gives another address (usually of a contract) approval to transfer up to a certain number of tokens, known as an allowance. The token holder uses approve() to provide this information.
+- the ```transfer()``` function transfers a number of tokens directly from the message sender to another address;
+- ```approve()``` and ```transferFrom()``` are two functions that allow the transfer to work using a two-step process. In the first step a token holder gives another address (usually that of a contract) and approval to transfer up to a certain number of tokens, known as an allowance. The token holder uses ```approve()``` to provide this information.
 
-The first line of our ```exchange``` function transfers previously approved tokens(receivingToken) from caller to еxchange contract.
-Next line transfers the second type tokens(sendingToken) from exchange contract to caller.
+The first line of our ```exchange``` function transfers previously approved ```tokens(receivingToken)``` from caller to еxchange contract.
+The next line transfers the second type ```tokens(sendingToken)``` from the exchange contract to the caller.
 
 ##### Sophia exchange contract code
 
-The code shown here is our Sophia exchange contract:
+The code below is our Sophia exchange contract:
 
 ```
 contract FungibleToken =
@@ -135,7 +135,7 @@ contract ExchangeContract =
 ```
 
 ## What is next?
-In [Part 2](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-2.md) of these series we are going to learn valuable skills - Decoding a base58 address, deploying a contract with and without parameters and calling a deployed contract. We will first walk through it manually and in [Part 3](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-3.md) we will do it through script.
+In [Part 2](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-2.md) of the series we will learn some very valuable skills - decoding a base58 address, deploying a contract with and without parameters and calling a deployed contract. We will first walk through it manually and in [Part 3](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-3.md) we will do it with script.
 
 The æternity team will keep this tutorial updated. If you encounter any problems please contact us through the [æternity Forum](https://forum.aeternity.com/c/development).
 
