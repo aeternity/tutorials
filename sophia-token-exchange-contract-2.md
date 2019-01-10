@@ -351,7 +351,7 @@ We are calling the mint function of the first deployed fungible token with addre
 Our caller account has **100** tokens of type *receiving*.
 
 Next step is to mint tokens of the *sending* type to ExchangeContract. We will call the mint function of the token contract with *sending* type(contract address - ```ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP```). The minted tokens will be assigned to the address of ExchangeContract, in my case - ```0x55c7479d0f0bf85b102c38cfd0a4551dad532bad4e4b3cc9bd761d0f7ba9924b```.
-I will apple my addresses to the structure of mint function described above: 
+I will apply my addresses to the structure of mint function described above: 
 
 ```
 aecli contract call ./my-ae-wallet --password 12345 

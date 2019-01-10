@@ -3,7 +3,7 @@
 This tutorial series will simultaneously teach you some of the needed skills when working with Fungible tokens and set you up for future tutorials on Crowdsales. The Exchange smart contract that we are going to go through, is both amazing example of how one uses Fungible tokens programmatically, and allows you to start specifying exchanging logic between different value systems (Tokens, AE, etc.)
 
 ## When would one want to apply similar exchange logic
-Here are some use cases to exchange smart contracts:
+Here are some use cases of token exchange logic:
 ### Decentralized Exchanges
 Every decentralized exchange would need to be able to "convert" one token to another. This happens in accordance to some rules - normally exchange rates. Our example will teach you how you can create this mechanism to exchange two Fungible tokens in accordance to a given exchange rate.
 

@@ -10,7 +10,7 @@ The third part of the tutorial will show you how to write a deployment procedure
 
 In the first part of the tutorial we have already created the contracts - ```FungibleToken.aes``` and ```ExchangeContract.aes```. They remain unchanged.
 
-Current tutorial section will be focus on building a deploy script which will includes:
+Current tutorial section will be focus on building a deploy script which will include:
 - constants for:
     - path to the wallet file;
     - initial amount of a receiving tokens intended for the caller account;
@@ -29,7 +29,7 @@ Current tutorial section will be focus on building a deploy script which will in
 - execution of the exchange function;
 - checking the receiving and sending token balances of the caller account;
 
-We will completely changed the ```deploy.js``` file, located at ```exchangeContract/deployment/deploy.js```. 
+We will completely change the ```deploy.js``` file, located at ```exchangeContract/deployment/deploy.js```. 
 *Please clear the file content and begin clean writing.*
 
 We start with import of the ```Crypto``` module of the æternity javascript SDK will enable us to decode the base58 addresses. You can learn more about ```Crypto``` module [here](https://dev.aepps.com/aepp-sdk-js/docs/api/utils/crypto.html).
