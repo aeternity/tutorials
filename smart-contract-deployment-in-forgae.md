@@ -2,7 +2,7 @@
 ## Tutorial Overview
 This tutorial will walk you through the process of setting up a new æpp project using the forgae tool. We will install **forgae**, initialize an æpp and go through the folder structure. Once this is done we will deploy the æpp on the live network.
 ## Prerequisites
-- Installed aeternity node and npm (have a look [here](LINK) to learn how to install an æternity node)
+- Installed node.js and npm (node package manager)
 - Installed docker and docker-compose. Installation instructions can be found [here](https://docs.docker.com/compose/install/)
 - The private key of an account that has at least AE tokens (*estimate tx cost/fee - 1671168 AET*)
 ## Installing forgae
