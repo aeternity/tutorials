@@ -58,8 +58,8 @@ aecli account create <name> [options]
 - Тhe option capabilities of the command are the following:
 ```
 Options:
-  -u, --url [hostname]                               Node to connect to (default: "https://sdk-mainnet.aepp.com")
-  -U, --internalUrl [internal]                       Node to connect to(internal) (default: "https://sdk-mainnet.aepp.com")
+  -u, --url [hostname]                               Node to connect to (default: "https://sdk-mainnet.aepps.com")
+  -U, --internalUrl [internal]                       Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
   --native                                           Build transaction natively
   --networkId [networkId]                            Network ID (default: ae_mainnet)
   -P, --password [password]                          Wallet Password

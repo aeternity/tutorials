@@ -83,12 +83,12 @@ The **deploy** command helps developers run their deployment scripts for their Ã
 forgae deploy [path] [network] [secretKey]
 ```
 - **-path** - path to a deployment file, default value is ```./deployment/deploy.js```
-- **-network** (**-n**) - specify the url to a node in this network (ex. https://sdk-mainnet.aepp.com)
+- **-network** (**-n**) - specify the url to a node in this network (ex. https://sdk-mainnet.aepps.com)
 - **-secretKey** (**-s**) - secret(private) key that will unlock the wallet that will be used to deploy the contract
 
 Deploy ExampleContract.aes on mainnet with the following command: 
 ```
-forgae deploy -n https://sdk-mainnet.aepp.com  -s <secretKey>
+forgae deploy -n https://sdk-mainnet.aepps.com  -s <secretKey>
 ```
 
 ## Deploying ExampleContract on the sdk-edgenet
