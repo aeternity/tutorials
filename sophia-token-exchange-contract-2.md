@@ -3,7 +3,7 @@
 The second part of the tutorial will show you how to interact with our ExchangeContract created in the previous article using the step-by-step approach. It will teach you how to use the aecli commands and the forgae tool to decode a base58 addresses, deploy a contract with and without parameter and call a deployed contract functions.
 
 ## Prerequisites
-- Created the two contract ```FungibleToken.aes``` and ```ExchangeContract.aes``` from the first part - [Simple Fungible Token Exchange Smart Contract - Part 1](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-1.md)
+- Created the two contracts ```FungibleToken.aes``` and ```ExchangeContract.aes``` from the first part - [Simple Fungible Token Exchange Smart Contract - Part 1](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-1.md)
 
 ## Content
 
@@ -26,7 +26,7 @@ The second approach(Scripted) will be shown in [Simple Fungible Token Exchange S
 ## Manual approach
 
 ### Deploying two fungible token contracts on sdk-edgenet
-Let’s refresh our memory on how to deploy contract to edgenet:
+Let’s refresh our memory on how to deploy contracts to edgenet:
 ```
 forgae deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
 ```
@@ -149,7 +149,7 @@ Interacting with the functions of the deployed second token contract will be don
 #### Summary
 Our two fungible token contracts have been deployed on sdk-edgenet. 
 
-The hex addresses for the two deployed token contract in our case are:
+The hex addresses for the two deployed token contracts in our case are:
 ```
 Receiving token - 0x28931779943d8b1ba9799fc73f0805567599abf6a0958e2463db9aa14ccc9685
 Sending token - 0xa732153f7ff0134e8632086ddcfc1b87cd9cc1e7f34c7a5968b1ae5d1dac353b

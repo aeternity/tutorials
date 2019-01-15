@@ -1,6 +1,6 @@
 # TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 1
 ## Tutorial Overview
-This tutorial series will simultaneously teach you some of the needed skills when working with Fungible tokens and set you up for future tutorials on Crowdsales. The Exchange smart contract that we are going to go through, is both amazing example of how one uses Fungible tokens programmatically, and allows you to start specifying exchanging logic between different value systems (Tokens, AE, etc.)
+This tutorial series will simultaneously teach you some of the needed skills when working with Fungible tokens and set you up for future tutorials on Crowdsales. The Exchange smart contract that we are going to go through, is both an amazing example of how one uses Fungible tokens programmatically, and allows you to start specifying exchanging logic between different value systems (Tokens, AE, etc.)
 
 ## When would one want to apply similar exchange logic
 Here are some use cases of token exchange logic:
@@ -8,7 +8,7 @@ Here are some use cases of token exchange logic:
 Every decentralized exchange would need to be able to "convert" one token to another. This happens in accordance to some rules - normally exchange rates. Our example will teach you how you can create this mechanism to exchange two Fungible tokens in accordance to a given exchange rate.
 
 ### Crowdsales
-Generally, every crowdsale is just exchange between a native currency (AE, USD, ETH) and newly created Fungible token. You can swap one of our tokens with AE and you have half of what is needed in order to create a crowdsale.
+Generally, every crowdsale is just an exchange between a native currency (AE, USD, ETH) and a newly created Fungible token. You can swap one of our tokens with AE and you have half of what is needed in order to create a crowdsale.
 
 ### Addition: Oracles
 One of the main benefits of Aeternity is the inbuilt support for Oracles. Exchange contracts combined with Oracles creates a robust Oracle-regulated system. For example, an Oracle might be updating your exchange smart contract, with the exchange rate between your Fungible token and AE, in accordance with off-chain factors.
@@ -21,7 +21,7 @@ Firstly we will create two contracts - ```FungibleToken.aes``` and ```ExchangeCo
 The second and the third parts will show us two approaches(```Manual``` and ```Scripted```) how to:
 - decode a base58 address to hex string;
 - deploy a contract with and without parameters;
-- call a deployed contract functions;
+- call a deployed contract's functions;
 
 ## Fungible token and simple fungible token exchange smart contracts
 
@@ -34,7 +34,7 @@ Let's create a folder for our project:
 mkdir ~/exchangeContract
 ```
 
-Go to a newly created folder and initialize the æpp:
+Go to the newly created folder and initialize the æpp:
 ```
 cd ~/exchangeContract
 forgae init
