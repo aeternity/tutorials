@@ -25,6 +25,7 @@ npm init -y
 3. Create a example project file `index.js` in this directory
 
 4. Setup example code structure in `index.js`, this does require the SDK dependency and setup a sync function in which we can build the naming workflow
+
 ```
 const {Universal} = require('@aeternity/aepp-sdk');
 
@@ -122,7 +123,6 @@ $ node index.js
      ttl: 6637,
      type: 'NameUpdateTx',
      version: 1 } }
-
 ```
 
 
