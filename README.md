@@ -19,6 +19,7 @@ title: Tutorials
 * [TUTORIAL: Deploying a Smart Contract on æternity with "forgae"](smart-contract-deployment-in-forgae.md)
 * [TUTORIAL: Deploying a Smart Contract with init parameters with "forgae"](deploy-with-init-params.md)
 * [TUTORIAL: Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
+* [TUTORIAL: Writing a greeter contract in Sophia using oracles - introduction](sophia-oracle-introduction.md)
 * [TUTORIAL: Smart Contract usage with the Javascript SDK](smart-contract-usage-in-javascript-sdk.md)
 * [TUTORIAL: Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
 * [TUTORIAL: Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
