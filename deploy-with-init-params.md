@@ -1,7 +1,7 @@
 # TUTORIAL: Deploying Sophia smart contracts with init parameters
 
 ## Tutorial Overview
-This tutorial will walk you through the steps of creating your own Aeternity Paper Wallets. From generation of accounts through broadcasting multiple transactions at once and all the way down to generating the QR codes, this tutorial will guide you into the creation of your own AE Paper Wallets.
+This tutorial will walk you through the deployment of smart contracts with init parameters throug the use of forgae.
 
 
 ## Prerequisites
