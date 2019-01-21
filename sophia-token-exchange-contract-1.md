@@ -31,12 +31,12 @@ The first thing we need to do is create a project folder and initialize its stru
 
 Let's create a folder for our project:
 ```
-mkdir ~/exchangeContract
+mkdir ~/exchange-contract
 ```
 
 Go to the newly created folder and initialize the æpp:
 ```
-cd ~/exchangeContract
+cd ~/exchange-contract
 forgae init
 ```
 
@@ -61,12 +61,12 @@ touch ./contracts/ExchangeContract.aes
 
 *Keep in mind that the Sophia indentation should be using two spaces.*
 
-First, we will create an interface for the ```FungibleToken``` contract. It will allow us to perform the ```transfer``` and ```transferFrom``` functions. The interface contract includes the signatures of both functions:
+First, we will create an interface for the ```FungibleToken``` contract. It will allow us to perform the ```transfer``` and ```transfer_from``` functions. The interface contract includes the signatures of both functions:
 
 ```
 contract FungibleToken =
   public function transfer : (address, int) => bool
-  public function transferFrom : (address, address, int) => bool
+  public function transfer_from : (address, address, int) => bool
 ``` 
 
 Let's continue with ```ExchangeContract```. 
@@ -78,34 +78,34 @@ At contract creation we will initialize the data.
 ```
 contract FungibleToken =
   public function transfer : (address, int) => bool
-  public function transferFrom : (address, address, int) => bool
+  public function transfer_from : (address, address, int) => bool
   
 contract ExchangeContract =
   record state = {
-    receivingToken : FungibleToken,
-    sendingToken   : FungibleToken,
+    receiving_token : FungibleToken,
+    sending_token   : FungibleToken,
     rate           : int}
 
-  public stateful function init(receivingToken: FungibleToken, sendingToken: FungibleToken, rate: int) = {
-    receivingToken = receivingToken,
-    sendingToken   = sendingToken,
+  public stateful function init(receiving_token: FungibleToken, sending_token: FungibleToken, rate: int) = {
+    receiving_token = receiving_token,
+    sending_token   = sending_token,
     rate           = rate}
 ```
 
 The main function of our contracts is called ```exchange```. It accepts just one parameter - the amount of tokens which we want to exchange.
 ```
 public function exchange(value: int) : bool =
-  state.receivingToken.transferFrom(Call.caller, Contract.address, value)
-  state.sendingToken.transfer(Call.caller, value * state._rate)
+  state.receiving_token.transfer_from(Call.caller, Contract.address, value)
+  state.sending_token.transfer(Call.caller, value * state._rate)
   true
 ```
 
 There are two ways to send tokens from one address to another: 
 - the ```transfer()``` function transfers a number of tokens directly from the message sender to another address;
-- ```approve()``` and ```transferFrom()``` are two functions that allow the transfer to work using a two-step process. In the first step a token holder gives another address (usually that of a contract) and approval to transfer up to a certain number of tokens, known as an allowance. The token holder uses ```approve()``` to provide this information.
+- ```approve()``` and ```transfer_from()``` are two functions that allow the transfer to work using a two-step process. In the first step a token holder gives another address (usually that of a contract) and approval to transfer up to a certain number of tokens, known as an allowance. The token holder uses ```approve()``` to provide this information.
 
-The first line of our ```exchange``` function transfers previously approved ```tokens(receivingToken)``` from caller to еxchange contract.
-The next line transfers the second type ```tokens(sendingToken)``` from the exchange contract to the caller.
+The first line of our ```exchange``` function transfers previously approved ```tokens(receiving_token)``` from caller to еxchange contract.
+The next line transfers the second type ```tokens(sending_token)``` from the exchange contract to the caller.
 
 ##### Sophia exchange contract code
 
@@ -114,22 +114,22 @@ The code below is our Sophia exchange contract:
 ```
 contract FungibleToken =
   public function transfer : (address, int) => bool
-  public function transferFrom : (address, address, int) => bool
+  public function transfer_from : (address, address, int) => bool
 
 contract ExchangeContract =
   record state = {
-    receivingToken : FungibleToken,
-    sendingToken   : FungibleToken,
-    rate           : int}
+    receiving_token : FungibleToken,
+    sending_token   : FungibleToken,
+    rate            : int}
 
-  public stateful function init(receivingToken: FungibleToken, sendingToken: FungibleToken, rate: int) = {
-    receivingToken = receivingToken,
-    sendingToken   = sendingToken,
-    rate           = rate}
+  public stateful function init(receiving_token: FungibleToken, sending_token: FungibleToken, rate: int) = {
+    receiving_token = receiving_token,
+    sending_token   = sending_token,
+    rate            = rate}
 
   public function exchange(value: int) : bool =
-    state.receivingToken.transferFrom(Call.caller, Contract.address, value)
-    state.sendingToken.transfer(Call.caller, value * state._rate)
+    state.receiving_token.transfer_from(Call.caller, Contract.address, value)
+    state.sending_token.transfer(Call.caller, value * state.rate)
     true
 
 ```

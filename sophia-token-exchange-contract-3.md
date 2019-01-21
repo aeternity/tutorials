@@ -251,44 +251,40 @@ module.exports = {
 
 We are ready to run our deploy script:
 ```
-forgae deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
-```
-Replaced with my secret key: 
-```
-forgae deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
+forgae deploy
 ```
 
 The result should look as follows: 
 ```
 ===== Receiving Token Contract =====
 ===== Contract: FungibleToken.aes has been deployed =====
-{ owner: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
-  transaction: 'th_oth8waRBW5ytKCEUhsUFc42usyJTdGUdp432Cjza9Tu6Mg8o7',
-  address: 'ct_2g67Zd8ucmphSPbZdBQ8qPC9ggrEjfBhFq7iuznCZbfASo8yTC',
+{ owner: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
+  transaction: 'th_zXYbgU5NVMHif4LEKqHUbe1Yw4s72mqXGeYt1LSq3awDGQRhs',
+  address: 'ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5',
   call: [Function],
   callStatic: [Function],
-  createdAt: 2019-01-04T09:05:52.373Z }
--> Receiving token contract decoded address: 0xdc7356882cf3808c2bf3ca1996e4fd058b4c6cdabd289e23d531a2231750b8a6
+  createdAt: 2019-01-21T12:46:58.361Z }
+-> Receiving token contract decoded address: 0x19877d65b8e253d10e7b0319a45191b7ef8919b6d73551d4dbdb3b1a59f4eb3c
 
 ===== Sending Token Contract =====
 ===== Contract: FungibleToken.aes has been deployed =====
-{ owner: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
-  transaction: 'th_2JKbK6sTbnYwVUWVfcPNREdbQ56iT8tuuNpZwpTG9KpQXSc6FN',
-  address: 'ct_n6PevDfHJUK79jcywm6yUDxwZFVXiZcbC5tzzaVLQ6NPWrNAD',
+{ owner: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
+  transaction: 'th_2E61F7Xbho25x8sGWinn2mRjPMMu5o3uysWt3vbKmahnpCwgUH',
+  address: 'ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme',
   call: [Function],
   callStatic: [Function],
-  createdAt: 2019-01-04T09:05:58.817Z }
--> Sending token contract decoded address: 0x666398102d926ac04be814a4a1039de761f9442cee130550314bfb32c1fbc60c
+  createdAt: 2019-01-21T12:46:59.614Z }
+-> Sending token contract decoded address: 0x6d03829c7c61f395ab39aa0200e6849ff5916384d195ef4a77b0c597ba7ea245
 
 ===== Exchange Contract =====
 ===== Contract: ExchangeContract.aes has been deployed =====
-{ owner: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
-  transaction: 'th_7ZAHtarTweeCzpx4dcDhWTk1CcJxTEBMhrd75Dmt7R4TsGKbq',
-  address: 'ct_2n5p4duByTMqMayR3C7CakcS2RNSW5ih9NqHBXSdtFx9PfYds1',
+{ owner: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
+  transaction: 'th_rscBoiBkPyfYKAAU5e6Bby1MLVyxSMc5y1Ub4FKEhnbQ26zXK',
+  address: 'ct_Lu9XYdtkDbTSJuadtMXkJHe2ybrF5dPAK973AMEURyZkMUEZw',
   call: [Function],
   callStatic: [Function],
-  createdAt: 2019-01-04T09:06:04.483Z }
--> Exchange contract decoded address: 0xea0ffd74acdad939f26d3ef1251a7131d2ac34830b0bac49a889187721a7c153
+  createdAt: 2019-01-21T12:47:00.804Z }
+-> Exchange contract decoded address: 0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb856170478
 
 ===== Minting receiving tokens to the caller account =====
 
@@ -297,45 +293,43 @@ The caller account has: 100 Receiving Tokens
 ===== Minting sending tokens to the ExchangeContract =====
 
 The ExchangeContract has: 1000 Sending Tokens
-
-Your deployment script finished successfully!
 ```
 The output is verbose and gives us all we need to execute the final three steps of this tutorial.
 
 Let's give permissions to ExchangeContract to spend form the caller's receiving tokens:
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-approve bool 0xea0ffd74acdad939f26d3ef1251a7131d2ac34830b0bac49a889187721a7c153 
+aecli contract call ./owner-wallet --password 12345 
+approve bool 0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb856170478 
 50  
---contractAddress ct_2g67Zd8ucmphSPbZdBQ8qPC9ggrEjfBhFq7iuznCZbfASo8yTC 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+--contractAddress ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
-The first parameter of the approve function is the decoded address of ExchangeContract. You can take it from the above output ```-> Exchange contract decoded address: 0xea0ffd74acdad939f26d3ef1251a7131d2ac34830b0bac49a889187721a7c153```. The ```contractAddress``` parameter is the receiving token contract address as base58 - ```ct_2g67Zd8ucmphSPbZdBQ8qPC9ggrEjfBhFq7iuznCZbfASo8yTC```, taken from the same output.
+The first parameter of the approve function is the decoded address of ExchangeContract. You can take it from the above output ```-> Exchange contract decoded address: 0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb856170478```. The ```contractAddress``` parameter is the receiving token contract address as base58 - ```ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5```, taken from the same output.
 
 We will use the same exchange amount as used in the previous section - 5.
 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
+aecli contract call ./owner-wallet --password 12345 
 exchange bool 5 
---contractAddress ct_2n5p4duByTMqMayR3C7CakcS2RNSW5ih9NqHBXSdtFx9PfYds1 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+--contractAddress ct_Lu9XYdtkDbTSJuadtMXkJHe2ybrF5dPAK973AMEURyZkMUEZw 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
-Here the address ```ct_2n5p4duByTMqMayR3C7CakcS2RNSW5ih9NqHBXSdtFx9PfYds1``` is our ExchangeContract deployed by newly created script.
+Here the address ```ct_Lu9XYdtkDbTSJuadtMXkJHe2ybrF5dPAK973AMEURyZkMUEZw``` is our ExchangeContract deployed by newly created script.
 
 Finally, let's check if the balances are as we expect them to be: 
 
 Тhe *receiving* tokens balance:
 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-balanceOf int 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 
---contractAddress ct_2g67Zd8ucmphSPbZdBQ8qPC9ggrEjfBhFq7iuznCZbfASo8yTC 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+aecli contract call ./owner-wallet --password 12345 
+balance_of int 0xe9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca 
+--contractAddress ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 ```
 Return value (decoded)___ 95
@@ -343,11 +337,11 @@ Return value (decoded)___ 95
 So far so good, let's check our sending token balance:
 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-balanceOf int 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 
---contractAddress ct_n6PevDfHJUK79jcywm6yUDxwZFVXiZcbC5tzzaVLQ6NPWrNAD 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+aecli contract call ./owner-wallet --password 12345 
+balance_of int 0xe9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca 
+--contractAddress ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 ```
 Return value (decoded)___ 10

@@ -7,7 +7,7 @@ The second part of the tutorial will show you how to interact with our ExchangeC
 
 ## Content
 
-In this tutorial we will deploy two fungible token contracts on edgenet and will deploy a simple fungible token exchange contract created in the previous part. The ```ExchangeContract``` will store the addresses of the token contracts and their exchange rate. The exchange function will transfer the first token type(hereafter called receivingToken) from caller to exchange contract and after that will transfer the second token type(hereafter called sendingToken) from exchange contract to caller, based on the stated rate. 
+In this tutorial we will deploy two fungible token contracts on the local network and will deploy a simple fungible token exchange contract created in the previous part. The ```ExchangeContract``` will store the addresses of the token contracts and their exchange rate. The exchange function will transfer the first token type(hereafter called receivingToken) from caller to exchange contract and after that will transfer the second token type(hereafter called sendingToken) from exchange contract to caller, based on the stated rate. 
 
 ## Execution plan
 
@@ -25,13 +25,13 @@ The second approach(Scripted) will be shown in [Simple Fungible Token Exchange S
 
 ## Manual approach
 
-### Deploying two fungible token contracts on sdk-edgenet
-Let’s refresh our memory on how to deploy contracts to edgenet:
+### Deploying two fungible token contracts on the local network
+Let’s refresh our memory on how to deploy contracts to the local network:
 ```
-forgae deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
+forgae deploy
 ```
 
-In the previous tutorial we deployed a token contract via forgae. We will use the same approach here.Let's update our deployment script which is located at ```~/exchangeContract/deployment/deploy.js```.
+In the previous tutorial we deployed a token contract via forgae. We will use the same approach here.Let's update our deployment script which is located at ```~/exchange-contract/deployment/deploy.js```.
 
 We have to change the contract path  from```./contracts/ExampleContract.aes``` to ```./contracts/FungibleToken.aes```.  The **deploy.js** file should now look like this:
 
@@ -51,114 +51,81 @@ module.exports = {
 
 #### Deploying Receiving token
 
-Next step is to run our deploy command with a secret parameter which is the private key of wallet with edgenet funds(see here - [how to get testnet funds](https://dev.aepps.com/tutorials/get-testnet-tokens.html)). The command for deploying on the edgenet is: 
+Next step is to run our deploy command: 
 
 ```
-forgae deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
+forgae deploy
 ```
 
-In order to get the secret(private) key of your account you can use the following command:
-
-```
-aecli account address <my-ae-wallet> --privateKey
-```
- where:
-
-- `my-ae-wallet` - path to the the æternity account file created via ```aecli account create <name> [options] ```
-- `privateKey` - the optional parameter which instructs aecli to show the private(secret) key of the *my-ae-wallet* account
-
-The above command gives the following output information for the account created by me:
-
-```
-Your address is: ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx
-Your private key is: 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
-```
-
-My **secretKey** is: 
-```
-195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
-```
-and the execution of the deploy command for my account looks like this:
-
-```
-forgae deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
-```
-*Please replace the <secretKey> with the private(secret) key of your own account.*
-
-
-```
-forgae deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
-```
 The structure of the output you can expect looks something like this:
 
 ```
 ===== Contract: FungibleToken.aes has been deployed =====
-{ owner: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
-  transaction: 'th_qdxNu9fNMoCRS2cfGV1PBwSrKSX8uB313jkN8b6gMS5EEDgj4',
-  address: 'ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN',
+{ owner: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
+  transaction: 'th_zXYbgU5NVMHif4LEKqHUbe1Yw4s72mqXGeYt1LSq3awDGQRhs',
+  address: 'ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5',
   call: [Function],
   callStatic: [Function],
-  createdAt: 2018-12-31T08:09:07.787Z }
+  createdAt: 2019-01-21T12:46:58.361Z }
 Your deployment script finished successfully!
 ```
-Аeternity command line interface accepts parameters of type address as hex string. So we have to decode the base58 contract address to hex string and add prefix ```0x``` - in my case **ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN** to this format **0x28931779943d8b1ba9799fc73f0805567599abf6a0958e2463db9aa14ccc9685**.
+Аeternity command line interface accepts parameters of type address as hex string. So we have to decode the base58 contract address to hex string and add prefix ```0x``` - in my case **ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5** to this format **0x19877d65b8e253d10e7b0319a45191b7ef8919b6d73551d4dbdb3b1a59f4eb3c**.
 
 ```
-aecli crypto decode ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN
-Decoded address (hex): 28931779943d8b1ba9799fc73f0805567599abf6a0958e2463db9aa14ccc9685
+aecli crypto decode ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5
+Decoded address (hex): 19877d65b8e253d10e7b0319a45191b7ef8919b6d73551d4dbdb3b1a59f4eb3c
 ```
 Prepending `0x` and we get:
 ```
-0x28931779943d8b1ba9799fc73f0805567599abf6a0958e2463db9aa14ccc9685
+0x19877d65b8e253d10e7b0319a45191b7ef8919b6d73551d4dbdb3b1a59f4eb3c
 ```
 The above address will be used as the contract address function parameter via **aecli**.
-Interacting with the functions of the deployed first token contract will be done using the base58 format - in my case `ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN`. 
+Interacting with the functions of the deployed first token contract will be done using the base58 format - in my case `ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5`. 
 
 #### Deploying Sending token
 
 Let's repeat the deployment procedure for our second fungible token type(sendingToken).
 The deployment script remains the same.
 ```
-forgae deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
+forgae deploy
 ```
-*Please replace the <secretKey> with the private(secret) key of your account.*
 
 ```
 ===== Contract: FungibleToken.aes has been deployed =====
-{ owner: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
-  transaction: 'th_23pm1dDgTXoRy1zPUWnMGcwEHkbjAvcPzhRc9Mju9JicQ2J7gE',
-  address: 'ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP',
+{ owner: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
+  transaction: 'th_2E61F7Xbho25x8sGWinn2mRjPMMu5o3uysWt3vbKmahnpCwgUH',
+  address: 'ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme',
   call: [Function],
   callStatic: [Function],
-  createdAt: 2018-12-31T08:36:39.525Z }
+  createdAt: 2019-01-21T12:46:59.614Z }
 Your deployment script finished successfully!
 ```
 The second token type hex address representation in my case is:
 ```
-aecli crypto decode ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP
-Decoded address (hex): a732153f7ff0134e8632086ddcfc1b87cd9cc1e7f34c7a5968b1ae5d1dac353b
+aecli crypto decode ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme
+Decoded address (hex): 6d03829c7c61f395ab39aa0200e6849ff5916384d195ef4a77b0c597ba7ea245
 ```
-*Please replace ```ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP``` with the address of your deployed contract.*
+*Please replace ```ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme``` with the address of your deployed contract.*
 
 ```
-0xa732153f7ff0134e8632086ddcfc1b87cd9cc1e7f34c7a5968b1ae5d1dac353b
+0x6d03829c7c61f395ab39aa0200e6849ff5916384d195ef4a77b0c597ba7ea245
 ```
 The above address will be used for passing the contract address as function parameter via **aecli**.
-Interacting with the functions of the deployed second token contract will be done using the base58 format - in my case ```ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP```.
+Interacting with the functions of the deployed second token contract will be done using the base58 format - in my case ```ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme```.
 
 #### Summary
-Our two fungible token contracts have been deployed on sdk-edgenet. 
+Our two fungible token contracts have been deployed on the local network. 
 
 The hex addresses for the two deployed token contracts in our case are:
 ```
-Receiving token - 0x28931779943d8b1ba9799fc73f0805567599abf6a0958e2463db9aa14ccc9685
-Sending token - 0xa732153f7ff0134e8632086ddcfc1b87cd9cc1e7f34c7a5968b1ae5d1dac353b
+Receiving token - 0x19877d65b8e253d10e7b0319a45191b7ef8919b6d73551d4dbdb3b1a59f4eb3c
+Sending token - 0x6d03829c7c61f395ab39aa0200e6849ff5916384d195ef4a77b0c597ba7ea245
 ```
 
 The base58 addresses:
 ```
-Receiving token - ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN
-Sending token - ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP
+Receiving token - ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5
+Sending token - ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme
 ```
 
 ### Building simple fungible token exchange contract
@@ -171,12 +138,12 @@ touch ./contracts/ExchangeContract.aes
 
 *Keep in mind that the Sophia indentation should be using two spaces.*
 
-Firstly, we will create an interface for FungibleToken contract. It will allow us to perform the ```transfer``` and ```transferFrom``` functions. The interface contract includes the signatures of both functions:
+Firstly, we will create an interface for FungibleToken contract. It will allow us to perform the ```transfer``` and ```transfer_from``` functions. The interface contract includes the signatures of both functions:
 
 ```
 contract FungibleToken =
   public function transfer : (address, int) => bool
-  public function transferFrom : (address, address, int) => bool
+  public function transfer_from : (address, address, int) => bool
 ``` 
 
 Let's continue with ```ExchangeContract```. 
@@ -188,31 +155,31 @@ At contract creation we will initialize the data.
 ```
 contract FungibleToken =
   public function transfer : (address, int) => bool
-  public function transferFrom : (address, address, int) => bool
+  public function transfer_from : (address, address, int) => bool
   
 contract ExchangeContract =
   record state = {
-    receivingToken : FungibleToken,
-    sendingToken   : FungibleToken,
-    rate           : int}
+    receiving_token : FungibleToken,
+    sending_token   : FungibleToken,
+    rate            : int}
 
-  public stateful function init(receivingToken: FungibleToken, sendingToken: FungibleToken, rate: int) = {
-    receivingToken = receivingToken,
-    sendingToken   = sendingToken,
-    rate           = rate}
+  public stateful function init(receiving_token: FungibleToken, sending_token: FungibleToken, rate: int) = {
+    receiving_token = receiving_token,
+    sending_token   = sending_token,
+    rate            = rate}
 ```
 
 The main function of our contracts is called ```exchange```. It accepts just one parameter - the amount of tokens which we want to exchange.
 ```
 public function exchange(value: int) : bool =
-  state.receivingToken.transferFrom(Call.caller, Contract.address, value)
-  state.sendingToken.transfer(Call.caller, value * state._rate)
+  state.receiving_token.transfer_from(Call.caller, Contract.address, value)
+  state.sending_token.transfer(Call.caller, value * state.rate)
   true
 ```
 
 There are two ways to send tokens from one address to another: 
 - the transfer() function transfers a number of tokens directly from the message sender to another address;
-- approve() and transferFrom() are two functions that allow the transfer to work using a two-step process. In the first step a token holder gives another address (usually of a contract) approval to transfer up to a certain number of tokens, known as an allowance. The token holder uses approve() to provide this information.
+- approve() and transfer_from() are two functions that allow the transfer to work using a two-step process. In the first step a token holder gives another address (usually of a contract) approval to transfer up to a certain number of tokens, known as an allowance. The token holder uses approve() to provide this information.
 
 The first line of our ```exchange``` function transfers previously approved tokens(receivingToken) from caller to еxchange contract.
 Next line transfers the second type tokens(sendingToken) from exchange contract to caller.
@@ -224,22 +191,22 @@ The code shown here is our Sophia exchange contract:
 ```
 contract FungibleToken =
   public function transfer : (address, int) => bool
-  public function transferFrom : (address, address, int) => bool
+  public function transfer_from : (address, address, int) => bool
 
 contract ExchangeContract =
   record state = {
-    receivingToken : FungibleToken,
-    sendingToken   : FungibleToken,
-    rate           : int}
+    receiving_token : FungibleToken,
+    sending_token   : FungibleToken,
+    rate            : int}
 
-  public stateful function init(receivingToken: FungibleToken, sendingToken: FungibleToken, rate: int) = {
-    receivingToken = receivingToken,
-    sendingToken   = sendingToken,
-    rate           = rate}
+  public stateful function init(receiving_token: FungibleToken, sending_token: FungibleToken, rate: int) = {
+    receiving_token = receiving_token,
+    sending_token   = sending_token,
+    rate            = rate}
 
   public function exchange(value: int) : bool =
-    state.receivingToken.transferFrom(Call.caller, Contract.address, value)
-    state.sendingToken.transfer(Call.caller, value * state._rate)
+    state.receiving_token.transfer_from(Call.caller, Contract.address, value)
+    state.sending_token.transfer(Call.caller, value * state.rate)
     true
 
 ```
@@ -257,8 +224,8 @@ const Deployer = require('forgae').Deployer;
 
 const deploy = async (network, privateKey) => {
 	let deployer = new Deployer(network, privateKey);
-	const receivingTokenAddress = "0x28931779943d8b1ba9799fc73f0805567599abf6a0958e2463db9aa14ccc9685";
-	const sendingTokenAddress = "0xa732153f7ff0134e8632086ddcfc1b87cd9cc1e7f34c7a5968b1ae5d1dac353b";
+	const receivingTokenAddress = "0x19877d65b8e253d10e7b0319a45191b7ef8919b6d73551d4dbdb3b1a59f4eb3c";
+	const sendingTokenAddress = "0x6d03829c7c61f395ab39aa0200e6849ff5916384d195ef4a77b0c597ba7ea245";
 	const rate = 2;
 
 	await deployer.deploy("./contracts/ExchangeContract.aes", undefined, `(${receivingTokenAddress}, ${sendingTokenAddress}, ${rate})`);
@@ -275,30 +242,26 @@ As you can see, we passed the token addresses and the exchange rate. Let's set t
 
 Let's run our deploy script:
 ```
-forgae deploy -n https://sdk-edgenet.aepps.com  -s <secretKey>
-```
-In my case the command is:
-```
-forgae deploy -n https://sdk-edgenet.aepps.com -s 195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
+forgae deploy
 ```
 
 ```
 ===== Contract: ExchangeContract.aes has been deployed =====
-{ owner: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
-  transaction: 'th_2Leci2HU99U3H2kQkjACypLW7cRvX3dpzB8azRzrYww6S2CGKH',
-  address: 'ct_en6Wh7dnntXQ6LYi3BQyGMuw2Vr6Ln1kcAcswDkziM53qpKup',
+{ owner: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
+  transaction: 'th_rscBoiBkPyfYKAAU5e6Bby1MLVyxSMc5y1Ub4FKEhnbQ26zXK',
+  address: 'ct_Lu9XYdtkDbTSJuadtMXkJHe2ybrF5dPAK973AMEURyZkMUEZw',
   call: [Function],
   callStatic: [Function],
-  createdAt: 2019-01-02T12:47:23.868Z }
+  createdAt: 2019-01-21T12:47:00.804Z }
 Your deployment script finished successfully!
 ```
 
-I will decode the deployed contract address ```ct_en6Wh7dnntXQ6LYi3BQyGMuw2Vr6Ln1kcAcswDkziM53qpKup```:
+I will decode the deployed contract address ```ct_Lu9XYdtkDbTSJuadtMXkJHe2ybrF5dPAK973AMEURyZkMUEZw```:
 ```
-aecli crypto decode ct_en6Wh7dnntXQ6LYi3BQyGMuw2Vr6Ln1kcAcswDkziM53qpKup
-Decoded address (hex): 55c7479d0f0bf85b102c38cfd0a4551dad532bad4e4b3cc9bd761d0f7ba9924b
+aecli crypto decode ct_Lu9XYdtkDbTSJuadtMXkJHe2ybrF5dPAK973AMEURyZkMUEZw
+Decoded address (hex): 2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb85617047
 ```
-The result is ```0x55c7479d0f0bf85b102c38cfd0a4551dad532bad4e4b3cc9bd761d0f7ba9924b```. Please do the same for your exchange contract address.
+The result is ```0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb85617047```. Please do the same for your exchange contract address.
 
 ### Interacting with the exchange contract
 The exchange mechanism is as follows - the exchange contract accepts *receiving* tokens and returns *sending* token multiplied by the rate.
@@ -306,8 +269,8 @@ The exchange mechanism is as follows - the exchange contract accepts *receiving*
 Here is a reminder of how looks the exchange function of the ExchangeContract:
 ```
 public function exchange(value: int) : bool =
-  state.receivingToken.transferFrom(Call.caller, Contract.address, value)
-  state.sendingToken.transfer(Call.caller, value * state.rate)
+  state.receiving_token.transfer_from(Call.caller, Contract.address, value)
+  state.sending_token.transfer(Call.caller, value * state.rate)
   true
 ```
 
@@ -318,78 +281,94 @@ In order to be able to achieve token exchange, we have to:
 - execute the exchange function of ExchangeContract;
 - check the caller account balance of the receiving and sending tokens;
 
-First of all, let's mint some receiving tokens to our caller account. In order to do that we would need hex representation of our account. Here are the commands for my account:
+First of all, let's mint some receiving tokens to our caller account. In order to do that we would need hex representation of the miner account:
 ```
-aecli account address ./my-ae-wallet --password 12345
-Your address is: ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx
-```
-```
-aecli crypto decode ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx
-Decoded address (hex): a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7
+aecli crypto decode ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU
+Decoded address (hex): e9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca
 ```
 
-Interacting with a deployed contract is done using ```aecli contract call```. For instance, calling of the *mint* function of our first fungible token contract looks like this:
+Interacting with a deployed contract is done using ```aecli contract call```. 
+
+We have to create a wallet file for the *miner* account to be able to call contract functions. 
+We will use the ```aecli account save``` command. It generates a keypair file from private key and encrypt it by password.
+The whole command looks like this:
+```
+aecli account save owner-wallet bb9f0b01c8c9553cfbaf7ef81a50f977b1326801ebf7294d1c2cbccdedf27476e9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca --password 12345
+```
+
+- owner-wallet - the name of the wallet file;
+- private key of the miner account;
+- encryption password;
+
+The result should be similar to:
+```
+    Wallet saved
+    Wallet address________________ ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU
+    Wallet path___________________ ~/exchange-contract/owner-wallet
+```
+
+For instance, calling of the *mint* function of our first fungible token contract looks like this:
 
 ```
 aecli contract call <wallet_file> --password <wallet_password> 
 mint bool <account_address> <created_token_amount> 
 --contractAddress <deployed_contract_address> 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```  
 In my case the above command looks like this:
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-mint bool 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 100 
---contractAddress ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+aecli contract call ./owner-wallet --password 12345 
+mint bool 0xe9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca 100 
+--contractAddress ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
-We are calling the mint function of the first deployed fungible token with address - ```ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN```. We want to mint 100 tokens of the *receiving* type.
+We are calling the mint function of the first deployed fungible token with address - ```ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5```. We want to mint 100 tokens of the *receiving* type.
 
 Our caller account has **100** tokens of type *receiving*.
 
-Next step is to mint tokens of the *sending* type to ExchangeContract. We will call the mint function of the token contract with *sending* type(contract address - ```ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP```). The minted tokens will be assigned to the address of ExchangeContract, in my case - ```0x55c7479d0f0bf85b102c38cfd0a4551dad532bad4e4b3cc9bd761d0f7ba9924b```.
+Next step is to mint tokens of the *sending* type to ExchangeContract. We will call the mint function of the token contract with *sending* type(contract address - ```ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme```). The minted tokens will be assigned to the address of ExchangeContract, in my case - ```0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb85617047```.
 I will apply my addresses to the structure of mint function described above: 
 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-mint bool 0x55c7479d0f0bf85b102c38cfd0a4551dad532bad4e4b3cc9bd761d0f7ba9924b 
+aecli contract call ./owner-wallet --password 12345 
+mint bool 0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb85617047 
 1000 
---contractAddress ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+--contractAddress ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
-*Please replace the address of your deployed ExchangeContract  as hex string and the address of deployed second token type(sending) as base58.*
+*Please replace the address of your deployed ExchangeContract as hex string and the address of deployed second token type(sending) as base58.*
 
 The above command shows how to mint 1000 tokens of the second(sendingToken) type.
 
 Our exchange contract has **1000** sending tokens now.
 
-In order to be able to perform the transferFrom function of FungibleToken contract our Exchange contract has to have permission to spend some amount of the first token type(receiving).
+In order to be able to perform the ```transfer_from``` function of FungibleToken contract our Exchange contract has to have permission to spend some amount of the first token type(receiving).
 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-approve bool 0x55c7479d0f0bf85b102c38cfd0a4551dad532bad4e4b3cc9bd761d0f7ba9924b 
+aecli contract call ./owner-wallet --password 12345 
+approve bool 0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb85617047 
 50  
---contractAddress ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+--contractAddress ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
-The above command shows how we as caller with address ```0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7``` and as owner of **100** *receiving* tokens give permission to the ExchangeContract with address ```0x55c7479d0f0bf85b102c38cfd0a4551dad532bad4e4b3cc9bd761d0f7ba9924b``` to spend **50** of our *receiving* tokens.
+The above command shows how we as caller with address ```0xe9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca``` and as owner of **100** *receiving* tokens give permission to the ExchangeContract with address ```0x2d2eed67337a96e2f0819cf6cdf754947dbd6ac95659a84e656b0fb85617047``` to spend **50** of our *receiving* tokens.
 
 Our account is the owner of **100** *receiving* tokens. Our goal is to call the exchange function of the Exchange contract and to receive tokens of the *sending* type based on our passed amount and the exchange rate.
 
 The execution of the exchange function is as follows: 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
+aecli contract call ./owner-wallet --password 12345 
 exchange bool 5 
---contractAddress ct_en6Wh7dnntXQ6LYi3BQyGMuw2Vr6Ln1kcAcswDkziM53qpKup 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+--contractAddress ct_Lu9XYdtkDbTSJuadtMXkJHe2ybrF5dPAK973AMEURyZkMUEZw 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
 We want to exchange **5** of our *receiving* tokens for *sending* ones.
@@ -397,37 +376,37 @@ So let's check the balance of our account.
 First the *receiving* tokens balance:
 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-balanceOf int 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 
---contractAddress ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+aecli contract call ./owner-wallet --password 12345 
+balance_of int 0xe9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca 
+--contractAddress ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
-```--contractAddress ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN ``` is the address of our *receiving* token contract.
+```--contractAddress ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5 ``` is the address of our *receiving* token contract.
 
 The result of the above command is: 
 ```
-Contract address_________ ct_JsRYM6WogCTyi7vMmKPR6K821JpT69bfxTpWUXCEUk9S7W8AN
+Contract address_________ ct_CF7R6Q8VSirY2MguEi8ukGWMStUFGiNXzpbo1KST4gNNvCiD5
 Gas price________________ 1
 Gas used_________________ 1920
 Return value (encoded)___ cb_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAF+2YqXM
 Return value (decoded)___ 95
 Return remote type_______ word
 ```
-The returned value is **95** *receiving* tokens. 5 of our previous amount of 100 tokens are transferred from caller to exchange contract with the first line of our ```exchange``` function - ```state._receivingToken.transferFrom(Call.caller, Contract.address, value)```. So let's check the balance of the second token type.
+The returned value is **95** *receiving* tokens. 5 of our previous amount of 100 tokens are transferred from caller to exchange contract with the first line of our ```exchange``` function - ```state.receiving_token.transfer_from(Call.caller, Contract.address, value)```. So let's check the balance of the second token type.
 
 ```
-aecli contract call ./my-ae-wallet --password 12345 
-balanceOf int 0xa2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7 
---contractAddress ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP 
--u https://sdk-edgenet.aepps.com 
---internalUrl https://sdk-edgenet.aepps.com --networkId ae_devnet
+aecli contract call ./owner-wallet --password 12345 
+balance_of int 0xe9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca 
+--contractAddress ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme 
+-u http://localhost:3001 
+--internalUrl http://localhost:3001/internal --networkId ae_devnet
 ```
 
 The result is:
 ```
-Contract address_________ ct_2GdniJWzbmXqGsbodswki6eeqPHzb7evVkbPWSBWEdQWrkpapP
+Contract address_________ ct_q1cKXEbgxJ6WmUTQwrSdsCZsbB8ygUV6Pk8TpFwBsujkNSRme
 Gas price________________ 1
 Gas used_________________ 1920
 Return value (encoded)___ cb_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABX4y1tk
