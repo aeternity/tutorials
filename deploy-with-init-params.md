@@ -1,23 +1,23 @@
 # TUTORIAL: Deploying Sophia smart contracts with init parameters
 
 ## Tutorial Overview
-This tutorial will walk you through the steps of creating your own Aeternity Paper Wallets. From generation of accounts through broadcasting multiple transactions at once and all the way down to generating the QR codes, this tutorial will guide you into the creation of your own AE Paper Wallets.
+This tutorial will walk you through the deployment of smart contracts with init parameters throug the use of forgae.
 
 
 ## Prerequisites
-- You have completed [this tutorial](smart-contract-deployment-in-aeproject.md) that teaches you how to deploy a contract without init parameters.
+- You have completed [this tutorial](smart-contract-deployment-in-forgae.md) that teaches you how to deploy a contract without init parameters.
 
-## Step 0. Run your aeproject node
-We would need a local node to compile and deploy on. The easiest option is to spawn one from aeproject
+## Step 0. Run your forgae node
+We would need a local node to compile and deploy on. The easiest option is to spawn one from forgae
 
 ```
-aeproject node
+forgae node
 ```
 
 Do not forget to stop it once you are done developing
 
 ```
-aeproject node --stop
+forgae node --stop
 ```
 
 ## Step 1. Update your example project
@@ -35,10 +35,10 @@ contract ExampleContract =
 
 As you can see the contract now has a state variable `savedNumber` of type int. The initial value will be passed by the init function. We've also added a read function for this value.
 
-Run aeproject compile to verify that your contract compiles successfully
+Run forgae compile to verify that your contract compiles successfully
 
 ```
-aeproject compile
+forgae compile
 ```
 
 ## Step 2. Change our default deploy script
@@ -59,9 +59,9 @@ const deploy = async (network, privateKey) => {
 As you can see, we are now passing the initial value value of 42 as tuple string. *Note*: If you are passing string, do not forget to add quotes (`"`) around the string too (`("Some string")`). More than one parameter can be passed separated by coma (`("Some string", 42)`))
 
 ## Step 3. Run our deploy script
-Running our deployment script with aeproject is trivial. Just run :
+Running our deployment script with forgae is trivial. Just run :
 ```
-aeproject deploy
+forgae deploy
 ```
 You will see in your terminal the value of the saved number - 42.
 ## Conclusion

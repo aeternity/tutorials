@@ -3,34 +3,34 @@
 ## Tutorial Overview
 This tutorial will walk teach you how one can access restrict a method to the deployer of the smart contract itself. This is a useful tool for defining critical business logic.
 ## Prerequisites
-- Installed Aeproject - For installation steps reffer to [this tutorial](smart-contract-deployment-in-aeproject.md)
+- Installed forgae - For installation steps reffer to [this tutorial](smart-contract-deployment-in-forgae.md)
 
 ## 1. Prepare your environment
 
 Before we begin coding up we should start by initializing an aepp project.
-`aeproject` is a npm package and binary executable allowing you to easily setup your development environment, run local nodes, compile and run deploy and test scripts.
-### 1.1 aeproject init
+`forgae` is a npm package and binary executable allowing you to easily setup your development environment, run local nodes, compile and run deploy and test scripts.
+### 1.1 forgae init
 
 Let's create a new empty folder and initialise an aepp project.
 
 ```
 mkdir ownable-project
 cd ownable-project
-aeproject init
+forgae init
 ```
 
-### 1.2 aeproject node
+### 1.2 forgae node
 Another thing we would require is a local working environment to develop against. 
-We are going to use the one provided by `aeproject`
+We are going to use the one provided by `forgae`
 Just type in the following command
 
 ```
-aeproject node
+forgae node
 ```
 
 You can later stop the local node by typing in 
 ```
-aeproject node --stop
+forgae node --stop
 ```
 
 ## 2. Writing the contract without access restriction
@@ -187,7 +187,7 @@ describe('Restricted', () => {
 As we have not yet implemented the restriction functionality the third test naturally fails.
 Run the following command in the terminal:
 ```
-aeproject test
+forgae test
 ```
 
 ```cmake=
@@ -259,7 +259,7 @@ This will ensure that the deployer is the only one that can call this method. Le
 ### Run the unit tests
 Lets run again the unit tests
 ```
-aeproject test
+forgae test
 ```
 
 ```cmake=

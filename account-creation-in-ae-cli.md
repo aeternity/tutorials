@@ -4,7 +4,7 @@ Each account on the æternity blockchain is represented by a private and public 
 
 This tutorial will walk you through the process of creating an account (wallet) through the **AECLI** tool. We will install **aepp-cli-js**(javascript version of CLI), create an account and will go through the basic account commands.
 ## Prerequisites
-- Installed node and npm (see the other tutorials to learn how to run a node and npm)
+- Installed node.js and npm (node package manager)
 ## Installing aecli
 One of the better features of æternity's JavaScript SDK is that it comes with a command-line interface (short - CLI, or AECLI). We are going to use the CLI from now on so lets install it first.
 ### Install from source
@@ -58,8 +58,8 @@ aecli account create <name> [options]
 - Тhe option capabilities of the command are the following:
 ```
 Options:
-  -u, --url [hostname]                               Node to connect to (default: "https://sdk-mainnet.aepp.com")
-  -U, --internalUrl [internal]                       Node to connect to(internal) (default: "https://sdk-mainnet.aepp.com")
+  -u, --url [hostname]                               Node to connect to (default: "https://sdk-mainnet.aepps.com")
+  -U, --internalUrl [internal]                       Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
   --native                                           Build transaction natively
   --networkId [networkId]                            Network ID (default: ae_mainnet)
   -P, --password [password]                          Wallet Password
