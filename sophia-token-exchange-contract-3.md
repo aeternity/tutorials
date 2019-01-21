@@ -249,6 +249,11 @@ module.exports = {
 };
 ```
 
+Let's run our local network:
+```
+forgae node
+```
+
 We are ready to run our deploy script:
 ```
 forgae deploy
