@@ -4,7 +4,7 @@
 
 - **Node.JS** (v8.0.0)
 - [Aeternity node](https://github.com/aeternity/epoch/blob/master/docs/release-notes/RELEASE-NOTES-1.1.0.md#retrieve-the-software-for-running-a-node)
-- [aepp-sdk-js](https://github.com/aeternity/aepp-sdk-js) with state channel support (`npm install git://github.com/aeternity/aepp-sdk-js.git#feature/channels`) 
+- [aepp-sdk-js](https://github.com/aeternity/aepp-sdk-js) (`npm install @aeternity/aepp-sdk`) 
 
 ## Configuration
 
