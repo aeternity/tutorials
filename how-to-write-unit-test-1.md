@@ -1,6 +1,6 @@
 # TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 1
 ## Tutorial Overview
-This tutorial series will walk you through the process of writing unit tests for Sophia smart contracts. To test a contract, we need use a process where we send some input data, to some function of the contract. Then we assert a given result. 
+This tutorial series will walk you through the process of writing unit tests for Sophia smart contracts. To test a contract, we need to use a process where we send some input data, to some function of the contract. Then we assert a given result. 
 
 This testing activity is carried out to find defects in the contract code ahead of the deployment. Logically, we can separate the unit tests in two cases, positive test cases and negative test cases.
 

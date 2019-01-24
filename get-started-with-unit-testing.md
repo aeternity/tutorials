@@ -1,6 +1,6 @@
 # TUTORIAL: How to get started with unit testing via forgae
 ## Tutorial Overview
-Immutability of smart contracts are both the best and worst thing for the blockchain developer. On one hand, the applications are trustless and are always running as expected. 
+Immutability of smart contracts is both the best and worst thing for the blockchain developer. On one hand, the applications are trustless and are always running as expected. 
 
 On the other hand, the smart contracts don’t generally offer simple upgrade paths, especially when it comes to critical components, such as code that controls the value in a token contract. Once a smart contract is up and running, changing it becomes complicated, if not impossible - changing it for bad (malicious) or good (bugfixing).
 
@@ -13,10 +13,10 @@ This tutorial will show you how to test your aeternity project created via forga
 
 ## Getting started
 
-**Forgae** is an aeternity framework which helps with setting up a project. The framework makes the development of smart contracts in the aeternity network pretty easy. It provides commands for compilation of smart contracts, running a local Epoch and unit testing the contracts. In future deployment will also be available through forgae.
+**Forgae** is an aeternity framework which helps with setting up a project. The framework makes the development of smart contracts in the aeternity network pretty easy. It provides commands for compilation of smart contracts, running a local AEternity node and unit testing the contracts. In future deployment will also be available through forgae.
 
 Let's recap the main forgae commands:
-- ```forgae init``` - creates aeternity project structure with a few folders, that the developer can use to create the contracts, tests and deployment scripts. Docker configuration files are also created, for easy boot up of local the aeternity blockchain network;
+- ```forgae init``` - creates aeternity project structure with a few folders, that the developer can use to create the contracts, tests and deployment scripts. Docker configuration files are also created, for easy boot up of local aeternity blockchain network;
 - ```forgae node``` - helps developers run their docker-based local network. The local network contains 3 nodes. Spawning the network takes couple of minutes. At the end of this command you will be presented with accounts that you can use in your unit tests
 - ```forgae compile``` - compiles Sophia contract. It's recommended to use .aes file extension. Default directory is `$projectDir/contracts`. The result of the compilation is the contract bytecode printed in the console
 - ```forgae test``` - helps developers run their unit tests for aeternity projects. The command executes the test scripts that are located in the `test` folder of your aeternity project
