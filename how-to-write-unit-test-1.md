@@ -1,4 +1,4 @@
-# TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 1
+# TUTORIAL: How to Write Unit tests for Sophia smart contracts - Part 1
 ## Tutorial Overview
 This tutorial series will walk you through the process of writing unit tests for Sophia smart contracts. To test a contract, we need to use a process where we send some input data, to some function of the contract. Then we assert a given result. 
 
@@ -10,7 +10,7 @@ The negative test cases or negative testing, deals with extreme cases and access
 
 ## Prerequisites
 Before we go any further, please make sure you have reviewed the following tutorials:
-- [Simple Fungible Token Exchange Smart Contract - Part 1](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-1.md)
+- [Simple Fungible Token Exchange Smart Contract - Part 1](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-1.md)fdfdfdfd
 - [How to get started with unit testing via forgae](https://github.com/aeternity/tutorials/blob/master/get-started-with-unit-testing.md)
 
 ## Content
