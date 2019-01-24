@@ -52,19 +52,19 @@ async function createAccounts () {
     networkdId: NETWORK_ID,
     url: API_URL,
     internalUrl: INTERNAL_API_URL,
-  })
-  initiatorAccount.setKeypair({
-    publicKey: initiatorAddress,
-    secretKey: 'a27376905aca058c0ca08a478515f04cb13f3a56a77705ec43a206fb6aa6c7282ce568a0488ed4823f403d908421ac5eee5703680f3fd7d1c6bdc8c6205125e2'
+    keypair: {
+      publicKey: initiatorAddress,
+      secretKey: 'a27376905aca058c0ca08a478515f04cb13f3a56a77705ec43a206fb6aa6c7282ce568a0488ed4823f403d908421ac5eee5703680f3fd7d1c6bdc8c6205125e2'
+    }
   })
   responderAccount = await Universal({
     networkdId: NETWORK_ID,
     url: API_URL,
     internalUrl: INTERNAL_API_URL,
-  })
-  responderAccount.setKeypair({
-    publicKey: responderAddress,
-    secretKey: '96d02824d81fdabfcb7fbcb66e2653a71ba5c4c5461dfd4fbdb0d07c4948c73d2f4a122bb84f9b1b1d65f89e4c0768ab768113a96959f664fa2288227216e71e'
+    keypair: {
+      publicKey: responderAddress,
+      secretKey: '96d02824d81fdabfcb7fbcb66e2653a71ba5c4c5461dfd4fbdb0d07c4948c73d2f4a122bb84f9b1b1d65f89e4c0768ab768113a96959f664fa2288227216e71e'
+    }
   })
 }
 ```
@@ -125,19 +125,19 @@ async function createAccounts () {
     networkdId: NETWORK_ID,
     url: API_URL,
     internalUrl: INTERNAL_API_URL,
-  })
-  initiatorAccount.setKeypair({
-    publicKey: initiatorAddress,
-    secretKey: 'a27376905aca058c0ca08a478515f04cb13f3a56a77705ec43a206fb6aa6c7282ce568a0488ed4823f403d908421ac5eee5703680f3fd7d1c6bdc8c6205125e2'
+    keypair: {
+      publicKey: initiatorAddress,
+      secretKey: 'a27376905aca058c0ca08a478515f04cb13f3a56a77705ec43a206fb6aa6c7282ce568a0488ed4823f403d908421ac5eee5703680f3fd7d1c6bdc8c6205125e2'
+    }
   })
   responderAccount = await Universal({
     networkdId: NETWORK_ID,
     url: API_URL,
     internalUrl: INTERNAL_API_URL,
-  })
-  responderAccount.setKeypair({
-    publicKey: responderAddress,
-    secretKey: '96d02824d81fdabfcb7fbcb66e2653a71ba5c4c5461dfd4fbdb0d07c4948c73d2f4a122bb84f9b1b1d65f89e4c0768ab768113a96959f664fa2288227216e71e'
+    keypair: {
+      publicKey: responderAddress,
+      secretKey: '96d02824d81fdabfcb7fbcb66e2653a71ba5c4c5461dfd4fbdb0d07c4948c73d2f4a122bb84f9b1b1d65f89e4c0768ab768113a96959f664fa2288227216e71e'
+    }
   })
 }
 ```
@@ -363,19 +363,19 @@ async function createAccounts () {
     networkdId: NETWORK_ID,
     url: API_URL,
     internalUrl: INTERNAL_API_URL,
-  })
-  initiatorAccount.setKeypair({
-    publicKey: initiatorAddress,
-    secretKey: 'a27376905aca058c0ca08a478515f04cb13f3a56a77705ec43a206fb6aa6c7282ce568a0488ed4823f403d908421ac5eee5703680f3fd7d1c6bdc8c6205125e2'
+    keypair: {
+      publicKey: initiatorAddress,
+      secretKey: 'a27376905aca058c0ca08a478515f04cb13f3a56a77705ec43a206fb6aa6c7282ce568a0488ed4823f403d908421ac5eee5703680f3fd7d1c6bdc8c6205125e2'
+    }
   })
   responderAccount = await Universal({
     networkdId: NETWORK_ID,
     url: API_URL,
     internalUrl: INTERNAL_API_URL,
-  })
-  responderAccount.setKeypair({
-    publicKey: responderAddress,
-    secretKey: '96d02824d81fdabfcb7fbcb66e2653a71ba5c4c5461dfd4fbdb0d07c4948c73d2f4a122bb84f9b1b1d65f89e4c0768ab768113a96959f664fa2288227216e71e'
+    keypair: {
+      publicKey: responderAddress,
+      secretKey: '96d02824d81fdabfcb7fbcb66e2653a71ba5c4c5461dfd4fbdb0d07c4948c73d2f4a122bb84f9b1b1d65f89e4c0768ab768113a96959f664fa2288227216e71e'
+    }
   })
 }
 
@@ -497,6 +497,11 @@ createAccounts().then(() => {
         console.log('Transfer has been rejected')  
       }
     })
+                                                       
+    initiatorChannel.on('error', err => console.log(err))
+  }).catch(err => {
+    console.log('Initiator failed to connect')
+    console.log(err)
   })
 
   // responder connects to state channels endpoint
@@ -517,6 +522,11 @@ createAccounts().then(() => {
         console.log('You can track this transaction onchain', tx)
       })
     }, 60000)
+                                                       
+    responderChannel.on('error', err => console.log(err))
+  }).catch(err => {
+    console.log('Responder failed to connect')
+    console.log(err)
   })
 })
 ```
