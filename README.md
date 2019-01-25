@@ -32,6 +32,7 @@ title: Tutorials
 * [TUTORIAL: How to get started with unit testing via forgae](get-started-with-unit-testing.md)
 * [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 1](how-to-write-unit-test-1.md)
 * [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 2](how-to-write-unit-test-2.md)
+* [TUTORIAL: State Channels Introduction](state-channels-introduction.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
