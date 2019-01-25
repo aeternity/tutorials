@@ -22,6 +22,7 @@ title: Tutorials
 * [TUTORIAL: Writing a greeter contract in Sophia using oracles - introduction](sophia-oracle-introduction.md)
 * [TUTORIAL: Smart Contract usage with the Javascript SDK](smart-contract-usage-in-javascript-sdk.md)
 * [TUTORIAL: Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
+* [TUTORIAL: How to create a Sophia contract for a simple voting aepp?](sophia-vote-contract.md)
 * [TUTORIAL: Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
 * [TUTORIAL: How to create a Sophia fungible token contract?](sophia-fungible-token-contract.md)
 
