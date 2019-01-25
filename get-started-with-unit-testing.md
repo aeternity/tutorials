@@ -42,7 +42,7 @@ The global `wallets` array is available for the developer to use. `wallets` has 
 }
 ```
 
-This structure makes it very convenient for creation of SDK client instances:
+This structure makes it very convenient for the creation of SDK client instances:
 ```
 // Create client objects
 owner = await Ae({
@@ -75,7 +75,8 @@ miner = await Ae({
 ```
 
 #### utils
-```utils``` is a package exposing helper functions, mainly for working with files. Most widely used one is ```readFileRelative(relativePath, fileEncoding)```. Here is how we can use it:
+```utils``` is a package exposing helper functions, mainly for working with files. The most widely used one is ```readFileRelative(relativePath, fileEncoding)```. Here is how we can use it:
+
 ```
 const contractSource = utils.readFileRelative(config.contractSourceFile, "utf-8");
 const compiledContract = await client.contractCompile(contractSource, {
@@ -84,8 +85,8 @@ const compiledContract = await client.contractCompile(contractSource, {
 ```
 
 ## Conclusion
-It’s very important to test your smart contract before deploying it on the main network, in order to prevent issues in the future. When you have written unit tests, they will give you confidence that there won’t be any discrepancy between your idea and smart contract execution.
+It’s very important to test your smart contract before deploying it on the main network in order to prevent (sometimes catastrophic) issues in the future. When you have written unit tests, they will give you confidence that there won’t be any discrepancies between your expectations and the actual smart contract execution.
 
 Look forward to our next tutorial showing how to create unit tests for a Sophia contract.
- 
-The æternity team will keep this tutorial updated with news. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
+
+The æternity team will keep this tutorial updated. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.æternity.com/c/development).
