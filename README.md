@@ -16,13 +16,22 @@ title: Tutorials
 * [TUTORIAL: Operating Oracle Transactions using the æternity Node](oracle-workflow-in-node-console.md)
 * [TUTORIAL: How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md)
 * [TUTORIAL: How to Get Testnet Funds?](get-testnet-tokens.md)
-* [TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
-* [TUTORIAL: Deploying a Smart Contract with init parameters with "aeproject"](deploy-with-init-params.md)
+* [TUTORIAL: Deploying a Smart Contract on æternity with "forgae"](smart-contract-deployment-in-forgae.md)
+* [TUTORIAL: Deploying a Smart Contract with init parameters with "forgae"](deploy-with-init-params.md)
 * [TUTORIAL: Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
 * [TUTORIAL: Writing a greeter contract in Sophia using oracles - introduction](sophia-oracle-introduction.md)
+* [TUTORIAL: Smart Contract usage with the Javascript SDK](smart-contract-usage-in-javascript-sdk.md)
 * [TUTORIAL: Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
-* [TUTORIAL:  Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
+* [TUTORIAL: Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
 * [TUTORIAL: How to create a Sophia fungible token contract?](sophia-fungible-token-contract.md)
+
+* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 1](sophia-token-exchange-contract-1.md)
+* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 2](sophia-token-exchange-contract-2.md)
+* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 3](sophia-token-exchange-contract-3.md)
+
+* [TUTORIAL: How to get started with unit testing via forgae](get-started-with-unit-testing.md)
+* [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 1](how-to-write-unit-test-1.md)
+* [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 2](how-to-write-unit-test-2.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
