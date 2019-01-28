@@ -25,11 +25,9 @@ title: Tutorials
 * [TUTORIAL: How to create a Sophia contract for a simple voting aepp?](sophia-vote-contract.md)
 * [TUTORIAL: Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
 * [TUTORIAL: How to create a Sophia fungible token contract?](sophia-fungible-token-contract.md)
-
 * [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 1](sophia-token-exchange-contract-1.md)
 * [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 2](sophia-token-exchange-contract-2.md)
 * [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 3](sophia-token-exchange-contract-3.md)
-
 * [TUTORIAL: How to get started with unit testing via forgae](get-started-with-unit-testing.md)
 * [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 1](how-to-write-unit-test-1.md)
 * [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 2](how-to-write-unit-test-2.md)
