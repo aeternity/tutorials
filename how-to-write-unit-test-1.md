@@ -10,7 +10,7 @@ The negative test cases or negative testing, deals with extreme cases and access
 
 ## Prerequisites
 Before we go any further, please make sure you have reviewed the following tutorials:
-- [Simple Fungible Token Exchange Smart Contract - Part 1](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-1.md)fdfdfdfd
+- [Simple Fungible Token Exchange Smart Contract - Part 1](https://github.com/aeternity/tutorials/blob/master/sophia-token-exchange-contract-1.md)
 - [How to get started with unit testing via forgae](https://github.com/aeternity/tutorials/blob/master/get-started-with-unit-testing.md)
 
 ## Content

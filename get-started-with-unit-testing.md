@@ -89,4 +89,4 @@ It’s very important to test your smart contract before deploying it on the mai
 
 Look forward to our next tutorial showing how to create unit tests for a Sophia contract.
 
-The æternity team will keep this tutorial updated. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.æternity.com/c/development).
+The æternity team will keep this tutorial updated. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
