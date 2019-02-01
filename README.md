@@ -33,6 +33,8 @@ title: Tutorials
 * [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 2](how-to-write-unit-test-2.md)
 * [TUTORIAL: State Channels Introduction](state-channels-introduction.md)
 * [TUTORIAL: How to Run Your Own æternity Middleware](running-your-own-ae-middleware.md)
+* [TUTORIAL: How to build a To-do list Æpp - Part 1](build-to-do-list-aepp-1.md)
+* [TUTORIAL: How to build a To-do list Æpp - Part 2](build-to-do-list-aepp-2.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
