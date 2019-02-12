@@ -9,23 +9,113 @@ This tutorial will teach you how to develop the communication process between th
 ## Plan
 I have published the simple frontend project in Github. We will start with cloning the github repository and I will explain the most important segments of the *To-do list Æpp*.
 
+## To-do list Æpp content
+The tutorial is created to showcase the aeternity SDK implementation for both Base/Wallet Aepp and simple To-do list Æpp "depending" on a base (Wallet/Identity) Aepp.
+The To-do list Æpp consists of two parts:
+- Wallet/Identity Base Aepp;
+- To-do list Æpp dependent on a wallet/identity aepp;
+
 ## Getting started 
 Clone the Github repository and install the required dependencies with the following sequence of commands:
 ```
 git clone https://github.com/VladislavIvanov/to-do-list-aepp.git
-cd to-do-list-aepp
+cd to-do-list-aepp/identity
 yarn install
 ```
 
-The application is started via:
+The Base/Wallet Aepp is started via:
 ```
 yarn run start:dev
 ```
 
-The project runs at http://localhost:8080.
+The Aepp runs at http://localhost:9000.
 
-## Project structure
-Here is the structure of the *src* directory for the frontend project:
+Repeat the above steps for the ```aepp-origin```.
+```
+cd to-do-list-aepp/aepp-origin
+yarn install
+```
+
+The To-do list Æpp is started via:
+```
+yarn run start:dev
+```
+
+It runs at http://localhost:9001.
+
+## Wallet/Identity Base Aepp
+The Wallet/Identity Aepp that expects our Aepp to be loaded into an iFrame contained into this base aepp.
+The essential part of the app is instantiation of the wallet. The implementation is shown here:
+```
+~/to-do-list-aepp/identity/src/components/Home.vue
+```
+```
+      Wallet({
+        url: settingData.host,
+        internalUrl: settingData.host,
+        accounts: [MemoryAccount({ keypair: { secretKey: this.priv, publicKey: this.pub } })],
+        address: this.pub,
+        onTx: this.confirmDialog,
+        onChain: this.confirmDialog,
+        onAccount: this.confirmDialog,
+        onContract: this.confirmDialog,
+        networkId: settingData.networkId
+      }).then(ae => {
+        this.client = ae;
+        console.log('status', this.client.api.getTopBlock())
+        console.log('version', this.client.api.getStatus())
+        this.$refs.aepp.src = this.aeppUrl
+
+        ae.height().then(height => {
+          console.log('height', height)
+          this.height = height
+        })
+
+        ae.balance(this.pub).then(balance => {
+          console.log('balance', balance)
+          this.balance = balance
+        }).catch(e => {
+          this.balance = 0
+        })
+      })
+```
+We have attached the confirmation dialog to the following events: 
+```
+        onTx: this.confirmDialog,
+        onChain: this.confirmDialog,
+        onAccount: this.confirmDialog,
+        onContract: this.confirmDialog,
+```
+When embedded Aepp triggers some of the above events, the Wallet/Identity Aepp should to approve the executed action.
+
+The configuration settings are placed in ```~/to-do-list-aepp/identity/src/settings.js```. For example:
+```
+export default {
+  pub: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
+  priv: '195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7',
+  aeppUrl: '//0.0.0.0:9001',
+  host: 'https://sdk-testnet.aepps.com',
+  networkId: 'ae_uat'
+}
+
+```
+
+The ```settings.js``` file contains the information for:
+- the public key;
+- the private key;
+- the link to the embedded Aepp;
+- the network we want to connect to;
+- the networkId of the selected network;
+
+We want to test our *To-do list Æpp* on the testnet. The host property should be ```https://sdk-testnet.aepps.com``` and the networkId is ```ae_uat```.
+As you can see the ```aeppUrl``` property points to the To-do list Æpp url - ```//0.0.0.0:9001```.
+This property is used for the embedding of the To-do list Æpp inside Base/Wallet Aepp:
+```
+<iframe v-show="aeppUrl" ref="aepp" class="w-full h-screen border border-black border-dashed bg-grey-light mx-auto mt-4 shadow" src="about:blank" frameborder="1"></iframe>
+```
+
+## To-do list Æpp
+Here is the structure of the *src* directory for the ```aepp-origin``` project:
 ```
 .
 ├── App.vue
@@ -44,42 +134,38 @@ This tutorial will not deal with creation of the ui components and styling them
 
 *Мost of the code is crammed into the ```Home.vue``` file. That is so, as for the purpose of this tutorial, good separation is not essential. Please do follow the VUE best practices once you start developing outside of this tutorial.*
 
-## Configuration file
-The ```settings.js``` file contains the information for:
-- the network we want to connect to - the ```host``` property;
-- the deployed contract address;
-- the bytecode of the contract;
-
-The structure of the file looks like this
+### Configuration file
+The ```settings.js``` file contains the information for the deployed contract address. For instance:
 
 ```
 export default {
-  host: 'https://sdk-testnet.aepps.com',
-  deployedContractAddress: CONTRACT_ADDRESS,
-  deployedContractByteCode: CONTRACT_BYTE_CODE
+  deployedContractAddress: 'ct_2XA3aXMZvH46CG5Ld387Z7Ac1QfTRQKpKNcgVaYVYDm3EKowNP',
 }
+
 ```
 
-We want to test our *To-do list Æpp* on the testnet. The host property should be ```https://sdk-testnet.aepps.com```. In the [previous tutorial](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-1.md) we have deployed the ```ToDoManager.aes``` contract to the testnet, we will use the deployed contract address as  a ```deployedContractAddress``` property. We have compiled the contract for the testnet usage, so we will use the bytecode as a ```deployedContractByteCode``` property. Our configuration file is ready.
+In the [previous tutorial](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-1.md) we have deployed the ```ToDoManager.aes``` contract to the testnet, we will use the deployed contract address as  a ```deployedContractAddress``` property.
 
 ## Authenticate
-The application flow starts with the authentication step. The user has to provide his/her private key to be authenticated.
-The functions responsible for the follow-up are ```connectWithPrivateKey``` and ```getClient```.
-The first function generates a key pair from the private key through the ```Crypto``` module of the ```aeternity/aepp-sdk``` and assigns the public and the private key to the ```account``` variable.
-The ```getClient``` function is responsible for connecting the account with the selected network. This action is done via ```Wallet``` module from the ```aeternity/aepp-sdk```. 
+The application flow starts with the authentication step. The code placed in the ```created``` lifecycle hook waits for the 'parent' identity provider Aepp to provide the connected client. 
+
 ```
-Wallet.compose(Contract)({
-  url: this.host,
-  internalUrl: this.host,
-  accounts: [MemoryAccount({keypair: {secretKey: this.account.priv, publicKey: this.account.pub}})],
-  address: this.account.pub,
-  onTx: true,
-  onChain: true,
-  onAccount: true,
-  networkId: 'ae_uat'
-})
+    created() {
+      Aepp().then(ae => {
+        this.client = ae
+        console.log(this.client);
+        ae.address()
+          .then(address => {
+            this.account.pub = address
+            console.log(address);
+            this.getContractTasks()
+          })
+          .catch(e => {
+            this.account.pub = `Rejected: ${e}`
+          })
+      })
+    }
 ```
-The compose function returns the connected client. After that we get the balance of the account public key.
 
 ## Calling a contract function
 In order to interact with the contract functions, we will use two functions:
@@ -87,19 +173,19 @@ In order to interact with the contract functions, we will use two functions:
 - ```callStatic``` - calling a contract function that just read from the contract, without changing the state;
 
 ```
-callContract (func, args, options) {
+callContract(func, args, options) {
     console.log(`calling a function on a deployed contract with func: ${func}, args: ${args} and options:`, options)
-    return this.client.contractCall(this.byteCode, 'sophia', this.contractAddress, func, {args, options})
+    return this.client.contractCall(this.contractAddress, 'sophia-address', this.contractAddress, func, { args, options })
 }
 ```
 ```
-callStatic (func, args) {
+callStatic(func, args) {
     console.log(`calling static func ${func} with args ${args}`)
     return this.client.contractCallStatic(this.contractAddress, 'sophia-address', func, { args })
 }
 ``` 
 
-The connected client allows us to call ```contractCall``` and ```contractCallStatic```. Calling a stateful function requires passing a contract bytecode, ```sophia``` constant, deployed contract address, function name and function arguments. Invoking a static function requires a contract address, ```sophia-address``` constant, function name and arguments.
+The connected client allows us to call ```contractCall``` and ```contractCallStatic```. Calling a stateful function requires passing a deployed contract address, ```sophia-address``` constant, deployed contract address again, function name and function arguments. Invoking a static function requires a contract address, ```sophia-address``` constant, function name and arguments.
 
 ```onCallDataAndFunctionAsync``` and ```onCallStatic``` functions wrap the above functions, process their responses and visualize the useful information about their execution in the browser.
 
@@ -107,19 +193,18 @@ The connected client allows us to call ```contractCall``` and ```contractCallSta
 The first step after successful authentication is to take all the tasks in the contract, if any. Тhis is achieved by calling three static functions. The first one will give us the total number of tasks created in the contract state - ```get_task_count```. We will iterate them with a for loop and for every task will call - ```get_task_by_index``` which returns the task name and ```task_is_completed``` which checks the task status. Finally we will store the results in the ```todos``` array and visualize it in the frontend template.
 
 ```
-async getContractTasks () {
-    const data = await this.onCallStatic('get_task_count', '()', 'int')
-    console.log(data.value)
+  async getContractTasks() {
+    const taskCount = await this.onCallStatic('get_task_count', '()', 'int')
     let taskName
     let taskCompleted
 
-    for (let i = 0; i < data.value; i++) {
+    for (let i = 0; i < taskCount; i++) {
       taskName = await this.onCallStatic('get_task_by_index', `(${i})`, 'string')
       taskCompleted = await this.onCallStatic('task_is_completed', `(${i})`, 'bool')
-      console.log(taskCompleted.value)
+      console.log(taskCompleted)
       const task = {
-        title: taskName.value,
-        done: !!taskCompleted.value
+        title: taskName,
+        done: !!taskCompleted
       }
       this.todos.push(task)
       console.log(this.todos)
