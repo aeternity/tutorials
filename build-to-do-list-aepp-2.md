@@ -207,7 +207,7 @@ The application flow starts with the authentication step. The code placed in the
         console.log(this.client);
         ae.address()
           .then(address => {
-            this.account.pub = addressvlad
+            this.account.pub = address
             console.log(address);
             this.getContractTasks()
           })
