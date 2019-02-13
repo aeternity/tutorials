@@ -43,7 +43,58 @@ yarn run start:dev
 
 It runs at http://localhost:9001.
 
-## Wallet/Identity Base Aepp
+## Base-aepp and Wallet/Identity Aepp
+### Base-aepp
+The most appropriate way to provide identity is the integration between the [base-aepp](https://identity.aepps.com/) and your Æpp. We will release an integration functionality to the base-aepp soon.
+The next steps describe how to integrate your Æpp with the test base-aepp:
+- go to the following link - https://feature-sdk-intergation.origin.aepps.com/#/ ;
+- simulate iPhone X mobile device with Device Mode in Chrome DevTools and refresh the page;
+- use the *Recover* button if you have an account, otherwise create a new account;
+- after successful login, go to *Browser* menu and select *Add an aepp*;
+- you have to provide your aepp url and add the aepp;
+
+The completed integration should look similar to this:
+
+![base-aepp integration](https://raw.githubusercontent.com/VladislavIvanov/to-do-list-aepp/master/base-aepp-integration.png)
+
+
+*Additional notes*:
+The test base-aepp is running over HTTPS. We have to expose our local web server to the internet over HTTPS too. 
+We can achieve this behavior with [ngrok](https://ngrok.com/docs) tool.
+The following command exposes the identity app:
+```
+ngrok http --host-header=rewrite 9000
+```
+The expected output is:
+```
+Session Status                online                                                                                                                                                                                                                                                                                                                                                                                                   
+Session Expires               7 hours, 34 minutes                                                                                                                                                                                                                                                                                                                                                                                      
+Version                       2.2.8                                                                                                                                                                                                                                                                                                                                                                                                    
+Region                        United States (us)                                                                                                                                                                                                                                                                                                                                                                                       
+Web Interface                 http://127.0.0.1:4040                                                                                                                                                                                                                                                                                                                                                                                    
+Forwarding                    http://47bc15a2.ngrok.io -> localhost:9000                                                                                                                                                                                                                                                                                                                                                               
+Forwarding                    https://47bc15a2.ngrok.io -> localhost:9000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+Connections                   ttl     opn     rt1     rt5     p50     p90                                                                                                                                                                                                                                                                                                                                           
+                              7       0       0.00    0.00    5.38    15.23
+```
+Our aepp url over HTTPS in this case is - ```https://47bc15a2.ngrok.io```. 
+
+We have to run the same command for the aepp-origin:
+```
+ngrok http --host-header=rewrite 9001
+```
+```
+...
+
+Forwarding                    https://87aa9a1f.ngrok.io -> localhost:9001 
+
+...
+```
+Finally, change the **aeppUrl** configuration property placed in ~/to-do-list-aepp/identity/src/settings.js:
+```aeppUrl: '//0.0.0.0:9001'``` => ```aeppUrl: 'https://87aa9a1f.ngrok.io'``` 
+
+## Wallet/Identity Aepp
+The alternative identity provider is the custom identity aepp. We will use it just for simplicity and showing the app development process.
 The Wallet/Identity Aepp that expects our Aepp to be loaded into an iFrame contained into this base aepp.
 The essential part of the app is instantiation of the wallet. The implementation is shown here:
 ```
@@ -156,7 +207,7 @@ The application flow starts with the authentication step. The code placed in the
         console.log(this.client);
         ae.address()
           .then(address => {
-            this.account.pub = address
+            this.account.pub = addressvlad
             console.log(address);
             this.getContractTasks()
           })
