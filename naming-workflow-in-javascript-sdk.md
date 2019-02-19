@@ -1,7 +1,7 @@
 # TUTORIAL: How to Register and Update a Name with the SDK in Javascript
 
 
-This tutorial explains how to use the æternity javascrip SDK to register and update name using the æternity naming system.
+This tutorial explains how to use the æternity javascript SDK to register and update name using the æternity naming system.
 
 In the current state the æternity protocol only allows for names to end in ".test", later in development more namespaces will be added. This tutorial should be run on the live æternity network, registering persistent names, but the ".test" limitation applies.
 
@@ -36,11 +36,14 @@ const main = async (name) => {
 
 ## SDK Naming Workflow
 
-A name registration is done in three steps for security reasons. First, the name is pre-claimed, this registers a hidden commitment to register some name. Afterwards, this name can be claimed, making it public without anybody being able to steal it, as it was pre-claimed before. Then the name can be updated, to attach some data to it and make it usable.
+A name registration is done in three steps for security reasons: 
+1. The register (the name is pre-claimed) is a hidden commitment to register some name. 
+2. The name can be claimed and made public without anyone being able to steal it, as it has been pre-claimed before. 
+3. Now the name can be updated to attach some data to it and make it usable.
 
 ### 1. Initialize SDK client
 
-Inside the main function, to create the SDK client referencing a live æternity network node and the needed public and private keys, add:
+To create the SDK client referencing a live æternity network node and the needed public and private keys, add following source code snippet inside the main function:
 
 ```
 const publicKey = 'REPLACE_WITH_PUBLIC_KEY';
@@ -58,21 +61,21 @@ const client = await Universal({
 ```
 
 
-### 2. Pre-Claim Name
+### 2. Pre-claim Name
 
-Pre-claiming requires to create a "commitment" to register the name, using a secret salt and the name, hashed together. This is done automatically using the SDK function as described. At the end of the defined main function, add:
+Pre-claiming requires to create a "commitment" to register the name. It uses a secret salt and the name, which are hashed together. This is done automatically, whenthe SDK function is used as described. At the end of the defined main function, add following:
 
 ```
 const preclaim = await client.aensPreclaim(name);
 console.log(preclaim);
 ```
 
-we use the `console.log()` output later to visualize all steps were working as intended.
+We're going to use the `console.log()` output later to visualize if all the steps worked as intended.
 
 
 ### 3. Claim Name
 
-After pre-claiming a name we need to make the name and chosen salt public to prove that our account is the owner of the name. Inside the main function at the end. This is done automatically using the sdk function as described. At the end of the defined main function, add:
+After pre-claiming a name we need to make the name and chosen salt public to prove that our account is the owner of the name inside the main function at the end. This is done automatically, when the SDK function is used as described. Add following source code snippet at the end of the defined main function:
 
 ```
 const claim = await client.aensClaim(name, preclaim.salt, preclaim.height);
@@ -81,7 +84,7 @@ console.log(claim);
 
 ### 4. Update Name
 
-Afterwards, the name is registered to the account and can be updated to provide functionallity as to point to an oracle, contract or account (wallet). In this tutorial we demonstrate how to point the name to the original account, so any transaction can be sent to this account, refering to its name, instead of the public key (which is much more user-friendly). At the end of the defined main function, add:
+The name should be registered to the account now and can be updated to provide functionalities like pointing to an oracle, contract or account (wallet). We demonstrated in this tutorial how to point the name to the original account. This means that any transaction can be sent to this account, refering to its name, instead of the public key (which is much more user-friendly) now. At the end of the defined main function, add following:
 
 ```
 const update = await client.aensUpdate(claim.id, publicKey);
@@ -90,9 +93,9 @@ console.log(update);
 
 ## Execution
 
-Add `main('YOUR_NAME_TO_REGISTER.test');` in the end of the file, then run `node index.js` to run, register and update the name.
+Add `main('YOUR_NAME_TO_REGISTER.test');` at the end of the file and run `node index.js` afterwards to execute, register and update the name.
 
-This may take some time, as it requires the mining of blocks on the live network. It will show output similar to:
+This might take some time, as it requires the mining of blocks on the live network. The output should show  something similar as below:
 
 ```
 $ node index.js
@@ -162,6 +165,6 @@ main('YOUR_NAME_TO_REGISTER.test');
 
 æternity's Naming System Protocol: https://github.com/aeternity/protocol/blob/master/AENS.md
 
-In case you experience any issues, please post your question in the [æternity Forum](https://forum.aeternity.com/c/development). 
+Please post your questions to the [æternity Forum](https://forum.aeternity.com/c/development) in case you've experienced any issue.
 
 
