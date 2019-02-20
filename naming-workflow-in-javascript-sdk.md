@@ -70,7 +70,7 @@ const preclaim = await client.aensPreclaim(name);
 console.log(preclaim);
 ```
 
-We're going to use the `console.log()` output later to visualize if all the steps worked as intended.
+We're using the `console.log()` output to visualize if all the steps work as intended.
 
 
 ### 3. Claim Name
