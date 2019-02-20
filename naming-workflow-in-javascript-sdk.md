@@ -63,7 +63,7 @@ const client = await Universal({
 
 ### 2. Pre-claim Name
 
-Pre-claiming requires to create a "commitment" to register the name. It uses a secret salt and the name, which are hashed together. This is done automatically, whenthe SDK function is used as described. At the end of the defined main function, add following:
+Pre-claiming requires to create a "commitment" to register the name. This uses a secret salt and the name, which are hashed together. This is done automatically, when the SDK function is used as described. At the end of the defined main function, add the following:
 
 ```
 const preclaim = await client.aensPreclaim(name);
