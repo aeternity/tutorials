@@ -37,7 +37,7 @@ const main = async (name) => {
 ## SDK Naming Workflow
 
 A name registration is done in three steps for security reasons: 
-1. The register (the name is pre-claimed) is a hidden commitment to register some name. 
+1. The name is pre-claim is a hidden commitment to register some name. 
 2. The name can be claimed and made public without anyone being able to steal it, as it has been pre-claimed before. 
 3. Now the name can be updated to attach some data to it and make it usable.
 
