@@ -75,7 +75,7 @@ We're going to use the `console.log()` output later to visualize if all the step
 
 ### 3. Claim Name
 
-After pre-claiming a name we need to make the name and chosen salt public to prove that our account is the owner of the name inside the main function at the end. This is done automatically, when the SDK function is used as described. Add following source code snippet at the end of the defined main function:
+After pre-claiming a name we need to make the name and chosen salt public to prove that our account is the owner of the name inside the main function at the end. This is done automatically, when the SDK function is used as described. Add the following source code snippet at the end of the defined main function:
 
 ```
 const claim = await client.aensClaim(name, preclaim.salt, preclaim.height);
