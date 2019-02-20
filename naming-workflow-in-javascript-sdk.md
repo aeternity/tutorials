@@ -84,7 +84,7 @@ console.log(claim);
 
 ### 4. Update Name
 
-The name should be registered to the account now and can be updated to provide functionalities like pointing to an oracle, contract or account (wallet). We demonstrated in this tutorial how to point the name to the original account. This means that any transaction can be sent to this account, refering to its name, instead of the public key (which is much more user-friendly) now. At the end of the defined main function, add following:
+The name is registered to the account now and can be updated to provide functionalities like pointing to an oracle, contract or account (wallet). We demonstrated in this tutorial how to point the name to the original account. This means that any transaction can be sent to this account, referring to its name, instead of the public key (which is much more user-friendly) now. At the end of the defined main function, add the following:
 
 ```
 const update = await client.aensUpdate(claim.id, publicKey);
