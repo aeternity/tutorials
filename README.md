@@ -51,8 +51,12 @@ Get support in [the Forum](https://forum.aeternity.com/c/development).
 Get support in [the Forum](https://forum.aeternity.com/c/mining).
 
 ## Get some ættos!
-You can request up to 2m ættos for testing purposes using this topic in the Forum:
+There is a faucet for testnet tokens available here https://faucet.aepps.com
+
+If you prefer human interaction, you can request up to 2m ættos for testing purposes using this topic in the Forum:
 
 [https://forum.aeternity.com/t/get-some-aettos-for-testing-purposes/1754](https://forum.aeternity.com/t/get-some-aettos-for-testing-purposes/1754)
 
 **More tutorials are coming!**
+
+To edit this page, go here: https://github.com/aeternity/tutorials/edit/master/README.md
