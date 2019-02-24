@@ -59,4 +59,4 @@ If you prefer human interaction, you can request up to 2m ættos for testing pur
 
 **More tutorials are coming!**
 
-To edit this page, go here: https://github.com/aeternity/tutorials/edit/master/README.md
+To edit this page, go here: https://github.com/aeternity/tutorials/blob/master/README.md
