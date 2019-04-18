@@ -360,15 +360,15 @@ initiatorChannel.sendMessage('hello world', responderAddress)
 const { Channel, Universal, TxBuilder: { unpackTx } } = require('@aeternity/aepp-sdk')
 const { BigNumber } = require('bignumber.js')
 
-const API_URL = 'http://localhost:3001'
-const INTERNAL_API_URL = 'http://localhost:3001/internal'
-const STATE_CHANNEL_URL = 'ws://localhost:3001'
+const API_URL = 'http://localhost:3013'
+const INTERNAL_API_URL = 'http://localhost:3113'
+const STATE_CHANNEL_URL = 'ws://localhost:3014'
 const NETWORK_ID = 'ae_docker'
 const RESPONDER_HOST = 'localhost'
 const RESPONDER_PORT = 3333
 
-const initiatorAddress = 'ak_236pSYHQFnaAy8rJMSypB2bmiNhjq3oA3zrsJMMrQyjtrw9ECK'
-const responderAddress = 'ak_24RZkzfKAQCxMD66shsbEUVEbQ3inU45Gu3j3VCSgF7GwNbZaU'
+const initiatorAddress = 'ak_Lmp4JMbNGdfgQ68yfavm4CxBizKXn9y1aJv1E1phf1geRbncN'
+const responderAddress = 'ak_MpwgJ4ZD5bctbHBmtdA6XMchpbtBKiYnMzaNwgCHvxL37mrea'
 
 let initiatorAccount
 let responderAccount
@@ -380,7 +380,7 @@ async function createAccounts () {
     internalUrl: INTERNAL_API_URL,
     keypair: {
       publicKey: initiatorAddress,
-      secretKey: 'bb184ac1420a6c61d04ac916cbaba60bd0c10c31a945e961f28f4246b61a4ffd8877111543ee3b68b4c8ba80237200bcd54bd9e458776db5a52c1e391fd16458'
+      secretKey: 'a27376905aca058c0ca08a478515f04cb13f3a56a77705ec43a206fb6aa6c7282ce568a0488ed4823f403d908421ac5eee5703680f3fd7d1c6bdc8c6205125e2'
     }
   })
   responderAccount = await Universal({
@@ -389,7 +389,7 @@ async function createAccounts () {
     internalUrl: INTERNAL_API_URL,
     keypair: {
       publicKey: responderAddress,
-      secretKey: 'd549faca2aa008dc0d5e99268c613d29c5a23c809795ca1b88d6a6e5fe716c778b783a6b93d1f1686dfaae3f25a539799246fe0e469a11250fba02c749055c08'
+      secretKey: '96d02824d81fdabfcb7fbcb66e2653a71ba5c4c5461dfd4fbdb0d07c4948c73d2f4a122bb84f9b1b1d65f89e4c0768ab768113a96959f664fa2288227216e71e'
     }
   })
 }
