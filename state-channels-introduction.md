@@ -4,7 +4,8 @@
 
 - **Node.JS** (v8.0.0)
 - [Aeternity node](https://github.com/aeternity/epoch/blob/master/docs/release-notes/RELEASE-NOTES-1.1.0.md#retrieve-the-software-for-running-a-node)
-- [aepp-sdk-js](https://github.com/aeternity/aepp-sdk-js) (`npm install @aeternity/aepp-sdk`) 
+- [aepp-sdk-js](https://github.com/aeternity/aepp-sdk-js) (`npm install @aeternity/aepp-sdk`)
+- [bignumber.js](https://github.com/MikeMcl/bignumber.js) (`npm install bignumber.js`)
 
 ## Configuration
 
@@ -171,6 +172,7 @@ async function responderSign (tag, tx) {
 Now let's define state channel parameters and connect both initiator and responder:
 
 ```javascript
+const DEPOSIT = 1000000000000000000
 const params = {
   // Public key of initiator
   // (in this case `initiatorAddress` defined earlier)
@@ -181,9 +183,9 @@ const params = {
   // Initial deposit in favour of the responder by the initiator
   pushAmount: 0,
   // Amount of tokes initiator will deposit into state channel
-  initiatorAmount: 50000,
+  initiatorAmount: DEPOSIT,
   // Amount of tokes responder will deposit into state channel
-  responderAmount: 50000,
+  responderAmount: DEPOSIT,
   // Minimum amount both peers need to maintain
   channelReserve: 40000,
   // Minimum block height to include the channel_create_tx
@@ -236,20 +238,25 @@ Let's say that we want to transfer 10 tokens from initiator account to responder
 First we need to update `responderSign` function. We want it to sign offchain transactions only when initiator is the sender:
 
 ```javascript
-import { Crypto } from '@aeternity/aepp-sdk'
+const { TxBuilder: { unpackTx } } = require('@aeternity/aepp-sdk')
 
-function responderSign (tag, tx) {
+async function responderSign (tag, tx) {
+  if (tag === 'responder_sign') {
+    return responderAccount.signTransaction(tx)
+  }
+
   // Deserialize binary transaction so we can inspect it
-  const txData = Crypto.deserialize(Crypto.decodeTx(tx), { prettyTags: true })
+  const { txType, tx: txData } = unpackTx(tx)
   // When someone wants to transfer a tokens we will receive
   // a sign request with `update_ack` tag
   if (tag === 'update_ack') {
     // Check if update contains only one offchain transaction
     // and sender is initiator
     if (
-      txData.tag === 'CHANNEL_OFFCHAIN_TX' &&
+      txType === 'channelOffChain' &&
       txData.updates.length === 1 &&
-      txData.updates[0].from === initiatorAddress
+      txData.updates[0].txType === 'channelOffChainUpdateTransfer' &&
+      txData.updates[0].tx.from === initiatorAddress
     ) {
       return responderAccount.signTransaction(tx)  
     }
@@ -289,18 +296,25 @@ Similar to transfering a token one party can trigger mutual close and the other 
 We need to modify `initiatorSign` function to verify mutual close transaction:
 
 ```javascript
-import { Crypto } from '@aeternity/aepp-sdk'
+const { TxBuilder: { unpackTx } } = require('@aeternity/aepp-sdk')
+const { BigNumber } = require('bignumber.js')
 
-function initiatorSign (tag, tx) {
+async function initiatorSign (tag, tx) {
+  if (tag === 'initiator_sign') {
+    return initiatorAccount.signTransaction(tx)
+  }
+                                        
   // Deserialize binary transaction so we can inspect it
-  const txData = Crypto.deserialize(Crypto.decodeTx(tx), { prettyTags: true })
+  const { txType, tx: txData } = unpackTx(tx)
   if (tag === 'shutdown_sign_ack') {
+    // Fee amount is splitted equally per participants
+    const fee = BigNumber(txData.fee).div(2)
     if (
-      txData.tag === 'CHANNEL_CLOSE_MUTUAL_TX' &&
+      txType === 'channelCloseMutual' &&
       // To keep things simple we manually check that
       // balances are correct (as a result of previous transfer update)
-      txData.initiatorAmount === 49990 &&
-      txData.responderAmount === 50010
+      BigNumber(txData.initiatorAmountFinal).plus(fee).eq(BigNumber(DEPOSIT).minus(10)) &&
+      BigNumber(txData.responderAmountFinal).plus(fee).eq(BigNumber(DEPOSIT).plus(10))
     ) {
       return initiatorAccount.signTransaction(tx)
     }
@@ -343,7 +357,8 @@ initiatorChannel.sendMessage('hello world', responderAddress)
 ## Full source code
 
 ```javascript
-const { MemoryAccount, Channel, Crypto, Universal } = require('@aeternity/aepp-sdk')
+const { Channel, Universal, TxBuilder: { unpackTx } } = require('@aeternity/aepp-sdk')
+const { BigNumber } = require('bignumber.js')
 
 const API_URL = 'http://localhost:3013'
 const INTERNAL_API_URL = 'http://localhost:3113'
@@ -385,14 +400,16 @@ async function initiatorSign (tag, tx) {
   }
                                         
   // Deserialize binary transaction so we can inspect it
-  const txData = Crypto.deserialize(Crypto.decodeTx(tx), { prettyTags: true })
+  const { txType, tx: txData } = unpackTx(tx)
   if (tag === 'shutdown_sign_ack') {
+    // Fee amount is splitted equally per participants
+    const fee = BigNumber(txData.fee).div(2)
     if (
-      txData.tag === 'CHANNEL_CLOSE_MUTUAL_TX' &&
+      txType === 'channelCloseMutual' &&
       // To keep things simple we manually check that
       // balances are correct (as a result of previous transfer update)
-      txData.initiatorAmount === 49990 &&
-      txData.responderAmount === 50010
+      BigNumber(txData.initiatorAmountFinal).plus(fee).eq(BigNumber(DEPOSIT).minus(10)) &&
+      BigNumber(txData.responderAmountFinal).plus(fee).eq(BigNumber(DEPOSIT).plus(10))
     ) {
       return initiatorAccount.signTransaction(tx)
     }
@@ -405,16 +422,17 @@ async function responderSign (tag, tx) {
   }
 
   // Deserialize binary transaction so we can inspect it
-  const txData = Crypto.deserialize(Crypto.decodeTx(tx), { prettyTags: true })
+  const { txType, tx: txData } = unpackTx(tx)
   // When someone wants to transfer a tokens we will receive
   // a sign request with `update_ack` tag
   if (tag === 'update_ack') {
     // Check if update contains only one offchain transaction
     // and sender is initiator
     if (
-      txData.tag === 'CHANNEL_OFFCHAIN_TX' &&
+      txType === 'channelOffChain' &&
       txData.updates.length === 1 &&
-      txData.updates[0].from === initiatorAddress
+      txData.updates[0].txType === 'channelOffChainUpdateTransfer' &&
+      txData.updates[0].tx.from === initiatorAddress
     ) {
       return responderAccount.signTransaction(tx)  
     }
@@ -439,6 +457,7 @@ async function connectAsResponder (params) {
   })
 }
 
+const DEPOSIT = 1000000000000000000
 const params = {
   // Public key of initiator
   // (in this case `initiatorAddress` defined earlier)
@@ -449,9 +468,9 @@ const params = {
   // Initial deposit in favour of the responder by the initiator
   pushAmount: 0,
   // Amount of tokens initiator will deposit into state channel
-  initiatorAmount: 50000,
+  initiatorAmount: DEPOSIT,
   // Amount of tokens responder will deposit into state channel
-  responderAmount: 50000,
+  responderAmount: DEPOSIT,
   // Minimum amount both peers need to maintain
   channelReserve: 40000,
   // Minimum block height to include the channel_create_tx
@@ -492,7 +511,6 @@ createAccounts().then(() => {
     ).then((result) => {
       if (result.accepted) {
         console.log('Succesfully transfered 10 tokens!')
-        console.log('Current state:', result.state)
       } else {
         console.log('Transfer has been rejected')  
       }
@@ -513,6 +531,7 @@ createAccounts().then(() => {
 
     // close channel after a minute
     setTimeout(() => {
+      console.log('Closing channel...')
       responderChannel.shutdown(
         // This function should verify shutdown transaction
         // and sign it with responder's secret key 
@@ -520,7 +539,7 @@ createAccounts().then(() => {
       ).then((tx) => {
         console.log('State channel has been closed')
         console.log('You can track this transaction onchain', tx)
-      })
+      }).catch(err => console.log(err))
     }, 60000)
                                                        
     responderChannel.on('error', err => console.log(err))
