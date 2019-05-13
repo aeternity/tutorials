@@ -13,7 +13,7 @@ For further information visit our documentation: https://github.com/aeternity/ep
 `tar xf ~/Downloads/epoch-1.0.1-ubuntu-x86_64.tar.gz`
  
 ## 3. Configure the node
-3.1. Inside your node directory create an`epoch.yaml` file
+3.1. Inside your node directory create an`aeternity.yaml` file
 3.2. Go to https://airgap.it/ or https://base.aepps.com/ and create an AE keypair
 3.3. Copy paste the below provided code to epoch.yaml 
 
@@ -49,7 +49,7 @@ fork_management:
 
 3.4. Replace peer_password: “secret” with your own password.
 3.5. Replace beneficiary: “beneficiary_pubkey_to_be_replaced” with your AE public key.
-3.6. Check if your `epoch.yaml` configuration is OK. In your terminal type: `./bin/epoch check_config epoch.yaml`
+3.6. Check if your `aeternity.yaml` configuration is OK. In your terminal type: `./bin/aeternity check_config aeternity.yaml`
 You should get an “OK” back, if not go through your config and check for mistakes.
 
 ## 4. Make sure your node is connectable
@@ -57,7 +57,7 @@ You should get an “OK” back, if not go through your config and check for mis
 https://blog.aeternity.com/insides-from-the-coredev-corner-configuring-ports-of-the-%C3%A6ternity-epoch-node-3bf366ebed26
 
 ## 5. Run the node
-4.1. Start the node inside your node directory using `./bin/epoch start` inside the terminal.
+4.1. Start the node inside your node directory using `./bin/aeternity start` inside the terminal.
 4.2. Inspect the current top of the blockchain as seen by the roma network. In your terminal type:
 `curl http://35.178.61.73:3013/v2/blocks/top`
 4.3. Inspect the current top of the blockchain as seen by your node. In your terminal type:
