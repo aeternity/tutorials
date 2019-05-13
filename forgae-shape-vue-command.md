@@ -67,7 +67,7 @@ The node command help developers run their local network on docker. The local ne
 ```
 forgae node
 ```
-To stop the local node, simply run
+Аt the end of the tutorial, after you have tested the functionality, you can stop the network with the following command:
 
 ```
 forgae node --stop
@@ -135,6 +135,8 @@ cd aepp-forgae-shape-vue
 npm run serve
 ```
 *By default the front-end app running at: Local: http://localhost:8080/*
+
+In order to test the aepp during development, please install this [Chrome plugin](https://chrome.google.com/webstore/detail/moesif-orign-cors-changer/digfbfaphojjndkpccljibejjbppifbc) (*or similar plugin for the alternative browsers*) which allows you to send cross-domain requests. Turn on the extension and test the aepp. For security reasons, please turn off after testing.
 
 ## Important considerations
 
