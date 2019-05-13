@@ -229,6 +229,8 @@ In the same component we can see how to get all tasks by user, create task and c
 
 *Мost of the code is crammed into the ToDo.vue file, as for the purpose of this tutorial, good separation is not essential. Please do follow the VUE best practices once you start developing outside of this tutorial.*
 
+*The source code for the aepp is on GitHub - [aepp-forgae-shape-vue](https://github.com/aeternity/aepp-forgae-shape-vue).*
+
 ## Conclusion
 Our first ready to use Æpps is finalized and can be accessed by running the command ```forgae shape vue```. We provide it in order to make it easier for those who want to start their blockchain projects with Vue.js by giving them a structured project. It represents a smart contract that manages a ToDo List and shows examples of how to read and record data on the Blockchain through the browser.
 
