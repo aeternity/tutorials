@@ -136,8 +136,6 @@ npm run serve
 ```
 *By default the front-end app running at: Local: http://localhost:8080/*
 
-In order to test the aepp during development, please install this [Chrome plugin](https://chrome.google.com/webstore/detail/moesif-orign-cors-changer/digfbfaphojjndkpccljibejjbppifbc) (*or similar plugin for the alternative browsers*) which allows you to send cross-domain requests. Turn on the extension and test the aepp. For security reasons, please turn off after testing.
-
 ## Important considerations
 
 ### Configurations
