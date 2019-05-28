@@ -125,20 +125,75 @@ As a result, we can see a table with the most important details. For example:
 └───────────────┴──────────────────────────────────────────────────────┘
 ```
 Copy the address of the contract that is shown as a **Result** in the above report table.
-Assign the deployed contract address to the contractAddress property in src/contractDetails.js file.
+Assign the deployed contract address to the contractAddress property in ```aepp/src/contractDetails.js``` file.
 
-## Run the aepp
-Now we are ready to run the aepp.
+## Shape project
 
+The shape project is a sample Wallet/Identity Aepp that expects an Aepp to be loaded into an iFrame contained into this base aepp. 
+The most appropriate way to provide identity is the integration between the [base-aepp](https://base.aepps.com/) and your Æpp.
+The alternative identity provider is the custom identity aepp. We will use it just for simplicity and showing the app development process.
+
+## Run the identity/wallet provider aepp
+Let's start the identity/wallet Aepp, which will start on port 8080:
 ```
-cd aepp-forgae-shape-vue
+cd aepp-forgae-shape-vue/identity-provider
 npm run serve
 ```
-*By default the front-end app running at: Local: http://localhost:8080/*
+
+## Run the aepp
+Now we are ready to run the aepp, which will start on port 8081. Open new terminal window and execute the following commands:
+
+```
+cd aepp-forgae-shape-vue/aepp
+npm run serve
+```
+
+## Shape Project appearance
+
+![shape project](https://raw.githubusercontent.com/aeternity/aepp-forgae-shape-vue/master/shape-project.png "Shape project")
+
 
 ## Important considerations
 
-### Configurations
+
+### Identity provider
+
+#### Get client
+The application flow starts with getting the client. The code placed in the ```created``` lifecycle hook takes care of this.
+
+```javascript=
+async created() {
+    this.client = await Wallet({
+        url: this.url,
+        internalUrl: this.internalUrl,
+        compilerUrl: this.compilerUrl,
+        accounts: [MemoryAccount({ keypair: { secretKey: this.priv, publicKey: this.pub } })],
+        address: this.pub,
+        onTx: this.confirmDialog,
+        onChain: this.confirmDialog,
+        onAccount: this.confirmDialog,
+        onContract: this.confirmDialog
+    })
+
+    if (!this.runningInFrame) this.$refs.aepp.src = this.aeppUrl
+    else window.parent.postMessage({ jsonrpc: '2.0', method: 'ready' }, '*')
+
+    this.height = await this.client.height()
+    this.balance = await this.client.balance(this.pub).catch(() => 0)
+}
+```
+
+### ToDo aepp
+
+#### Identity 
+The loaded ToDo aepp waits for the ‘parent’ identity provider Aepp to provide the connected client, using the Aepp approach:
+```javascript=
+this.client = await Aepp({
+    parent: this.runningInFrame ? window.parent : await this.getReverseWindow()
+});
+```
+
+#### Configurations
 The configuration file about contract details.
 
 ```
@@ -146,74 +201,38 @@ The configuration file about contract details.
 ```
 We should provide the deployed contract address and the source code of the contract.
 
-The general configuration file.
-```
-../vue-shape/aepp-forgae-shape-vue/src/setting.js
-```
-In this file, we have to fill in the account private/public key pair and the network details.
 
-### Get client
-The application flow starts with getting the client and contract instances. The code placed in the ```created``` lifecycle hook takes care of this as it is based on data from the configuration files.
-
-```javascript=
-async getClient() {
-    try {
-        const networkId = settings.networkId;
-
-        const clientNative = await Ae.compose({
-            props: {
-                url: settings.url,
-                internalUrl: settings.internalUrl,
-                compilerUrl: compilerUrl
-            }
-        })({ nativeMode: true, networkId })
-
-        const account = { secretKey: settings.account.priv, publicKey: settings.account.pub }
-
-        await clientNative.setKeypair(account)
-
-        this.client = clientNative
-
-        this.$store.dispatch('setAccount', this.client);
-        this.accountBalance();
-        this.contractInstance = await this.client.getContractInstance(contractDetails.contractSource, { contractAddress: contractDetails.contractAddress });
-    } catch (err) {
-        console.log(err);
-    }
-}
-```
-
-### Calling a contract function
+#### Calling a contract function
 
 In order to interact with the contract functions, we will use two functions:
 
-- callContract - calling a contract function that changes the state of the contract (has ```stateful``` modifier);
+- call - calling a contract function that changes the state of the contract (has ```stateful``` modifier);
 - callStatic - calling a contract function that just read from the contract, without changing the state;
 
 ```javascript=
-async onCallStatic(func, args, returnType) {
-    if (func && args && returnType) {
+async call(funcName, funcArgs) {
+
+    if (funcName && funcArgs) {
         try {
-            const res = await this.contractInstance.call(func, args)
-            return res.decode(returnType);
+            const res = await this.contractInstance.call(funcName, funcArgs);
+
+            const data = await res.decode();
+            console.log(data);
+            return data
         } catch (err) {
             console.log(err);
         }
     } else {
         console.log('Please enter a Function and 1 or more Arguments.');
     }
-    },
-async onCallDataAndFunctionAsync(funcName, funcArgs, returnType) {
-
-    if (funcName && funcArgs && returnType) {
+},
+async callStatic(func, args) {
+    if (func && args) {
         try {
-            const res = await this.contractInstance.call(funcName, funcArgs);
-
-            if (returnType !== '()') {
-                const data = await res.decode(returnType);
-                console.log(data);
-                return data
-            }
+            const options = { callStatic: true };
+            const res = await this.contractInstance.call(func, args, options);
+            console.log(res);
+            return res.decode();
         } catch (err) {
             console.log(err);
         }
@@ -223,7 +242,7 @@ async onCallDataAndFunctionAsync(funcName, funcArgs, returnType) {
 }
 ```
 
-### Contract functionalities
+#### Contract functionalities
 
 In the same component we can see how to get all tasks by user, create task and change task status.
 
