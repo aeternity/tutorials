@@ -197,50 +197,9 @@ this.client = await Aepp({
 The configuration file about contract details.
 
 ```
-../vue-shape/aepp-forgae-shape-vue/src/contractDetails.js
+../vue-shape/aepp-forgae-shape-vue/aepp/src/contractDetails.js
 ```
 We should provide the deployed contract address and the source code of the contract.
-
-
-#### Calling a contract function
-
-In order to interact with the contract functions, we will use two functions:
-
-- call - calling a contract function that changes the state of the contract (has ```stateful``` modifier);
-- callStatic - calling a contract function that just read from the contract, without changing the state;
-
-```javascript=
-async call(funcName, funcArgs) {
-
-    if (funcName && funcArgs) {
-        try {
-            const res = await this.contractInstance.call(funcName, funcArgs);
-
-            const data = await res.decode();
-            console.log(data);
-            return data
-        } catch (err) {
-            console.log(err);
-        }
-    } else {
-        console.log('Please enter a Function and 1 or more Arguments.');
-    }
-},
-async callStatic(func, args) {
-    if (func && args) {
-        try {
-            const options = { callStatic: true };
-            const res = await this.contractInstance.call(func, args, options);
-            console.log(res);
-            return res.decode();
-        } catch (err) {
-            console.log(err);
-        }
-    } else {
-        console.log('Please enter a Function and 1 or more Arguments.');
-    }
-}
-```
 
 #### Contract functionalities
 
