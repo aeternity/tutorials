@@ -15,9 +15,11 @@ This tutorial will lead you throughout process of creating such Aepp.
 
 ## Forgae shape command
 ```
-forgae shape [name]
+forgae shape [ vue | react | angular ]
 ```
-- name - Specifies the name of the framework or library that the project will be build up. Choices: vue - shapes boilerplate containing ready to use aepp with Vue.js front-end and forgae project.
+- [ react | angular ] - coming soon
+- [ vue | react | angular ] - Specifies the name of the framework or library that the project will be build up. 
+- vue - shapes boilerplate containing ready to use aepp with Vue.js front-end and forgae project.
 First, open your terminal, create a new directory ```vue-shape``` and bootstrap new **forgae vue shape** project:
 ```
 mkdir vue-shape
@@ -81,7 +83,7 @@ Deploying the contract on the already started local network is done with only on
 forgae deploy
 ```
 
-The **deploy** command help developers run their deployment scripts for aeternity proejcts. The deploy script is scaffolded in deployment folder. We can see the ```ToDoManager.aes``` contract in contracts folder.
+The **deploy** command help developers run their deployment scripts for aeternity projects. The deploy script is scaffolded in deployment folder. We can see the ```ToDoManager.aes``` contract in contracts folder.
 ```
 ├── contracts
     └── ToDoManager.aes
@@ -161,37 +163,10 @@ npm run serve
 #### Get client
 The application flow starts with getting the client. The code placed in the ```created``` lifecycle hook takes care of this.
 
-```javascript=
-async created() {
-    this.client = await Wallet({
-        url: this.url,
-        internalUrl: this.internalUrl,
-        compilerUrl: this.compilerUrl,
-        accounts: [MemoryAccount({ keypair: { secretKey: this.priv, publicKey: this.pub } })],
-        address: this.pub,
-        onTx: this.confirmDialog,
-        onChain: this.confirmDialog,
-        onAccount: this.confirmDialog,
-        onContract: this.confirmDialog
-    })
-
-    if (!this.runningInFrame) this.$refs.aepp.src = this.aeppUrl
-    else window.parent.postMessage({ jsonrpc: '2.0', method: 'ready' }, '*')
-
-    this.height = await this.client.height()
-    this.balance = await this.client.balance(this.pub).catch(() => 0)
-}
-```
-
 ### ToDo aepp
 
 #### Identity 
 The loaded ToDo aepp waits for the ‘parent’ identity provider Aepp to provide the connected client, using the Aepp approach:
-```javascript=
-this.client = await Aepp({
-    parent: this.runningInFrame ? window.parent : await this.getReverseWindow()
-});
-```
 
 #### Configurations
 The configuration file about contract details.
