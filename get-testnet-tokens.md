@@ -83,14 +83,14 @@ Options:
 ```
 When checking the balance of an empty wallet, the expected output should be:
 ```
-aecli account balance ./my-ae-wallet -u https://sdk-edgenet.aepps.com
+aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
 prompt: Enter your password:  *****
 
 API ERROR: Account not found
 ```
 The account is not found, because the wallet actually has 0 funds and the balance is equal to 0.
 
-Running the above command, but with ```-u https://sdk-edgenet.aepps.com``` will result in the same error.
+Running the above command, but with ```-u https://sdk-testnet.aepps.com``` will result in the same error.
 
 Let's change that!
 ## Getting tokens
@@ -99,7 +99,7 @@ There are two ways of getting tokens. The faucets operated by the SDK team will 
 - sdk-testnet - https://faucet.aepps.com/
 - sdk-edgenet - https://edge-faucet.aepps.com/
 
-In the next steps we're going to show you how to get tokens from the faucet for **sdk-edgenet**. The same proces could be followed for the **sdk-testnet**.
+In the next steps we're going to show you how to get tokens from the faucet for **sdk-testnet**. The same proces could be followed for the **sdk-edgenet**.
 ![][faucet_initial_img]
 *<center>Initial dialog</center>*
 
@@ -122,9 +122,9 @@ Transaction: th_Si4dGBD27P8zJQXEAig68nbzwouk9GZf5DGvEN9JBWjrJdQLb
 
 Account: ak_maudCMZW7WyPrHFhpJNzjBtNBw62L7jceMyqkXkYVXtVfcDK1
 ```
-Finally, let's check the balance of wallet on **sdk-edgenet**:
+Finally, let's check the balance of wallet on **sdk-testnet**:
 ```
-aecli account balance ./my-ae-wallet -u https://sdk-edgenet.aepps.com
+aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
 ```
 and we have it:
 ```
