@@ -70,16 +70,25 @@ Getting wallet balance:
 aecli account balance <wallet_path>
 ```
 ```
+Usage: aecli-account [options] [command]
+
 Options:
-  -u, --url [hostname]                               Node to connect to (default: "https://sdk-mainnet.aepps.com")
-  -U, --internalUrl [internal]                       Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
-  --native                                           Build transaction natively
-  --networkId [networkId]                            Network id (default: ae_mainnet)
-  -P, --password [password]                          Wallet Password
-  -n, --nonce [nonce]                                Override the nonce that the transaction is going to be sent with
-  -f --force                                         Ignore epoch version compatibility check
-  --json                                             Print result in json format
-  -h, --help                                         output usage information
+  -u, --url [hostname]                                      Node to connect to (default: "https://sdk-mainnet.aepps.com")
+  -U, --internalUrl [internal]                              Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
+  -P, --password [password]                                 Wallet Password
+  -f --force                                                Ignore epoch version compatibility check
+  --json                                                    Print result in json format
+  -h, --help                                                output usage information
+
+Commands:
+  spend [options] <wallet_path> <receiver> <amount>
+  transfer [options] <wallet_path> <receiver> <percentage>
+  sign [options] <wallet_path> <tx>                         Create a transaction to another wallet
+  balance [options] <wallet_path>                           Get wallet balance
+  address [options] <wallet_path>                           Get wallet address
+  create [options] <name>                                   Create a secure wallet
+  save [options] <name> <privkey>                           Save a private keys string to a password protected file wallet
+  nonce <wallet_path>                                       Get account nonce
 ```
 When checking the balance of an empty wallet, the expected output should be:
 ```
