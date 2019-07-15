@@ -1,6 +1,6 @@
 # TUTORIAL: How to Get Testnet Funds?
 ## Tutorial Overview
-In this tutorial we'll briefly explain the æternity testnet – what they are, what they're used for, and how to get AE tokens from a faucet for the testnet.
+In this tutorial we'll briefly explain the æternity testnet – what it is, what it's used for, and how to get AE tokens from a faucet for the testnet.
 ## Prerequisites
 - Please read our previous tutorial [How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md) in order to better understand the next steps and to follow them.
 ## æternity test network
