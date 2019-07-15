@@ -1,12 +1,12 @@
 # TUTORIAL: How to Get Testnet Funds?
 ## Tutorial Overview
-In this tutorial we'll briefly explain æternity testnets – what they are, what they're used for, and how to get AE tokens from a faucet for testnets.
+In this tutorial we'll briefly explain the æternity testnet – what they are, what they're used for, and how to get AE tokens from a faucet for the testnet.
 ## Prerequisites
 - Please read our previous tutorial [How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md) in order to better understand the next steps and to follow them.
-## æternity test networks
-Testnets are copies of the æternity blockchain almost identical to the live network except the fact that their AE tokens are worthless.
+## æternity test network
+The testnet of the æternity blockchain is almost identical to the live network except the fact that their AE tokens are worthless.
 
-The æternity SDK team currently runs three testnets - **sdk-testnet**, **sdk-edgenet** and **uat-testnet**. Testnet is the latest stable release, and Edgenet is the next. The æternity core team runs another network, **uat-testnet**. It’s for internal testing and is not guaranteed to work with the SDKs. But it’s the one which has the very latest features and may be useful for you if you are an enthusiast who runs their own nodes.
+The æternity SDK team currently runs the **sdk-testnet**. This testnet represents the latest stable release.
 
 In the previous tutorial we've installed **aecli**. So we can use ```aecli chain``` to interact with the blockchain. You can see additional information for the command here:
 ```
@@ -30,7 +30,7 @@ Commands:
 ```
 
 ### sdk-testnet
-Audience – people using released versions of our SDKs. Most software developers should use this one.
+Audience – people using released versions of our SDKs. Most software developers should use this for testing purposes.
 
 Let's check the Epoch version of sdk-testnet:
 ```
@@ -49,20 +49,7 @@ Pending transactions count______________ 0
 Solutions_______________________________ 0
 Syncing_________________________________ false
 ```
-### sdk-edgenet
-Audience – people developing the SDKs, developers who need the latest features from the develop branch on github. This network is used primarily for development and can be reset without notification.
 
-Epoch version checking:
-```
-aecli chain status -u https://sdk-edgenet.aepps.com
-```
-```
-Epoch node version____________  1.0.0
-```
-
-### uat-testnet
-
-Audience – core developers, miners, people who want to track the bleeding edge. You may not be able to connect to this using our SDKs because it’s a version later than the ones they support.
 ## Before funding
 We are going to use the secure wallet created in the previous tutorial - ```my-ae-wallet```.
 Getting wallet balance: 
@@ -99,16 +86,13 @@ API ERROR: Account not found
 ```
 The account is not found, because the wallet actually has 0 funds and the balance is equal to 0.
 
-Running the above command, but with ```-u https://sdk-testnet.aepps.com``` will result in the same error.
-
 Let's change that!
 ## Getting tokens
-There are two ways of getting tokens. The faucets operated by the SDK team will give you tokens for no effort at all. Alternatively, you can mine your own. The SDK team does not provide tokens for the uat-testnet via a faucet.
-### Faucets
+There are two ways of getting tokens. The faucet operated by the SDK team will give you tokens for no effort at all. Alternatively, you can mine your own.
+### Faucet
 - sdk-testnet - https://faucet.aepps.com/
-- sdk-edgenet - https://edge-faucet.aepps.com/
 
-In the next steps we're going to show you how to get tokens from the faucet for **sdk-testnet**. The same proces could be followed for the **sdk-edgenet**.
+In the next steps we're going to show you how to get tokens from the faucet for **sdk-testnet**.
 ![][faucet_initial_img]
 *<center>Initial dialog</center>*
 
@@ -146,7 +130,7 @@ If you want to use your node to mine, please read the following documentation:
 [Beneficiary Account and Miner Configuration](https://github.com/aeternity/epoch/blob/master/docs/configuration.md#beneficiary-account)
 
 ## Conclusion
-Testnets are an incredibly useful tool in æpps development. They make the process of testing the æternity software much easier by providing safety layers on which to experiment before pushing something to the live network.
+The testnet is an incredibly useful tool in æpps development. It makes the process of testing the æternity software much easier by providing safety layers on which to experiment before pushing something to the live network.
 
 The æternity team will keep this tutorial updated. If you encounter any problems please contact us through the [æternity Forum](https://forum.aeternity.com/c/development).
 
