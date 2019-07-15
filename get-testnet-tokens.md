@@ -61,20 +61,6 @@ Solutions_______________________________ 0
 Syncing_________________________________ false
 ```
 
-### sdk-edgenet
-
-Audience – people developing the SDKs, developers who need the latest features from the develop branch on github. This network is used primarily for development and can be reset without notification.
-
-Epoch version checking:
-
-```
-aecli chain status -u https://sdk-edgenet.aepps.com
-```
-
-```
-Epoch node version____________  1.0.0
-```
-
 ### uat-testnet
 
 Audience – core developers, miners, people who want to track the bleeding edge. You may not be able to connect to this using our SDKs because it’s a version later than the ones they support.
@@ -104,15 +90,13 @@ Options:
 When checking the balance of an empty wallet, the expected output should be:
 
 ```
-aecli account balance ./my-ae-wallet -u https://sdk-edgenet.aepps.com
+aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
 prompt: Enter your password:  *****
 
 API ERROR: Account not found
 ```
 
 The account is not found, because the wallet actually has 0 funds and the balance is equal to 0.
-
-Running the above command, but with `-u https://sdk-edgenet.aepps.com` will result in the same error.
 
 Let's change that!
 
@@ -123,13 +107,11 @@ There are two ways of getting tokens. The faucets operated by the SDK team will 
 ### Faucets
 
 - sdk-testnet - https://faucet.aepps.com/
-- sdk-edgenet - https://edge-faucet.aepps.com/
+- sdk-edgenet - https://edge-faucet.aepps.com/ -- has been retired
 
-In the next steps we're going to show you how to get tokens from the faucet for **sdk-edgenet**. The same proces could be followed for the **sdk-testnet**.  
-
+In the next steps we're going to show you how to get tokens from the faucet for **sdk-testnet**.  
 
 ![][faucet_initial_img]
-_<center>Initial dialog</center>_
 
 The faucet form accepts just one parameter - wallet address.
 Let's bring to mind how to get it:
@@ -141,31 +123,33 @@ aecli account address my-ae-wallet
 The CLI will prompt you to type in your password and will give you the following output:
 
 ```
-Address_________________________________ ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx
+Address_________________________________ ak_2SrtD9oLbymLko1WxdZZu4cUMaGVtR9oBNoMww1UeRakRXR5Na
 ```
 
 We are placing a request and just few seconds later, our account is topped up:
 
 ```
-Added 250000000000000000000 AET!
+Added 5000000000000000000 AET!
 
-Current Balance: 250000000000000000000
+Current Balance: 5000000000000000000 AET
 
-Transaction: [th_24L8sJY3d2Gqqd6CTnhmCKU6Ys8AyQ7HCE8q7qouDyypzoJ3aB](https://explorer.aepps.com/#/tx/th_24L8sJY3d2Gqqd6CTnhmCKU6Ys8AyQ7HCE8q7qouDyypzoJ3aB)
+Transaction: [th_2V7mbpmNE8sqnMERuQ8MeTNhxqMgZbyXVEo2Sp8qsEfZffqm6c](https://testnet.explorer.aepps.com/#/tx/th_2V7mbpmNE8sqnMERuQ8MeTNhxqMgZbyXVEo2Sp8qsEfZffqm6c)
 
-Account: ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx
+Account: ak_2SrtD9oLbymLko1WxdZZu4cUMaGVtR9oBNoMww1UeRakRXR5Na
 ```
 
-Finally, let's check the balance of wallet on **sdk-edgenet**:
+Finally, let's check the balance of wallet on **sdk-testnet**:
 
 ```
-aecli account balance ./my-ae-wallet -u https://sdk-edgenet.aepps.com
+aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
 ```
 
 and we have it:
 
 ```
-Your balance is: 250000000000000000000
+Balance_________________________________ 5000000000000000000
+ID______________________________________ ak_2SrtD9oLbymLko1WxdZZu4cUMaGVtR9oBNoMww1UeRakRXR5Na
+Nonce___________________________________ 1
 ```
 
 ### Mining
