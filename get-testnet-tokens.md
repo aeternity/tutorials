@@ -18,21 +18,23 @@ In the previous tutorial we've installed **aecli**. So we can use ```aecli chain
 
 
 ```
+Usage: aecli-chain [options] [command]
+
 Options:
-  -u --url [hostname]         Node to connect to (default: "https://sdk-mainnet.aepps.com")
-  --internalUrl [internal]    Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
-  --networkId [networkId]     Network id (default: ae_mainnet)
-  -L --limit [playlimit]      Limit for play command (default: 10)
-  -P --height [playToHeight]  Play to selected height
-  -f --force                  Ignore epoch version compatibility check
-  --json                      Print result in json format
-  -h, --help                  output usage information
+  -u --url [hostname]       Node to connect to (default: "https://sdk-mainnet.aepps.com")
+  --internalUrl [internal]  Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
+  -L --limit [playlimit]    Limit for play command (default: 10)
+  -f --force                Ignore node version compatibility check
+  --json                    Print result in json format
+  -h, --help                output usage information
 
 Commands:
-  top                         Get top of Chain
-  status                      Get Epoch version
-  mempool                     Get mempool of Chain
-  play                        Real-time block monitoring
+  top                       Get top of Chain
+  status                    Get node version
+  ttl <absoluteTtl>         Get relative ttl
+  network_id                Get network ID
+  play [options]            Real-time block monitoring
+  broadcast [options] <tx>  Send transaction to the chain
 ```
 
 ### sdk-testnet
@@ -45,13 +47,12 @@ aecli chain status -u https://sdk-testnet.aepps.com
 ```
 expected output at the time of writing:
 ```
-Difficulty______________________________ 138381472
+
 Node version____________________________ 3.3.0
 Node revision___________________________ f7b59566e1dc12f48db2b5fb76f4a496e782cff9
 Genesis hash____________________________ kh_wUCideEB8aDtUaiHCtKcfywU6oHZW6gnyci8Mw6S1RSTCnCRu
 Network ID______________________________ ae_uat
 Listening_______________________________ true
-Peer count______________________________ 8078
 Pending transactions count______________ 0
 Solutions_______________________________ 0
 Syncing_________________________________ false
@@ -86,27 +87,33 @@ Getting wallet balance:
 aecli account balance <wallet_path>
 ```
 ```
+Usage: aecli-account [options] [command]
+
 Options:
-  -u, --url [hostname]                               Node to connect to (default: "https://sdk-mainnet.aepps.com")
-  -U, --internalUrl [internal]                       Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
-  --native                                           Build transaction natively
-  --networkId [networkId]                            Network id (default: ae_mainnet)
-  -P, --password [password]                          Wallet Password
-  -n, --nonce [nonce]                                Override the nonce that the transaction is going to be sent with
-  -f --force                                         Ignore epoch version compatibility check
-  --json                                             Print result in json format
-  -h, --help                                         output usage information
+  -u, --url [hostname]                                      Node to connect to (default: "https://sdk-mainnet.aepps.com")
+  -U, --internalUrl [internal]                              Node to connect to(internal) (default: "https://sdk-mainnet.aepps.com")
+  -P, --password [password]                                 Wallet Password
+  -f --force                                                Ignore epoch version compatibility check
+  --json                                                    Print result in json format
+  -h, --help                                                output usage information
+
+Commands:
+  spend [options] <wallet_path> <receiver> <amount>
+  transfer [options] <wallet_path> <receiver> <percentage>
+  sign [options] <wallet_path> <tx>                         Create a transaction to another wallet
+  balance [options] <wallet_path>                           Get wallet balance
+  address [options] <wallet_path>                           Get wallet address
+  create [options] <name>                                   Create a secure wallet
+  save [options] <name> <privkey>                           Save a private keys string to a password protected file wallet
+  nonce <wallet_path>                                       Get account nonce
 ```
 When checking the balance of an empty wallet, the expected output should be:
 ```
-aecli account balance ./my-ae-wallet
 prompt: Enter your password:  *****
 
 API ERROR: Account not found
 ```
 The account is not found, because the wallet actually has 0 funds and the balance is equal to 0.
-
-Running the above command, but with ```-u https://sdk-mainnet.aepps.com``` will result in the same error.
 
 Let's change that!
 
@@ -116,12 +123,6 @@ There is a way of getting tokens using ```sdk-testnet```. The faucets operated b
 
 ### Faucets
 
-sdk-testnet - https://testnet.faucet.aepps.com/
-
-In the next steps we're going to show you how to get tokens from the **sdk-testnet** faucet.
-![faucet_initial_img](https://i.ibb.co/86NdLnv/testnet-faucet-aepps-com.png)
-
-
 The faucet form accepts just one parameter - wallet address.
 Let's bring to mind how to get it:
 ```
@@ -129,19 +130,6 @@ aecli account address my-ae-wallet
 ```
 The CLI will prompt you to type in your password and will give you the following output:
 ```
-Your address is: ak_gRs3WYdFpbhECVDXPDayrMQahmhYyoWogY8ZdJo4gKSHvt1F7
-```
-We are placing a request and just few seconds later, our account is topped up with 5000000000000000000 AET which is eqivalent to 5 AE!
-
-- Step 1: Visit https://testnet.faucet.aepps.com/
-- Step 2: Copy and paste you wallet address in the input field and click the **Top up!** button
-- Step 3: Ensure you got the confirmation message which include the transaction, amount, and address
-
-Transaction: [th_Snq62iNMpmjmDJ2MQFihxCm3aMZK5nbF7Q6MGeJbBpQBND7f2](https://testnet.explorer.aepps.com/#/tx/th_Snq62iNMpmjmDJ2MQFihxCm3aMZK5nbF7Q6MGeJbBpQBND7f2)
-
-Account: [ak_gRs3WYdFpbhECVDXPDayrMQahmhYyoWogY8ZdJo4gKSHvt1F7](https://testnet.explorer.aepps.com/#/account/ak_gRs3WYdFpbhECVDXPDayrMQahmhYyoWogY8ZdJo4gKSHvt1F7)
-
-Finally, let's check the balance of wallet on **sdk-testnet**:
 
 ```
 aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
@@ -149,9 +137,6 @@ aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
 and we have it:
 
 ```
-
-Balance_________________________________ 5000000000000000000
-ID______________________________________ ak_gRs3WYdFpbhECVDXPDayrMQahmhYyoWogY8ZdJo4gKSHvt1F7
 Nonce___________________________________ 1
 ```
 
