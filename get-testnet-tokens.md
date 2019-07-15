@@ -8,11 +8,11 @@ In this tutorial we'll briefly explain æternity testnets – what they are, wha
 
 Please read our previous tutorial [How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md) in order to better understand the next steps and to follow them.
 
-## æternity test networks
+## æternity test network
 
 Testnets are copies of the æternity blockchain almost identical to the live network except the fact that their AE tokens are worthless.
 
-The æternity SDK team currently runs three testnets - **sdk-testnet**, **sdk-edgenet** and **uat-testnet**. Testnet is the latest stable release, and Edgenet is the next. The æternity core team runs another network, **uat-testnet**. It’s for internal testing and is not guaranteed to work with the SDKs. But it’s the one which has the very latest features and may be useful for you if you are an enthusiast who runs their own nodes.
+The æternity SDK team currently runs **sdk-testnet** testnets. Testnet is the latest stable release, and Mainnet is the next.
 
 In the previous tutorial we've installed **aecli**. So we can use ```aecli chain``` to interact with the blockchain. You can see additional information for the command here:
 
@@ -57,7 +57,7 @@ Solutions_______________________________ 0
 Syncing_________________________________ false
 ```
 
-### sdk-edgenet
+### sdk-mainnet
 
 Audience – people developing the SDKs, developers who need the latest features from the develop branch on github. This network is used primarily for development and can be reset without notification.
 
@@ -77,10 +77,6 @@ Pending transactions count______________ 1
 Solutions_______________________________ 0
 Syncing_________________________________ false
 ```
-
-### uat-testnet
-
-Audience – core developers, miners, people who want to track the bleeding edge. You may not be able to connect to this using our SDKs because it’s a version later than the ones they support.
 
 ## Before funding
 
