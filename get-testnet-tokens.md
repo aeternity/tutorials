@@ -103,7 +103,7 @@ aecli account address my-ae-wallet
 ```
 The CLI will prompt you to type in your password and will give you the following output:
 ```
-Your address is: ak_maudCMZW7WyPrHFhpJNzjBtNBw62L7jceMyqkXkYVXtVfcDK1
+Address_________________________________ ak_maudCMZW7WyPrHFhpJNzjBtNBw62L7jceMyqkXkYVXtVfcDK1
 ```
 We are placing a request and just few seconds later, our account is topped up:
 ```
