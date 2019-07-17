@@ -2,7 +2,7 @@
 
 ## Tutorial Overview
 
-This tutorial will walk you through the deployment of smart contracts with init parameters throug the use of forgae.
+This tutorial will walk you through the deployment of smart contracts with init parameters through the use of forgae.
 
 ## Prerequisites
 
@@ -99,14 +99,14 @@ const deploy = async (network, privateKey, compiler) => {
     let contract = await deployer.deploy("./contracts/ExampleContract.aes")
 
     // Getting savedString value in our ExampleContract
-    let getString = await contract.callStatic('getString')
+    let getString = await contract.call('getString')
     console.log(getString.value)
 
     // Writing new value ('hello world') to our savedString
     await contractCall('registerString', 'hello world')
 
     // Getting new savedString value in our ExampleContract
-    let getString2 = await contract.callStatic('getString')
+    let getString2 = await contract.call('getString')
     console.log(getString2.value)
 };
 
