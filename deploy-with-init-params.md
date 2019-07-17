@@ -67,18 +67,18 @@ Lets add some state and init parameters to our example contract which can be fou
 ```
 contract ExampleContract =
 
-  record state = { savedString : string }
+  record state = { saved_string : string }
 
-  function init() = { savedString = "aeternity" }
+  function init() = { saved_string = "aeternity" }
 
-  public function getString() : string =
-	  state.savedString
+  public function get_string() : string =
+	  state.saved_string
 
-  public stateful function registerString(word : string) =
-	  put(state { savedString = word})
+  public stateful function register_string(word : string) =
+	  put(state { saved_string = word})
 ```
 
-As you can see the contract now has a state variable `savedString` of type `string`. The initial value will be passed by the init function. We've also added a read function `getString` for this value and a write function `registerString` to write and change the value in `savedString`.
+As you can see the contract now has a state variable `saved_string` of type `string`. The initial value will be passed by the init function. We've also added a read function `get_string` for this value and a write function `register_string` to write and change the value in `saved_string`.
 
 Run forgae compile to verify that your contract compiles successfully
 
@@ -99,15 +99,15 @@ const deploy = async (network, privateKey, compiler) => {
     let contract = await deployer.deploy("./contracts/ExampleContract.aes")
 
     // Getting savedString value in our ExampleContract
-    let getString = await contract.call('getString')
-    console.log(getString.value)
+    let get_string = await contract.call('get_string')
+    console.log(get_string.value)
 
-    // Writing new value ('hello world') to our savedString
-    await contractCall('registerString', 'hello world')
+    // Writing new value ('hello world') to our saved_string
+    await contractCall('register_string', 'hello world')
 
-    // Getting new savedString value in our ExampleContract
-    let getString2 = await contract.call('getString')
-    console.log(getString2.value)
+    // Getting new saved_string value in our ExampleContract
+    let get_string2 = await contract.call('get_string')
+    console.log(get_string2.value)
 };
 
 module.exports = {
