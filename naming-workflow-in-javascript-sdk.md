@@ -150,9 +150,6 @@ This may take some time, as it requires the mining of blocks on the live network
 }
 ```
 
-Transaction: [th_BBaG2E1bd8pRzib962sS81YP4zo5jutwutr5priJxEvKmhxjk](https://testnet.explorer.aepps.com/#/tx/th_BBaG2E1bd8pRzib962sS81YP4zo5jutwutr5priJxEvKmhxjk)
-Account: [ak_KwMaLaTpXCW25ztTjFBKwZ7E3EXfWqVmKwt1doFdar33q7ESW](https://testnet.explorer.aepps.com/#/account/ak_KwMaLaTpXCW25ztTjFBKwZ7E3EXfWqVmKwt1doFdar33q7ESW)
-
 ### Confirmation Image For Successful name
 
 You should get this type of output when your name has been recorded successfully
@@ -164,7 +161,7 @@ You should get this type of output when your name has been recorded successfully
 const {Universal} = require('@aeternity/aepp-sdk');
 
 const main = async (name) => {
-  const publicKey = 'ak_KwMaLaTpXCW25ztTjFBKwZ7E3EXfWqVmKwt1doFdar33q7ESW'; // replace with your publicKey
+  const publicKey = 'ak_rLoCtHE3NK9dKyCNonJFYWkEEfeAsDUWa887GsCKqV1rhSuT6'; // replace with your publicKey
   const privateKey = 'PRIVATE_KEY';
 
   const client = await Universal({
@@ -188,7 +185,7 @@ const main = async (name) => {
   console.log(update);
 };
 
-main('aeternity.test');
+main('emmanueljet.test');
 ```
 
 ## Further Documentation
