@@ -153,6 +153,11 @@ This may take some time, as it requires the mining of blocks on the live network
 Transaction: [th_BBaG2E1bd8pRzib962sS81YP4zo5jutwutr5priJxEvKmhxjk](https://testnet.explorer.aepps.com/#/tx/th_BBaG2E1bd8pRzib962sS81YP4zo5jutwutr5priJxEvKmhxjk)
 Account: [ak_KwMaLaTpXCW25ztTjFBKwZ7E3EXfWqVmKwt1doFdar33q7ESW](https://testnet.explorer.aepps.com/#/account/ak_KwMaLaTpXCW25ztTjFBKwZ7E3EXfWqVmKwt1doFdar33q7ESW)
 
+### Confirmation Image For Successful name
+
+You should get this type of output when your name has been recorded successfully
+![confirmation_image](https://i.ibb.co/dtgbt19/confirmation.png)
+
 ## Final Example Project File
 
 ```
