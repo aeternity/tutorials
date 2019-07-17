@@ -168,13 +168,13 @@ const main = async (name) => {
   const privateKey = 'PRIVATE_KEY';
 
   const client = await Universal({
-    url: 'https://sdk-testnet.aepps.com', //replace with https://sdk-mainnet.aepps.com for mainnet
-    internalUrl: 'https://sdk-testnet.aepps.com', //replace with https://sdk-mainnet.aepps.com for mainnet
+    url: 'https://sdk-mainnet.aepps.com', //replace with https://sdk-testnet.aepps.com for testnet
+    internalUrl: 'https://sdk-mainnet.aepps.com', //replace with https://sdk-testnet.aepps.com for testnet
     keypair: {
         publicKey: publicKey,
         secretKey: privateKey
     },
-    networkId: 'ae_uat', //replace with ae_mainnet for mainnet
+    networkId: 'ae_mainnet', //replace with ae_uat for testnet
     nativeMode: true
   });
 
