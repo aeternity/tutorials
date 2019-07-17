@@ -163,10 +163,12 @@ npm run serve
 #### Get client
 The application flow starts with getting the client. The code placed in the ```created``` lifecycle hook takes care of this.
 
-### ToDo aepp
-
 #### Identity 
 The loaded ToDo aepp waits for the ‘parent’ identity provider Aepp to provide the connected client, using the Aepp approach:
+Aepp provides Ae base functionality with Contract and Aens. This stamp can be used only with Wallet, all Aepp method's going through RPC to Wallet. This Wallet would sign transactions and prompt you for a coming events like onTx, onChain, onAccount and onContract.
+
+### ToDo aepp
+Todo aepp communicate with identity-provider via 'window.postMessage()'. Every action related with create or edit state of 'ToDo Manager' on a AE blockchain goes to identity provider that would prompt you to sign a transaction.
 
 #### Configurations
 The configuration file about contract details.
