@@ -94,6 +94,12 @@ Deploy ExampleContract.aes on mainnet with the following command:
 forgae deploy -n mainnet -s <secretKey>
 ```
 
+Final output upon deployment:
+```
+===== Contract: ExampleContract.aes has been deployed =====
+Your deployment script finished successfully!
+```
+
 ## Deploying ExampleContract on the sdk-testnet
 The command for deploying on the testnet is similar to the one above, but with a different ```--network``` parameter:
 ```
