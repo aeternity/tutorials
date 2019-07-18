@@ -44,40 +44,41 @@ Now we need to start coding our smart contract.
 
 The entire code of our simple ```ToDoManager.aes``` is:
 ```
-contract ToDoManager =
+contract ToDoManager = 
   record state = {
     index_counter : int,
     m_index_to_do : map(int, string),
-    m_to_do_done : map(int, bool)}
-
-  public stateful function init() =
-    { index_counter = 0,
-      m_index_to_do = {},
-      m_to_do_done = {}}
-
-  public function get_task_count() : int =
+    m_to_do_done: map(int, bool)}
+  
+  public entrypoint  init() ={ 
+    index_counter = 0,
+    m_index_to_do = {},
+    m_to_do_done = {} }
+  
+  public entrypoint get_task_count() : int =
     state.index_counter
-
-  public stateful function add_to_do(_to_do : string) : string =
+  
+  public stateful entrypoint add_to_do(_to_do : string) : string =
     put(state{m_index_to_do[state.index_counter] = _to_do})
     put(state{m_to_do_done[state.index_counter] = false})
     put(state{index_counter = state.index_counter + 1})
     _to_do
-
-  public stateful function complete_task(_index : int) : bool =
+  
+  public stateful entrypoint complete_task(_index: int) : bool =
     put(state{m_to_do_done[_index] = true})
     true
-
-  public function get_task_by_index(_index: int) : string =
+  
+  
+  public entrypoint get_task_by_index(_index: int) : string =
     switch(Map.lookup(_index, state.m_index_to_do))
       None  => ""
       Some(x) => x
 
-  public function task_is_completed(_index : int) : bool =
+  public entrypoint task_is_completed(_index : int) : bool =
     switch(Map.lookup(_index, state.m_to_do_done))
       None  => false
       Some(x) => x
-
+  
 ```
 
 As you can see, the contract stores the total number of tasks, a map that stores tasks by their index and an additional map which helps us to monitor the tasks statuses.
