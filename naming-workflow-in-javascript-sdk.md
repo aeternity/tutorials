@@ -185,7 +185,7 @@ const main = async (name) => {
   console.log(update);
 };
 
-main('emmanueljet.test');
+main('YOUR_NAME_TO_REGISTER.test');
 ```
 
 ## Further Documentation
