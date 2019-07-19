@@ -42,7 +42,7 @@ The next thing that we will do is to write a simple Sophia smart contract. This 
 
 Let's first write our `Restricted.aes` smart contract.
 
-First create the contract file under contracts folder
+First create the contract file under contracts folder:
 ```
 touch ./contracts/Restricted.aes
 ```
@@ -75,9 +75,7 @@ The main three unit tests needed are:
 2. The non-restricted method is freely called by non-owner (more on owners soon)
 3. The restricted method cannot be called by non-owner
 
-Add the following code to your `test/exampleTest.js` file.
-
-#### The code
+Add the following code to your `test/exampleTest.js` file:
 
 ```javascript=
 const Deployer = require('forgae-lib').Deployer;
@@ -263,11 +261,12 @@ Although this is a very cool practice, the main reason for blockchain technology
 
 It is pretty easy to add access-restriction to your contract methods. In a few simple steps you can have administrative layer functionality. What are some use-cases for you to use it? Feel free to get in touch with us with your ideas!
 
-*The æternity team will keep this tutorial updated with news. If you encounter any problems please contact us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).*
+The æternity team will keep this tutorial updated with news. If you encounter any problems please contact us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
 
 ## Full code
 
-contracts/Restricted.aes
+`contracts/Restricted.aes`:
+
 ```javascript=
 contract Restricted =
 
@@ -299,7 +298,8 @@ contract Restricted =
 
 ```
 
-test/exampleTest.js
+`test/exampleTest.js`:
+
 ```javascript=
 const Deployer = require('forgae-lib').Deployer;
 const RESTRICTED_CONTRACT_PATH = "./contracts/Restricted.aes";
