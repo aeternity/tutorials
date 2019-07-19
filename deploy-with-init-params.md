@@ -13,6 +13,10 @@ You have completed [this tutorial](smart-contract-deployment-in-forgae.md) that 
 We would need a local node to compile and deploy on. The easiest option is to spawn one from forgae. Follow the below steps to create a project, initialize the project, and test the project using forgae on your CLI:
 
 ```
+Step 1: $ mkdir forgae-init
+Step 2: $ cd forgae-init
+Step 3: $ forgae init
+Step 4: $ forgae node or docker-compose for docker toolbox users
 mkdir forgae-init
 cd forgae-init
 forgae init
