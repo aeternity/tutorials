@@ -2,7 +2,7 @@
 ## Tutorial Overview
 Immutability of smart contracts is both the best and worst thing for the blockchain developer. On one hand, the applications are trustless and are always running as expected. 
 
-On the other hand, smart contracts don’t generally offer simple upgrade paths, especially when it comes to critical components, such as code that controls the value in a token contract. Once a smart contract is up and running, changing it becomes complicated, if not impossible, regardless if the user has a malicious or benevolent intent.
+On the other hand, smart contracts don't generally offer simple upgrade paths, especially when it comes to critical components, such as code that controls the value in a token contract. Once a smart contract is up and running, changing it becomes complicated, if not impossible, regardless if the user has a malicious or benevolent intent.
 
 The only way to be confident that your smart contract is solid is to test it meticulously. That begins with smart contract unit testing. At its simplest, unit testing means testing the code at the lowest level — at the smallest unit of code — to identify problems early, before they affect the program.
 
@@ -10,7 +10,7 @@ This tutorial will show you how to test your æternity Sophia smart contract pro
 
 ## Prerequisites
 - Installed **forgae** framework (take a look at the [installing forgae](https://dev.aepps.com/tutorials/smart-contract-deployment-in-forgae.html) section)
-- Some familiarity with the **forgae** framework and development of Sophia smart contracts. If you are not there yet, we recommend checking some of these [development tutorials](https://dev.aepps.com/tutorials/README.html).
+- Some familiarity with the **forgae** framework and development of Sophia smart contracts. If you are not there yet, we recommend checking some of these [development tutorials](https://dev.aepps.com/tutorials/README.html), and in particular [forgae deployment with init parameters](deploy-with-init-params.md).
 - Experience with the [Mocha](https://mochajs.org/) test framework.
 
 ## Getting started
@@ -27,7 +27,7 @@ For convenience, here are the main **forgae** commands:
 
 In this tutorial we will focus on the ```forgae test``` command.
 
-As rule of thumb, every smart contract should have unit tests covering it’s logic. It’s not a “nice to have” thing  —  it's a "must have" in the immutable blockchain world. Using **forgae** you get the well-known Mocha testing framework in place.
+As rule of thumb, every smart contract should have unit tests covering it's logic. It's not a "nice to have" thing  —  it's a "must have" in the immutable blockchain world. Using **forgae** you get the well-known Mocha testing framework in place.
 
 ### Special global variables and modules available for unit tests
 
@@ -46,19 +46,23 @@ This structure makes it very convenient for the creation of SDK client instances
 ```
 // Create client objects
 owner = await Ae({
-	url: config.host,
-	internalUrl: config.internalHost,
+	url: "http://localhost:3001/",
+	internalUrl: "http://localhost:3001/internal/",
 	keypair: wallets[0],
 	nativeMode: true,
-	networkId: 'ae_devnet'
+	networkId: 'ae_devnet',
+	compilerUrl: 'http://localhost:3080'
+
 });
 
 nonOwner = await Ae({
-	url: config.host,
-	internalUrl: config.internalHost,
+	url: "http://localhost:3001/",
+	internalUrl: "http://localhost:3001/internal/",
 	keypair: wallets[1],
 	nativeMode: true,
-	networkId: 'ae_devnet'
+	networkId: 'ae_devnet',
+	compilerUrl: 'http://localhost:3080'
+
 });
 ```
 #### minerWallet
@@ -66,11 +70,12 @@ Similarly to ```wallets``` there is a global variable ```minerWallet``` represen
 ```
 // Create client objects
 miner = await Ae({
-	url: config.host,
-	internalUrl: config.internalHost,
+	url: "http://localhost:3001/",
+	internalUrl: "http://localhost:3001/internal/",
 	keypair: minerWallet,
 	nativeMode: true,
-	networkId: 'ae_devnet'
+	networkId: 'ae_devnet',
+	compilerUrl: 'http://localhost:3080'
 });
 ```
 
@@ -84,9 +89,70 @@ const compiledContract = await client.contractCompile(contractSource, {
 })
 ```
 
+### Time to run a sample unit test!
+
+#### First, create and initialize a sample æpp:
+```
+mkdir forgae-sample-test
+cd forgae-sample-test
+forgae init
+```
+
+#### Edit `test/exampleTest.js` to:
+```
+const Deployer = require('forgae-lib').Deployer;
+const EXAMPLE_CONTRACT_PATH = "./contracts/ExampleContract.aes";
+
+describe('Example Contract', () => {
+
+    let deployer;
+    let ownerKeyPair = wallets[0];
+
+    before(async () => {
+        deployer = new Deployer('local', ownerKeyPair.secretKey)
+    })
+
+    it('Deploying Example Contract', async () => {
+        const deployPromise = deployer.deploy(EXAMPLE_CONTRACT_PATH) // Deploy it
+
+        await assert.isFulfilled(deployPromise, 'Could not deploy the ExampleContract Smart Contract'); // Check whether it's deployed
+    })
+})
+```
+
+#### Next, start up a local node:
+
+```
+forgae node
+```
+
+#### Finally, run the tests:
+
+```
+forgae test
+```
+
+You will see the following output:
+
+```
+===== Starting Tests =====
+
+
+  Example Contract
+===== Contract: ExampleContract.aes has been deployed =====
+    ✓ Deploying Example Contract (5242ms)
+
+
+  1 passing (5s)
+
+There is no sophia test to execute.
+[]
+```
+
+
 ## Conclusion
-It’s very important to test your smart contract before deploying it on the main network in order to prevent (sometimes catastrophic) issues in the future. When you have written unit tests, they will give you confidence that there won’t be any discrepancies between your expectations and the actual smart contract execution.
+It's very important to test your smart contract before deploying it on the main network in order to prevent (sometimes catastrophic) issues in the future. When you have written unit tests, they will give you confidence that there won't be any discrepancies between your expectations and the actual smart contract execution.
 
 Look forward to our next tutorial showing how to create unit tests for a Sophia contract.
 
-The æternity team will keep this tutorial updated. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
+The æternity team will keep this tutorial updated. If you encounter any problems please contact us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
