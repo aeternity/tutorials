@@ -3,7 +3,7 @@
 ## Tutorial Overview
 This tutorial will teach you how one can access restrict a method to the deployer of the smart contract itself. This is a useful tool for defining critical business logic.
 ## Prerequisites
-- Installed forgae - For installation steps refer to [this tutorial](smart-contract-deployment-in-forgae.md)
+- Installed forgae - For installation steps refer to [this tutorial](smart-contract-deployment-in-forgae.md).
 
 ## 1. Prepare your environment
 
@@ -66,7 +66,7 @@ contract Restricted =
 
 As you can see this contract exposes two functions - both returning the number it has received as an argument. Note that the restricted function is **not** actually restricted yet.
 
-#### Write unit tests to call the methods
+### 2.2 Write unit tests to call the methods
 
 In order to show the functionality we want we should write some unit tests.
 
@@ -77,7 +77,7 @@ The main three unit tests needed are:
 
 Add the following code to your `test/exampleTest.js` file.
 
-##### The code
+#### The code
 
 ```javascript=
 const Deployer = require('forgae-lib').Deployer;
@@ -143,9 +143,12 @@ describe('Restricted', () => {
 
 As we have not yet implemented the restriction functionality the third test naturally fails.
 Run the following command in the terminal:
+
 ```
 forgae test
 ```
+
+Output of `forgae test`:
 
 ```cmake=
 ===== Starting Tests =====
@@ -176,11 +179,11 @@ There is no sophia test to execute.
 []
 ```
 
-## Access restrict the smart contract
+## 3. Access restrict the smart contract
 
 In order to restrict a method to be called only by the deployer of the smart contract we would need to modify the smart contract to know who is their deployer. Below is how to do that.
 
-### Modify the smart contract
+### 3.1 Modify the smart contract
 
 Let's first add state variable for the owner and set it on deploy time. On the second line of Restricted.aes put the following:
 
@@ -221,11 +224,15 @@ The onlyOwner function checks who has called the current transaction and reverts
 
 This will ensure that the deployer is the only one that can call this method. Let's prove this through the unit tests.
 
-### Run the unit tests
-Let's run again the unit tests
+## 3. Run the unit tests
+
+Let's run the unit tests again:
+
 ```
 forgae test
 ```
+
+Output of `forgae test`:
 
 ```cmake=
 ===== Starting Tests =====
@@ -253,11 +260,13 @@ All three tests pass successfully now!
 Although this is a very cool practice, the main reason for blockchain technology is to allow for decentralization of systems. Having an access being restricted to a certain user is somewhat similar to having a central point, although it is very well known. Use this technique with caution and think about possible implications of this elevated access.
 
 ## Conclusion
+
 It is pretty easy to add access-restriction to your contract methods. In a few simple steps you can have administrative layer functionality. What are some use-cases for you to use it? Feel free to get in touch with us with your ideas!
 
 *The æternity team will keep this tutorial updated with news. If you encounter any problems please contact us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).*
 
 ## Full code
+
 contracts/Restricted.aes
 ```javascript=
 contract Restricted =
