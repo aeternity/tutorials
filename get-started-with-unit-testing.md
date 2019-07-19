@@ -100,6 +100,52 @@ const compiledContract = await client.contractCompile(contractSource, {
 })
 ```
 
+## Check if you are on track
+
+- Command 1 Output
+
+```
+===== Initializing ForgAE =====
+===== Installing aepp-sdk =====
+===== Installing ForgAE locally =====
+===== Installing yarn locally =====
+===== Creating project file & dir structure =====
+===== Creating contracts directory =====
+===== Creating tests directory =====
+===== Creating integrations directory =====
+===== Creating deploy directory =====
+===== Creating docker directory =====
+===== ForgAE was successfully initialized! =====
+```
+
+- Command 2 Output
+
+```
+===== Starting node =====
+.....Starting forgae-init-testing_node3_1 ...
+
+Creating forgae-init-testing_proxy_1 ...
+
+Starting forgae-init-testing_node3_1 ... done
+
+Creating forgae-init-testing_node1_1 ...
+Creating forgae-init-testing_proxy_1 ... done
+........
+...
+Creating forgae-init-testing_node1_1 ... done
+
+........................................................
+===== Node was successfully started! =====
+===== Funding default wallets! =====
+```
+
+- Command 3 Output
+
+```
+Contract '~\forgae-unit-testing\contracts\ExampleContract.aes has been successfully compiled'     
+Contract bytecode: cb_+QP1RgKgP9ddDnECNFDZtun/Kvi5cOcQRqSHHZPubbCyqVqphpD5Avv5ASqgaPJnYzj/UIg5q6R3Se/6i+h+8oTyB/s9mZhwHNU4h8WEbWFpbrjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKD//////////////////////////////////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+QHLoLnJVvKLMUmp9Zh6pQXz2hsiCcxXOSNABiu2wb2fn5nqhGluaXS4YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////////////////////////////////////7kBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA//////////////////////////////////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///////////////////////////////////////////uMxiAABkYgAAhJGAgIBRf7nJVvKLMUmp9Zh6pQXz2hsiCcxXOSNABiu2wb2fn5nqFGIAAMBXUIBRf2jyZ2M4/1CIOaukd0nv+ovofvKE8gf7PZmYcBzVOIfFFGIAAK9XUGABGVEAW2AAGVlgIAGQgVJgIJADYAOBUpBZYABRWVJgAFJgAPNbYACAUmAA81tZWWAgAZCBUmAgkANgABlZYCABkIFSYCCQA2ADgVKBUpBWW2AgAVFRWVCAkVBQgJBQkFZbUFCCkVBQYgAAjFaFMi4xLjA5775X
+```
+
 ## Conclusion
 
 It’s very important to test your smart contract before deploying it on the main network in order to prevent (sometimes catastrophic) issues in the future. When you have written unit tests, they will give you confidence that there won’t be any discrepancies between your expectations and the actual smart contract execution. Look forward to our next tutorial showing how to create unit tests for a Sophia contract.
