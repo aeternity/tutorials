@@ -69,12 +69,12 @@ contract ExampleContract =
 
   record state = { saved_string : string }
 
-  function init() = { saved_string = "aeternity" }
+  entrypoint init() = { saved_string = "aeternity" }
 
-  public function get_string() : string =
+  public entrypoint get_string() : string =
 	  state.saved_string
 
-  public stateful function register_string(word : string) =
+  public stateful entrypoint register_string(word : string) =
 	  put(state { saved_string = word})
 ```
 
