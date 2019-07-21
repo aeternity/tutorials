@@ -16,7 +16,7 @@ We would need a local node to compile and deploy on. The easiest option is to sp
 Step 1: $ mkdir forgae-init
 Step 2: $ cd forgae-init
 Step 3: $ forgae init
-Step 4: $ forgae node for docker toolbox user
+Step 4: $ forgae node
 ```
 
 ### Check if you are on track
