@@ -5,7 +5,7 @@ This tutorial will teach you how to to create an aepp with Vue.js front-end fram
 - Communicate between the frontend(SPA with Vue.js) and the Sophia smart contract;
 
 ## Prerequisites
-- Installed the **forgae** framework (take a look over [installing forgae](https://dev.aepps.com/tutorials/smart-contract-deployment-in-forgae.html) section)
+- Installed the **forgae** framework (take a look over [forgae docs](https://forgae.gitbook.io/forgae/) or [installing forgae](https://dev.aepps.com/tutorials/smart-contract-deployment-in-forgae.html) section)
 - Some familiarity with the **forgae** framework and development of Sophia smart contracts. If you are not there yet, we recommend checking some of these [development tutorials](https://dev.aepps.com/tutorials/README.html).
 - Installed **git** ([installing git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 
@@ -64,11 +64,17 @@ As a result from the aforementioned section, the structure of the initialized pr
 This project presents ready to use aepp. The provided boilerplate code contains all modules and settings needed to facilitate its usage - Vue.js project created by vue cli, a Sophia smart contract and scripts for deployment on the Blockchain. It gives a helpful structure for further forgae project development and shows examples how to read and record a data on the Blockchain through the browser. The aepp represents a smart contract that manages a ToDo List and enables interaction with each ToDo's status. It uses a local node spawned by forgae and one of the default forgae account to sign transactions.
 
 ## Run a local node
-The node command help developers run their local network on docker. The local network contains 3 nodes. To spawn a fully functional network takes couple of minutes. At the end of this command you will be presented with accounts that you can use in your unit tests.
+The node command help developers run their local network and compiler on docker. The local network contains 3 nodes. To spawn a fully functional network takes couple of minutes. At the end of this command you will be presented with accounts that you can use in your unit tests. Together with AE node node command run a local compiler that response at http://localhost:3080 If you want to run only AE node, you should type a optional parameter --only
 
 ```
 forgae node
 ```
+or
+
+```
+forgae node --only
+```
+
 Аt the end of the tutorial, after you have tested the functionality, you can stop the network with the following command:
 
 ```
