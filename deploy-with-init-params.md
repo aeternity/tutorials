@@ -99,14 +99,14 @@ const deploy = async (network, privateKey, compiler) => {
     let contract = await deployer.deploy("./contracts/ExampleContract.aes")
 
     // Getting savedString value in our ExampleContract
-    let get_string = await contract.call('get_string')
+    let get_string = await contract.decode('get_string')
     console.log(get_string.value)
 
     // Writing new value ('hello world') to our saved_string
-    await contractCall('register_string', 'hello world')
+    await contract.call('register_string', 'hello world')
 
     // Getting new saved_string value in our ExampleContract
-    let get_string2 = await contract.call('get_string')
+    let get_string2 = await contract.decode('get_string')
     console.log(get_string2.value)
 };
 
