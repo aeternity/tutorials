@@ -54,11 +54,11 @@ The following code goes inside this file:
 ```javascript=
 contract Restricted =
   // Non access restricted method. Should be callable by any user successfully
-  public function nonRestrictedFunction(i : int) : int =
+  entrypoint nonRestrictedFunction(i : int) : int =
     i
 
   // Access restricted method. Should be callable only by the owner/deployer
-  public function restrictedFunction(i : int) : int =
+  entrypoint restrictedFunction(i : int) : int =
     i
 ```
 
@@ -189,7 +189,7 @@ Let's first add state variable for the owner and set it on deploy time. On the s
   record state = 
 	  { owner : address }
 
-  public stateful function init() = 
+  stateful entrypoint init() = 
     { owner = Call.caller } // Initializing the owner to the deployer
     
 ```
@@ -200,14 +200,14 @@ With this done let's create a function that checks the caller of an arbitrary tr
 
 ```javascript=
   // Method to throw an exception if the expression exp is falsey
-  private function require(exp : bool, err : string) = 
+  private function requirement(exp : bool, err : string) = 
       if(!exp)
         abort(err)
 
-  public function onlyOwner() : bool =
+  entrypoint onlyOwner() : bool =
     // Require that the caller of this method
     // is actually the deployer
-    require(state.owner == Call.caller, "The caller is different than the owner") 
+    requirement(state.owner == Call.caller, "The caller is different than the owner") 
     true
 ```
 
@@ -215,7 +215,7 @@ The onlyOwner function checks who has called the current transaction and reverts
 
 ```javascript=
   // Access restricted method. Should be callable only by the owner/deployer
-  public function restrictedFunction(i: int) : int =
+  entrypoint restrictedFunction(i: int) : int =
     onlyOwner()
     i
 ```
@@ -273,29 +273,28 @@ contract Restricted =
   record state = 
 	  { owner : address }
 
-  public stateful function init() = 
+  stateful entrypoint init() = 
     { owner = Call.caller } // Initializing the owner to the deployer
 
   // Method to throw an exception if the expression exp is falsey
-  private function require(exp : bool, err : string) = 
+  private function requirement(exp : bool, err : string) = 
       if(!exp)
         abort(err)
 
-  public function onlyOwner() : bool =
+  entrypoint onlyOwner() : bool =
     // Require that the caller of this method
     // is actually the deployer
-    require(state.owner == Call.caller, "The caller is different than the owner") 
+    requirement(state.owner == Call.caller, "The caller is different than the owner") 
     true
 
   // Non access restricted method. Should be callable by any user successfully
-  public function nonRestrictedFunction(i: int) : int =
+  entrypoint nonRestrictedFunction(i: int) : int =
     i
 
   // Access restricted method. Should be callable only by the owner/deployer
-  public function restrictedFunction(i: int) : int =
+  entrypoint restrictedFunction(i: int) : int =
     onlyOwner()
     i
-
 ```
 
 `test/exampleTest.js`:
