@@ -200,7 +200,7 @@ With this done let's create a function that checks the caller of an arbitrary tr
 
 ```javascript=
   // Method to throw an exception if the expression exp is falsey
-  private function requirement(exp : bool, err : string) = 
+  function requirement(exp : bool, err : string) = 
       if(!exp)
         abort(err)
 
@@ -277,7 +277,7 @@ contract Restricted =
     { owner = Call.caller } // Initializing the owner to the deployer
 
   // Method to throw an exception if the expression exp is falsey
-  private function requirement(exp : bool, err : string) = 
+  function requirement(exp : bool, err : string) = 
       if(!exp)
         abort(err)
 
