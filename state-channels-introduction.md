@@ -13,7 +13,7 @@ You need to know some configuration variables of the node you will connect to.
 
 - URL of the API (by default `http://localhost:3013`)
 - URL of the internal API (by default `http://localhost:3113`)
-- URL of state channels endpoint (by default `http://localhost:3014`)
+- URL of state channels endpoint (by default `http://localhost:3014/channel`)
 - Network ID (for example `ae_docker` if you run your node with docker)
 - Host of the responder's node (for example `localhost`)
 - Port of the responder's node (for example `3333`)
@@ -23,7 +23,7 @@ Let's define variables which we can use later.
 ```javascript
 const API_URL = 'http://localhost:3013'
 const INTERNAL_API_URL = 'http://localhost:3113'
-const STATE_CHANNEL_URL = 'ws://localhost:3014'
+const STATE_CHANNEL_URL = 'ws://localhost:3014/channel'
 const NETWORK_ID = 'ae_docker'
 const RESPONDER_HOST = 'localhost'
 const RESPONDER_PORT = 3333
@@ -254,9 +254,9 @@ async function responderSign (tag, tx) {
     // and sender is initiator
     if (
       txType === 'channelOffChain' &&
-      txData.updates.length === 1 &&
-      txData.updates[0].txType === 'channelOffChainUpdateTransfer' &&
-      txData.updates[0].tx.from === initiatorAddress
+      updates.length === 1 &&
+      updates[0].op === 'OffChainTransfer' &&
+      updates[0].from === initiatorAddress
     ) {
       return responderAccount.signTransaction(tx)  
     }
@@ -362,7 +362,7 @@ const { BigNumber } = require('bignumber.js')
 
 const API_URL = 'http://localhost:3013'
 const INTERNAL_API_URL = 'http://localhost:3113'
-const STATE_CHANNEL_URL = 'ws://localhost:3014'
+const STATE_CHANNEL_URL = 'ws://localhost:3014/channel'
 const NETWORK_ID = 'ae_docker'
 const RESPONDER_HOST = 'localhost'
 const RESPONDER_PORT = 3333
@@ -416,7 +416,7 @@ async function initiatorSign (tag, tx) {
   }
 }
 
-async function responderSign (tag, tx) {
+async function responderSign (tag, tx, { updates } = {}) {
   if (tag === 'responder_sign') {
     return responderAccount.signTransaction(tx)
   }
@@ -430,9 +430,9 @@ async function responderSign (tag, tx) {
     // and sender is initiator
     if (
       txType === 'channelOffChain' &&
-      txData.updates.length === 1 &&
-      txData.updates[0].txType === 'channelOffChainUpdateTransfer' &&
-      txData.updates[0].tx.from === initiatorAddress
+      updates.length === 1 &&
+      updates[0].op === 'OffChainTransfer' &&
+      updates[0].from === initiatorAddress
     ) {
       return responderAccount.signTransaction(tx)  
     }
