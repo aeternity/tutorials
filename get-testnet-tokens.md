@@ -1,15 +1,28 @@
-# TUTORIAL: How to Get Testnet Funds?
-## Tutorial Overview
+                                                    +---------------------------------+
+                                                    +                                 +    
+                                                    +    How to Get Testnet Funds?    +
+                                                    +                                 +
+                                                    +---------------------------------+
+====================
+ Tutorial Overview
+====================
+
 In this tutorial we'll briefly explain the æternity testnet – what it is, what it's used for, and how to get AE tokens from a faucet for the testnet.
-## Prerequisites
+================
+ Prerequisites
+================
+
 - Please read our previous tutorial [How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md) in order to better understand the next steps and to follow them.
-## æternity test network
+
+========================
+ æternity test network
+========================
 The testnet of the æternity blockchain is almost identical to the live network except the fact that their AE tokens are worthless.
 
 The æternity SDK team currently runs the **sdk-testnet**. This testnet represents the latest stable release.
 
 In the previous tutorial we've installed **aecli**. So we can use ```aecli chain``` to interact with the blockchain. You can see additional information for the command here:
-```
+---------------------------------------------------------------------------------------------------------------------
 Usage: aecli-chain [options] [command]
 
 Options:
@@ -27,17 +40,19 @@ Commands:
   network_id                Get network ID
   play [options]            Real-time block monitoring
   broadcast [options] <tx>  Send transaction to the chain
-```
+----------------------------------------------------------------------------------------------------------------------
 
-### sdk-testnet
+===============
+ sdk-testnet
+===============
 Audience – people using released versions of our SDKs. Most software developers should use this for testing purposes.
 
 Let's check the Epoch version of sdk-testnet:
-```
-aecli chain status -u https://sdk-testnet.aepps.com
-```
+---------------------------------------------------------------
+      $ aecli chain status -u https://sdk-testnet.aepps.com
+---------------------------------------------------------------
 expected output at the time of writing:
-```
+--------------------------------------------------------------------------------------------------
 Difficulty______________________________ 151080097
 Node version____________________________ 3.3.0
 Node revision___________________________ f7b59566e1dc12f48db2b5fb76f4a496e782cff9
@@ -48,15 +63,18 @@ Peer count______________________________ 8136
 Pending transactions count______________ 0
 Solutions_______________________________ 0
 Syncing_________________________________ false
-```
+--------------------------------------------------------------------------------------------------
 
-## Before funding
+==================
+ Before funding
+==================
+
 We are going to use the secure wallet created in the previous tutorial - ```my-ae-wallet```.
 Getting wallet balance: 
-```
-aecli account balance <wallet_path>
-```
-```
+------------------------------------------------
+    $ aecli account balance <wallet_path>
+------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 Usage: aecli-account [options] [command]
 
 Options:
@@ -76,20 +94,29 @@ Commands:
   create [options] <name>                                   Create a secure wallet
   save [options] <name> <privkey>                           Save a private keys string to a password protected file wallet
   nonce <wallet_path>                                       Get account nonce
-```
+-----------------------------------------------------------------------------------------------------------------------------
 When checking the balance of an empty wallet, the expected output should be:
-```
-aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
+
+-----------------------------------------------------------------------------------
+    $ aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
+-----------------------------------------------------------------------------------
 prompt: Enter your password:  *****
 
 API ERROR: Account not found
-```
+---------------------------------
 The account is not found, because the wallet actually has 0 funds and the balance is equal to 0.
 
 Let's change that!
-## Getting tokens
+
+================= 
+ Getting tokens
+=================
+
 There are two ways of getting tokens. The faucet operated by the SDK team will give you tokens for no effort at all. Alternatively, you can mine your own.
-### Faucet
+=========
+ Faucet
+=========
+
 - sdk-testnet - https://faucet.aepps.com/
 
 In the next steps we're going to show you how to get tokens from the faucet for **sdk-testnet**.
@@ -98,15 +125,16 @@ In the next steps we're going to show you how to get tokens from the faucet for 
 
 The faucet form accepts just one parameter - wallet address.
 Let's bring to mind how to get it:
-```
-aecli account address my-ae-wallet
-```
+------------------------------------------
+    $ aecli account address my-ae-wallet
+------------------------------------------
+
 The CLI will prompt you to type in your password and will give you the following output:
-```
+-------------------------------------------------------------------------------------------------
 Address_________________________________ ak_maudCMZW7WyPrHFhpJNzjBtNBw62L7jceMyqkXkYVXtVfcDK1
-```
+-------------------------------------------------------------------------------------------------
 We are placing a request and just few seconds later, our account is topped up:
-```
+
 Added 5 AE!
 
 Current Balance: 5 AE
@@ -114,22 +142,26 @@ Current Balance: 5 AE
 Transaction: th_Si4dGBD27P8zJQXEAig68nbzwouk9GZf5DGvEN9JBWjrJdQLb
 
 Account: ak_maudCMZW7WyPrHFhpJNzjBtNBw62L7jceMyqkXkYVXtVfcDK1
-```
+-------------------------------------------------------------------------------------------------
 Finally, let's check the balance of wallet on **sdk-testnet**:
-```
-aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
-```
+-------------------------------------------------------------------------------------------------
+    $ aecli account balance ./my-ae-wallet -u https://sdk-testnet.aepps.com
+-------------------------------------------------------------------------------------------------
 and we have it:
-```
+-------------------------------------------------------------------------------------------------
 Balance_________________________________ 5000000000000000000
 ID______________________________________ ak_maudCMZW7WyPrHFhpJNzjBtNBw62L7jceMyqkXkYVXtVfcDK1
 Nonce___________________________________ 1
-```
-### Mining
+-------------------------------------------------------------------------------------------------
+
+=========
+ Mining
+=========
 If you want to use your node to mine, please read the following documentation:
 [Beneficiary Account and Miner Configuration](https://github.com/aeternity/epoch/blob/master/docs/configuration.md#beneficiary-account)
-
-## Conclusion
+=============
+ Conclusion
+=============
 The testnet is an incredibly useful tool in æpps development. It makes the process of testing the æternity software much easier by providing safety layers on which to experiment before pushing something to the live network.
 
 The æternity team will keep this tutorial updated. If you encounter any problems please contact us through the [æternity Forum](https://forum.aeternity.com/c/development).
