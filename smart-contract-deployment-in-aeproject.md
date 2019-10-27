@@ -4,7 +4,7 @@ This tutorial will walk you through the process of setting up a new æpp project
 ## Prerequisites
 - Installed node.js and npm (node package manager)
 - Installed docker and docker-compose. Installation instructions can be found [here](https://docs.docker.com/compose/install/)
-- The private key of an account that has at least AE tokens (*estimate tx cost/fee - 1677680 AET*)
+- The private key of an account that has at least AE tokens (*estimate tx cost/fee - 1579000 AET*)
 - Installed Visual Studio Code 2017 for Windows users
 ## Installing aeproject
 **aeproject** is an æternity framework which helps with setting up an æpp project. The framework makes the development of smart contracts in the æternity network very easy. It provides commands for compilation of smart contracts, running a local æternity node, unit testing and deployment of smart contracts.
