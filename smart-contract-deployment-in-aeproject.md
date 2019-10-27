@@ -1,13 +1,13 @@
-# TUTORIAL: Deploying a Smart Contract on æternity with "AEproject"
+# TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"
 ## Tutorial Overview
-This tutorial will walk you through the process of setting up a new æpp project using the AEproject tool. We will install **AEproject**, initialize an æpp and go through the folder structure. Once this is done we will deploy the æpp on the live network.
+This tutorial will walk you through the process of setting up a new æpp project using the aeproject tool. We will install **aeproject**, initialize an æpp and go through the folder structure. Once this is done we will deploy the æpp on the live network.
 ## Prerequisites
 - Installed node.js and npm (node package manager)
 - Installed docker and docker-compose. Installation instructions can be found [here](https://docs.docker.com/compose/install/)
 - The private key of an account that has at least AE tokens (*estimate tx cost/fee - 1677680 AET*)
 - Installed Visual Studio Code 2017 for Windows users
-## Installing AEproject
-**AEproject** is an æternity framework which helps with setting up an æpp project. The framework makes the development of smart contracts in the æternity network very easy. It provides commands for compilation of smart contracts, running a local æternity node, unit testing and deployment of smart contracts.
+## Installing aeproject
+**aeproject** is an æternity framework which helps with setting up an æpp project. The framework makes the development of smart contracts in the æternity network very easy. It provides commands for compilation of smart contracts, running a local æternity node, unit testing and deployment of smart contracts.
 
 ### From npm global repository (recommended)
 
