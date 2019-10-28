@@ -1,32 +1,30 @@
 # TUTORIAL: Deploying Sophia smart contracts with init parameters
 
-## Tutorial Overview
+## Overview
 
-This tutorial will walk you through the deployment of smart contracts with init parameters through the use of forgae.
+This tutorial will walk you through the deployment of smart contracts with init parameters through the use of aeproject.
 
 ## Prerequisites
 
-You have completed [this tutorial](smart-contract-deployment-in-forgae.md) that teaches you how to deploy a contract without init parameters.
+You have completed [this tutorial](smart-contract-deployment-in-aeproject.md) that teaches you how to deploy a contract without init parameters.
 
-## Step 0: Create a project and Run your forgae node
+## Create a project and run your aeproject node
 
-We would need a local node to compile and deploy on. The easiest option is to spawn one from forgae. Follow the below steps to create a project, initilize the project and test the project using forgae on your CLI
-
-```
-Step 1: $ mkdir forgae-init
-Step 2: $ cd forgae-init
-Step 3: $ forgae init
-Step 4: $ forgae node
-```
-
-### Check if you are on track
-
-- Step 3 Output
+We would need a local node to compile and deploy on. The easiest option is to spawn one from aeproject. Follow the below steps to create a project, initialize the project, and test the project using aeproject on your CLI:
 
 ```
-===== Initializing ForgAE =====
+mkdir aeproject-init
+cd aeproject-init
+aeproject init
+aeproject node
+```
+
+#### Output of `aeproject init`:
+
+```
+===== Initializing AEproject =====
 ===== Installing aepp-sdk =====
-===== Installing ForgAE locally =====
+===== Installing AEproject locally =====
 ===== Installing yarn locally =====
 ===== Creating project file & dir structure =====
 ===== Creating contracts directory =====
@@ -34,80 +32,73 @@ Step 4: $ forgae node
 ===== Creating integrations directory =====
 ===== Creating deploy directory =====
 ===== Creating docker directory =====
-===== ForgAE was successfully initialized! =====
+==== Adding additional files ====
+===== AEproject was successfully initialized! =====
 ```
 
-- Step 4 Output
+#### Output of `aeproject node`:
 
 ```
 ===== Starting node =====
-........Creating forgae-init_node3_1 ...
-Creating forgae-init_node1_1 ...
-Creating forgae-init_proxy_1 ...
-Creating forgae-init_node2_1 ...
-..............
-
-===== Node was successfully started =====
-===== Funding default wallets =====
-
-....
+...............
+===== Node was successfully started! =====
+===== Funding default wallets! =====
+[List of wallet public keys, private keys, and balances]
 ===== Default wallets was successfully funded! =====
 ```
 
 Do not forget to stop it once you are done developing
 
 ```
-forgae node --stop
+aeproject node --stop
 ```
 
 ## Step 1: Update your ExampleContract.aes
 
-Lets add some state and init parameters to our example contract which can be found at **contracts/ExampleContract.aes**
+Let's add some state and init parameters to our example contract which can be found at **contracts/ExampleContract.aes**
 
 ```
 contract ExampleContract =
+  record state =
+    { savedNumber : int }
 
-  record state = { saved_string : string }
+  stateful entrypoint init(num : int) =
+    { savedNumber = num }
 
-  entrypoint init() = { saved_string = "aeternity" }
-
-  public entrypoint get_string() : string =
-	  state.saved_string
-
-  public stateful entrypoint register_string(word : string) =
-	  put(state { saved_string = word})
+  entrypoint savedNumber() : int = state.savedNumber
 ```
 
-As you can see the contract now has a state variable `saved_string` of type `string`. The initial value will be passed by the init function. We've also added a read function `get_string` for this value and a write function `register_string` to write and change the value in `saved_string`.
+As you can see the contract now has a state variable `savedNumber` of type int. The initial value will be passed by the init function. We've also added a read function for this value.
 
-Run forgae compile to verify that your contract compiles successfully
-
-```
-forgae compile
-```
-
-## Step 2. Update your deploy.js
-
-Lets add some parameters to our example deploy script which can be found at **deployment/deploy.js**. The parameters of the init functions are always passed as tuple. Here is how our new deploy script looks like
+Run aeproject compile to verify that your contract compiles successfully
 
 ```
-const Deployer = require('forgae-lib').Deployer;
+aeproject compile
+```
+
+#### Output of `aeproject compile`:
+
+```
+===== Compiling contracts =====
+
+Contract '[your directory path]/aeproject-init/contracts/ExampleContract.aes has been successfully compiled'
+Contract bytecode: "cb_+HRGA6DbtXpvFpQzcO1kecnHs/7Wuq9JXd665XxOzeYZtvRBocC4R6X+RNZEHwA3AQc3AAwBACcMAhoCggEDP/7it2wBADcABygsAIIAnS8CEUTWRB8RaW5pdBHit2wBLXNhdmVkTnVtYmVygi8AhTQuMC4wAN6kD9k="
+```
+
+## Step 2: Update your deploy.js
+
+Let's add some parameters to our example deploy script which can be found at **deployment/deploy.js**. The parameters of the init functions are always passed as an array. Here is how our new deploy script looks like:
+
+```
+const Deployer = require('aeproject-lib').Deployer;
 
 const deploy = async (network, privateKey, compiler) => {
     let deployer = new Deployer(network, privateKey, compiler)
 
-    let contract = await deployer.deploy("./contracts/ExampleContract.aes")
+    let contract = await deployer.deploy("./contracts/ExampleContract.aes", [42])
 
-    // Getting savedString value in our ExampleContract
-    let get_string = await contract.decode('get_string')
-    console.log(get_string.value)
-
-    // Writing new value ('hello world') to our saved_string
-    await contract.call('register_string', 'hello world')
-
-    // Getting new saved_string value in our ExampleContract
-    let get_string2 = await contract.decode('get_string')
-    console.log(get_string2.value)
+    let encodedSavedNumber = await contract.savedNumber()
+    console.log(encodedSavedNumber.decodedResult)
 };
 
 module.exports = {
@@ -115,17 +106,23 @@ module.exports = {
 };
 ```
 
-As you can see, we got our first initial value of `aeternity` then we are add a new value `hello world` as a tuple string and finally got the new value.
+As you can see, we are now passing the initial value of `42` into the init parameters array. Note: If you are passing a parameter of type string, do not forget to add quotes `"` around the string too `"Some string"`. Multiple init parameters can be passed into the array, for example `[42, 24]`.
 
 ## Step 3. Run our deploy script
 
-Running our deployment script with forgae is trivial. Just run :
+Running our deployment script with aeproject is trivial. Just run:
 ```
-forgae deploy
+aeproject deploy
 ```
 
-You will see in your terminal the value of the saved string - aeternity.
+You will see the following output which includes our init parameter of `42`:
+
+```
+===== Contract: ExampleContract.aes has been deployed at [contract address] =====
+42
+Your deployment script finished successfully!
+```
 
 ## Conclusion
 
-Smart contracts are frequently in need of init params. Keep in mind the specifics of tuples and you will be able to successfully initialize your awesome Aeternity smart contracts. The æternity team will keep this tutorial updated. If you encounter any problems please contact us through the [æternity Forum](https://forum.aeternity.com/c/development).
+Smart contracts are frequently in need of init params. Keep in mind the specifics of arrays and you will be able to successfully initialize your awesome æternity smart contracts. The æternity team will keep this tutorial updated. If you encounter any problems please contact us through the [æternity Forum](https://forum.aeternity.com/c/development).
