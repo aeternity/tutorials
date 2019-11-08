@@ -21,8 +21,11 @@ This tutorial will show you how to test your æternity Sophia smart contract pro
 Here are the **aeproject** commands we will be using for this particular tutorial:
 
 `aeproject init` - creates an æternity project structure with a few folders that the developer can use to create the contracts, tests and deployment scripts. Docker configuration files are also created, for easy boot up of a local æternity blockchain network.
+
 `aeproject node` - helps developers run their docker-based local network. The local network contains several nodes. Spawning the network takes couple of minutes. At the end of this command, you will be presented with AE accounts (key pairs) that you can use in your unit tests.
+
 `aeproject compile` - compiles a Sophia smart contract. It's recommended to use the .aes file extension. Default directory is `$projectDir/contracts`. The result of the compilation is the contract bytecode printed in the console.
+
 `aeproject test` - helps developers run their unit tests for æternity projects. The command executes the test scripts that are located in the `test` folder of your æternity project.
 
 ## Unit testing with aeproject
@@ -52,18 +55,18 @@ This structure makes it very convenient for the creation of SDK client instances
 owner = await Ae({
 	url: "http://localhost:3001/",
 	internalUrl: "http://localhost:3001/internal/",
-  keypair: wallets[0],
+	keypair: wallets[0],
 	nativeMode: true,
-  networkId: 'ae_devnet',
+	networkId: 'ae_devnet',
 	compilerUrl: 'http://localhost:3080'
 });
 
 nonOwner = await Ae({
 	url: "http://localhost:3001/",
 	internalUrl: "http://localhost:3001/internal/",
-  keypair: wallets[1],
+	keypair: wallets[1],
 	nativeMode: true,
-  networkId: 'ae_devnet',
+	networkId: 'ae_devnet',
 	compilerUrl: 'http://localhost:3080'
 });
 ```
@@ -74,20 +77,20 @@ Similarly to ```wallets``` there is a global variable ```minerWallet``` represen
 ```
 // Create client objects
 miner = await Ae({
-  url: "http://localhost:3001/",
+	url: "http://localhost:3001/",
 	internalUrl: "http://localhost:3001/internal/",
-  keypair: minerWallet,
-  nativeMode: true,
-  networkId: 'ae_devnet',
+	keypair: minerWallet,
+	nativeMode: true,
+	networkId: 'ae_devnet',
 	compilerUrl: 'http://localhost:3080'
 });
 ```
 
 ### aeproject-utils
 
-`aeproject-utils` is a package giving helper functions mainly for working with files and AEternity contracts. For more specifics, visit: [aeproject-utils](https://aeproject.gitbook.io/aeproject/developer-documentation/aeproject-utils/utils)
+`aeproject-utils` is a package giving helper functions mainly for working with files and æternity contracts. For more specifics, visit: [aeproject-utils](https://aeproject.gitbook.io/aeproject/developer-documentation/aeproject-utils/utils)
 
-### Let's get started!
+## Let's get testing!
 
 First, create and initialize a sample æpp:
 
