@@ -21,7 +21,7 @@ title: Tutorials
 * [TUTORIAL: Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
 * [TUTORIAL: How to create a Sophia contract for a simple voting aepp?](sophia-vote-contract.md)
 * [TUTORIAL: Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
-* [TUTORIAL: How to get started with unit testing via forgae](get-started-with-unit-testing.md)
+* [TUTORIAL: How to get started with unit testing via aeproject](get-started-with-unit-testing.md)
 * [TUTORIAL: State Channels Introduction](state-channels-introduction.md)
 * [TUTORIAL: How to Run Your Own æternity Middleware](running-your-own-ae-middleware.md)
 * [TUTORIAL: How to build a To-do list Æpp - Part 1](build-to-do-list-aepp-1.md)
