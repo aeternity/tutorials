@@ -66,7 +66,7 @@ As rule of thumb, every smart contract should have unit tests covering it’s lo
 
 ### wallets
 
-The global `wallets` array is available for the developer to use. `wallets` has 10 items, all representing the 10 forgae wallets created on the forgae node start. Every item has the structure of:
+The global `wallets` array is available for the developer to use. `wallets` has 10 items, all representing the 10 aeproject wallets created on the aeproject node start. Every item has the structure of:
 
 ```bash
 {
@@ -77,14 +77,14 @@ The global `wallets` array is available for the developer to use. `wallets` has 
 
 This structure makes it very convenient for the creation of SDK client instances:
 
-```bash
+```js
 // Create client objects
 owner = await Ae({
   url: config.host,
   internalUrl: config.internalHost,
   keypair: wallets[0],
   nativeMode: true,
-  networkId: 'ae_uat',
+  networkId: 'ae_devnet',
   compilerUrl: 'http://localhost:3080',
 });
 
@@ -93,7 +93,7 @@ nonOwner = await Ae({
   internalUrl: config.internalHost,
   keypair: wallets[1],
   nativeMode: true,
-  networkId: 'ae_uat',
+  networkId: 'ae_devnet',
   compilerUrl: 'http://localhost:3080',
 });
 ```
@@ -102,7 +102,7 @@ nonOwner = await Ae({
 
 Similarly to ```wallets``` there is a global variable ```minerWallet``` representing the wallet of the node miner following the same structure. Let's look at an example:
 
-```bash
+```js
 // Create client objects
 miner = await Ae({
   url: config.host,
@@ -146,8 +146,6 @@ const deploy = async (network, privateKey, compiler, networkId) => {
     let deployedContract = await deployer.deploy("./contracts/ExampleContract.aes");
 
     let result = await deployedContract.say_hello('World'); // result would be: "Hello, World"
-
-    console.log(result)
 };
 
 module.exports = {
@@ -252,4 +250,4 @@ Your deployment script finished successfully!
 
 It’s very important to test your smart contract before deploying it on the main network in order to prevent (sometimes catastrophic) issues in the future. When you have written unit tests, they will give you confidence that there won’t be any discrepancies between your expectations and the actual smart contract execution. Look forward to our next tutorial showing how to create unit tests for a Sophia contract.
 
-The æternity team will keep this tutorial updated. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
+The æternity team will keep this tutorial updated. If you encounter any problems please contact us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).

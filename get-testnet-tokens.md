@@ -132,6 +132,16 @@ Address_________________________________ ak_2czJ2tLL3eDZh3r9Z77X2JboyVof3y9brzQa
 
 We are placing a request and just few seconds later, our account is topped up:
 
+```txt
+Added 5AE!
+
+Current Balance: 5 AE
+
+Transaction: th_EVZ8XdcPy8WBC1EEBfoEKJ25QuviyazzYyTswnTriNiCEad5T
+
+Account: ak_2czJ2tLL3eDZh3r9Z77X2JboyVof3y9brzQaAWC6WhmwuB4HKv
+```
+
 ![Testnet Faucet](https://i.ibb.co/b68Fn3V/Screenshot-from-2019-11-07-22-47-52.png)
 
 Finally, let's check the balance of wallet on **sdk-testnet**:
@@ -147,6 +157,7 @@ Balance_________________________________ 5000000000000000000
 ID______________________________________ ak_2czJ2tLL3eDZh3r9Z77X2JboyVof3y9brzQaAWC6WhmwuB4HKv
 Nonce___________________________________ 1
 ```
+
 ### Mining
 
 If you want to use your node to mine, please read the following documentation:
