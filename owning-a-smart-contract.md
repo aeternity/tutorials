@@ -78,7 +78,7 @@ The main three unit tests needed are:
 Add the following code to your `test/exampleTest.js` file:
 
 ```javascript=
-const Deployer = require('forgae-lib').Deployer;
+const Deployer = require('aeproject-lib').Deployer;
 const RESTRICTED_CONTRACT_PATH = "./contracts/Restricted.aes";
 
 describe('Restricted', () => {
@@ -118,7 +118,7 @@ describe('Restricted', () => {
       
       const callResult = await callNotRestrictedMethod;
       
-      await assert.equal(callResult, 2, 'The returned data was not correct')
+      await assert.equal(callResult.decodedResult, 2, 'The returned data was not correct')
       
     })
 
@@ -127,11 +127,10 @@ describe('Restricted', () => {
       const nonOwnerCalling = await ownerDeployedContract.from(nonOwnerKeyPair.secretKey);
       
       // Call the restricted method from non owner
-      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(2);
+      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(3);
       
       // It should be rejected as it is restricted to owner only
       await assert.isRejected(callRestrictedMethod);
-      
     })
     
   })
