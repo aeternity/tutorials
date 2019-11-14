@@ -3,35 +3,35 @@
 ## Tutorial Overview
 This tutorial will teach you how one can access restrict a method to the deployer of the smart contract itself. This is a useful tool for defining critical business logic.
 ## Prerequisites
-- Installed forgae - For installation steps refer to [this tutorial](smart-contract-deployment-in-forgae.md).
+- Installed aeproject - For installation steps refer to [this tutorial](smart-contract-deployment-in-aeproject.md).
 
 ## 1. Prepare your environment
 
 Before we begin coding up we should start by initializing an æpp project.
-`forgae` is a npm package and binary executable allowing you to easily setup your development environment, run local nodes, compile and run deploy and test scripts.
+`aeproject` is a npm package and binary executable allowing you to easily setup your development environment, run local nodes, compile and run deploy and test scripts.
 
-### 1.1 forgae init
+### 1.1 aeproject init
 
 Let's create a new empty folder and initialize an æpp project.
 
 ```
 mkdir ownable-project
 cd ownable-project
-forgae init
+aeproject init
 ```
 
-### 1.2 forgae node
+### 1.2 aeproject node
 Another thing we would require is a local working environment to develop against. 
-We are going to use the one provided by `forgae`.
+We are going to use the one provided by `aeproject`.
 Just type in the following command:
 
 ```
-forgae node
+aeproject node
 ```
 
 You can later stop the local node by typing in:
 ```
-forgae node --stop
+aeproject node --stop
 ```
 
 ## 2. Writing the contract without access restriction
@@ -78,7 +78,7 @@ The main three unit tests needed are:
 Add the following code to your `test/exampleTest.js` file:
 
 ```javascript=
-const Deployer = require('forgae-lib').Deployer;
+const Deployer = require('aeproject-lib').Deployer;
 const RESTRICTED_CONTRACT_PATH = "./contracts/Restricted.aes";
 
 describe('Restricted', () => {
@@ -118,7 +118,7 @@ describe('Restricted', () => {
       
       const callResult = await callNotRestrictedMethod;
       
-      await assert.equal(callResult, 2, 'The returned data was not correct')
+      await assert.equal(callResult.decodedResult, 2, 'The returned data was not correct')
       
     })
 
@@ -127,11 +127,10 @@ describe('Restricted', () => {
       const nonOwnerCalling = await ownerDeployedContract.from(nonOwnerKeyPair.secretKey);
       
       // Call the restricted method from non owner
-      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(2);
+      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(3);
       
       // It should be rejected as it is restricted to owner only
       await assert.isRejected(callRestrictedMethod);
-      
     })
     
   })
@@ -143,38 +142,31 @@ As we have not yet implemented the restriction functionality the third test natu
 Run the following command in the terminal:
 
 ```
-forgae test
+aeproject test
 ```
 
-Output of `forgae test`:
+Output of `aeproject test`:
 
 ```cmake=
 ===== Starting Tests =====
 
 
   Restricted
-===== Contract: Restricted.aes has been deployed =====
-    ✓ deploying successfully (10572ms)
+===== Contract: Restricted.aes has been deployed at [contract address] =====
+    ✓ deploying successfully (6680ms)
     Calling functions
-===== Contract: Restricted.aes has been deployed =====
-      ✓ Should successfully call the non restricted method (15273ms)
+===== Contract: Restricted.aes has been deployed at [contract address] =====
+      ✓ Should successfully call the non restricted method (6521ms)
       1) Should successfully call the restricted method
 
 
-  2 passing (33s)
+  2 passing (14s)
   1 failing
 
   1) Restricted
        Calling functions
          Should successfully call the restricted method:
-     AssertionError: expected promise to be rejected but it was fulfilled with 2
-  
-
-
-
-1
-There is no sophia test to execute.
-[]
+     AssertionError: expected promise to be rejected but it was fulfilled with { Object (result, decode, ...) }
 ```
 
 ## 3. Access restrict the smart contract
@@ -227,25 +219,25 @@ This will ensure that the deployer is the only one that can call this method. Le
 Let's run the unit tests again:
 
 ```
-forgae test
+aeproject test
 ```
 
-Output of `forgae test`:
+Output of `aeproject test`:
 
 ```cmake=
 ===== Starting Tests =====
 
 
   Restricted
-===== Contract: Restricted.aes has been deployed =====
-    ✓ deploying successfully (10191ms)
+===== Contract: Restricted.aes has been deployed at [contract address] =====
+    ✓ deploying successfully (6757ms)
     Calling functions
-===== Contract: Restricted.aes has been deployed =====
-      ✓ Should successfully call the non restricted method (15540ms)
-      ✓ Should successfully call the restricted method (7372ms)
+===== Contract: Restricted.aes has been deployed at [contract address] =====
+      ✓ Should successfully call the non restricted method (6828ms)
+      ✓ Should successfully call the restricted method (223ms)
 
 
-  3 passing (33s)
+  3 passing (14s)
 
 There is no sophia test to execute.
 []
@@ -269,12 +261,20 @@ The æternity team will keep this tutorial updated with news. If you encounter a
 
 ```javascript=
 contract Restricted =
-
   record state = 
 	  { owner : address }
 
   stateful entrypoint init() = 
     { owner = Call.caller } // Initializing the owner to the deployer
+
+  // Non access restricted method. Should be callable by any user successfully
+  entrypoint nonRestrictedFunction(i : int) : int =
+    i
+
+  // Access restricted method. Should be callable only by the owner/deployer
+  entrypoint restrictedFunction(i: int) : int =
+    onlyOwner()
+    i
 
   // Method to throw an exception if the expression exp is falsey
   function requirement(exp : bool, err : string) = 
@@ -286,21 +286,12 @@ contract Restricted =
     // is actually the deployer
     requirement(state.owner == Call.caller, "The caller is different than the owner") 
     true
-
-  // Non access restricted method. Should be callable by any user successfully
-  entrypoint nonRestrictedFunction(i: int) : int =
-    i
-
-  // Access restricted method. Should be callable only by the owner/deployer
-  entrypoint restrictedFunction(i: int) : int =
-    onlyOwner()
-    i
 ```
 
 `test/exampleTest.js`:
 
 ```javascript=
-const Deployer = require('forgae-lib').Deployer;
+const Deployer = require('aeproject-lib').Deployer;
 const RESTRICTED_CONTRACT_PATH = "./contracts/Restricted.aes";
 
 describe('Restricted', () => {
@@ -340,7 +331,7 @@ describe('Restricted', () => {
       
       const callResult = await callNotRestrictedMethod;
       
-      await assert.equal(callResult, 2, 'The returned data was not correct')
+      await assert.equal(callResult.decodedResult, 2, 'The returned data was not correct')
       
     })
 
@@ -349,11 +340,10 @@ describe('Restricted', () => {
       const nonOwnerCalling = await ownerDeployedContract.from(nonOwnerKeyPair.secretKey);
       
       // Call the restricted method from non owner
-      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(2);
+      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(3);
       
       // It should be rejected as it is restricted to owner only
       await assert.isRejected(callRestrictedMethod);
-      
     })
     
   })
