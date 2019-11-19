@@ -2,7 +2,7 @@
 ## Tutorial Overview
 This tutorial series will teach you how to build a To-do list Æpp. You will learn how to:
 - Develop a ToDoManager Sophia smart contract and write unit tests for it;
-- Use the **forgae** framework to build æpps: configuration of the project structure, compilation, deployment, running tests;
+- Use the **aeproject** framework to build æpps: configuration of the project structure, compilation, deployment, running tests;
 - Communicate between the frontend(SPA with Vue.js) and the Sophia smart contract;
 
 The To-do list Æpp will be able to:
@@ -16,22 +16,22 @@ Once finished it will look like this:
 ![To-do list Æpp](https://raw.githubusercontent.com/VladislavIvanov/to-do-list-aepp/master/to-do-list-aepp.png)
 
 ## Prerequisites
-- Installed the **forgae** framework (take a look over [installing forgae](https://dev.aepps.com/tutorials/smart-contract-deployment-in-forgae.html) section)
-- Some familiarity with the **forgae** framework and development of Sophia smart contracts. If you are not there yet, we recommend checking some of these [development tutorials](https://dev.aepps.com/tutorials/README.html).
+- Installed the **aeproject** framework (take a look over [installing aeproject](https://dev.aepps.com/tutorials/smart-contract-deployment-in-forgae.html) section)
+- Some familiarity with the **aeproject** framework and development of Sophia smart contracts. If you are not there yet, we recommend checking some of these [development tutorials](https://dev.aepps.com/tutorials/README.html).
 - Installed **git** ([installing git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 - Account with testnet funds ([How to Get Testnet Funds](https://dev.aepps.com/tutorials/get-testnet-tokens.html) - referencing tutorial)
 
 ## Plan
 
-This part of the tutorial series will show you how to develop a *ToDoManager* Sophia smart contract and write unit tests for it, using the **forgae** framework.
+This part of the tutorial series will show you how to develop a *ToDoManager* Sophia smart contract and write unit tests for it, using the **aeproject** framework.
 The [second part](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-2.md) will focus on the communication between the frontend and the *ToDoManager* smart contract.   
 ## Initialize the smart contract project
 
-First, open your terminal, create a new directory ```to-do-contract``` and bootstrap new **forgae** project:
+First, open your terminal, create a new directory ```to-do-contract``` and bootstrap new **aeproject** project:
 ```
 mkdir to-do-contract
 cd to-do-contract
-forgae init
+aeproject init
 ```
 
 ## Creating the ```ToDoManager.aes``` smart contract
@@ -89,7 +89,7 @@ We can create task using the ```add_to_do``` function and complete a task with `
 
 Please compile the contract with ```testnet``` network selected:
 ```
-forgae compile -n testnet
+aeproject compile -n testnet
 ```
 
 ## Writing unit tests for the smart contract
@@ -101,7 +101,7 @@ Let's go to the ```test``` folder of the project and create a new test file.
 touch ./toDoManagerTests.js
 ```
 
-In our tests we will deploy the contract to the local network spawned by **forgae** and interact with the deployed contract.
+In our tests we will deploy the contract to the local network spawned by **aeproject** and interact with the deployed contract.
 We will test the contract functionalities as follows:
 - create a task;
 - get the count of tasks;
@@ -370,10 +370,10 @@ describe('ToDoManager Contract', () => {
 
 Next step is to run our local network with the following command:
 ```
-forgae node
+aeproject node
 ```
 
-Let's run the tests with the ```forgae test``` command and wait for the result. It should look like this:
+Let's run the tests with the ```aeproject test``` command and wait for the result. It should look like this:
 ```
 ===== Starting Tests =====
 
@@ -399,10 +399,10 @@ Let's run the tests with the ```forgae test``` command and wait for the result. 
 ## Deploy the contract to testnet
 The testnet is a wonderful place where you can experiment with the To-do list Æpp without worrying that a mistake will cost you real tokens.
 
-We will use **forgae** to deploy our contract to the testnet. The sample deployment script is scaffolded in deployment folder - ```deploy.js```.
+We will use **aeproject** to deploy our contract to the testnet. The sample deployment script is scaffolded in deployment folder - ```deploy.js```.
 Let’s configure our deployment script. We have to change the contract path from ```./contracts/ExampleContract.aes``` to ```./contracts/ToDoManager.aes```. The ```deploy.js``` file should look like this:
 ```
-const Deployer = require('forgae').Deployer;
+const Deployer = require('aeproject').Deployer;
 
 const deploy = async (network, privateKey) => {
     let deployer = new Deployer(network, privateKey);
@@ -417,7 +417,7 @@ module.exports = {
 
 The deploy command is:
 ```
-forgae deploy -n testnet -s <yourPrivateKeyHere>
+aeproject deploy -n testnet -s <yourPrivateKeyHere>
 
 ```
 
