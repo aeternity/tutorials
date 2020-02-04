@@ -13,25 +13,20 @@ title: Tutorials
 * [TUTORIAL: How to Register and Update a Name with the SDK in Javascript](naming-workflow-in-javascript-sdk.md)
 * [TUTORIAL: How to Create an æternity Account With CLI?](account-creation-in-ae-cli.md)
 * [TUTORIAL: How to Get Testnet Funds?](get-testnet-tokens.md)
-* [TUTORIAL: Deploying a Smart Contract on æternity with "forgae"](smart-contract-deployment-in-forgae.md)
-* [TUTORIAL: Deploying a Smart Contract with init parameters with "forgae"](deploy-with-init-params.md)
+* [TUTORIAL: Deploying a Smart Contract on æternity with "aeproject"](smart-contract-deployment-in-aeproject.md)
+* [TUTORIAL: Deploying a Smart Contract with init parameters with "aeproject"](deploy-with-init-params.md)
 * [TUTORIAL: Call a deployed contract using the CLI](smart-contract-calling-in-ae-cli.md)
 * [TUTORIAL: Writing a greeter contract in Sophia using oracles - introduction](sophia-oracle-introduction.md)
 * [TUTORIAL: Smart Contract usage with the Javascript SDK](smart-contract-usage-in-javascript-sdk.md)
 * [TUTORIAL: Sophia basics - owning a smart contract and owner privileges](owning-a-smart-contract.md)
 * [TUTORIAL: How to create a Sophia contract for a simple voting aepp?](sophia-vote-contract.md)
 * [TUTORIAL: Creating your own Aeternity Paper Wallets](create-a-paper-wallet.md)
-* [TUTORIAL: How to create a Sophia fungible token contract?](sophia-fungible-token-contract.md)
-* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 1](sophia-token-exchange-contract-1.md)
-* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 2](sophia-token-exchange-contract-2.md)
-* [TUTORIAL: Simple Fungible Token Exchange Smart Contract - Part 3](sophia-token-exchange-contract-3.md)
-* [TUTORIAL: How to get started with unit testing via forgae](get-started-with-unit-testing.md)
-* [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 1](how-to-write-unit-test-1.md)
-* [TUTORIAL: How to write Unit tests for Sophia smart contracts - Part 2](how-to-write-unit-test-2.md)
+* [TUTORIAL: How to get started with unit testing via aeproject](get-started-with-unit-testing.md)
 * [TUTORIAL: State Channels Introduction](state-channels-introduction.md)
 * [TUTORIAL: How to Run Your Own æternity Middleware](running-your-own-ae-middleware.md)
 * [TUTORIAL: How to build a To-do list Æpp - Part 1](build-to-do-list-aepp-1.md)
 * [TUTORIAL: How to build a To-do list Æpp - Part 2](build-to-do-list-aepp-2.md)
+* [TUTORIAL: Forgae has made it simple to build Æpps with the front-end framework](forgae-shape-vue-command.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
@@ -49,10 +44,6 @@ Get support in [the Forum](https://forum.aeternity.com/c/mining).
 
 ## Get some ættos!
 There is a faucet for testnet tokens available here https://faucet.aepps.com
-
-If you prefer human interaction, you can request up to 2m ættos for testing purposes using this topic in the Forum:
-
-[https://forum.aeternity.com/t/get-some-aettos-for-testing-purposes/1754](https://forum.aeternity.com/t/get-some-aettos-for-testing-purposes/1754)
 
 **More tutorials are coming!**
 
