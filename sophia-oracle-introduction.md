@@ -63,8 +63,7 @@ payable stateful entrypoint greet_oracle(message : string) : bool =
       let query : oracle_query(string, string) =
         Oracle.query(state.greeter_oracle, message, 10, RelativeTTL(50), RelativeTTL(50))
       let caller_address : string = Address.to_str(Call.caller)
-      let new_greets = (caller_address, query) :: state.greets
-      put(state{greets = new_greets})
+      put(state{greets @ g = (caller_address, query) :: g})
       true
 ```
 
@@ -76,30 +75,14 @@ After that, we are calling the builtin function `put`, which modifies the state 
 
 ## Responding to the greetings
 
-Now that we are able to query our oracle, we should also add logic to respond to those queries. We will have to work with a recursive function that iterates through all of the queries and responds to them. To make it a bit more complicated, we will make it so that the oracle responds only to certain greets, let's say "Hello", "Hi" and "Greetings".
-
-Let's begin with the public function that will start the recursive calls:
+Now that we are able to query our oracle, we should also add logic to respond to those queries. This logic will iterate through all the queries and respond to them. For this tutorial, our oracle will only respond to  "Hello", "Hi" and "Greetings" greetings.
 
 ```sophia
 stateful entrypoint respond_to_greets() =
-  respond_to_greets'(state.greets)
+  [ respond_to_greet(caller_addr, query) | (caller_addr, query) <- state.greets ]
 ```
 
-Very straightforward. Calling this function will call `respond_to_greets'` (Sophia doesn't allow you to have multiple functions with the same name) and will pass the `greets` that are in the state. Now for the recursive function:
-
-```sophia
-stateful function respond_to_greets'(greets : list((string * oracle_query(string, string)))) =
-  switch(greets)
-    (caller_address, query) :: rest =>
-      respond_to_greet(caller_address, query)
-      respond_to_greets'(rest)
-    [] =>
-      0
-```
-
-We start off by checking what the current list is with `switch(greets`). A list can be matched on its head and tail with the `::` syntax, similar to the prepend syntax. In our case, we pattern match on the head of the list and "extract" the address and query from the tuple, we also name the tail `rest`. After that, we call `respond_to_greet` (not yet defined) and pass the `caller_address` and `query` from above as an argument. When we are done with responding to the query, the function calls itself in order to continue and the `rest` of the queries are passed. If the list is empty, that means that we are done with the responses and the recursion should come to an end - return `0` since we have to return something.
-
-Finally, let's implement `respond_to_greet`:
+Very straightforward. Calling this function will call `respond_to_greet'` function with the caller's address and the query supplied by the caller. Finally, let's implement `respond_to_greet`:
 
 ```sophia
 stateful function respond_to_greet(caller_address : string, query : oracle_query(string, string)) =
@@ -144,23 +127,14 @@ contract Greeter =
       let query : oracle_query(string, string) =
         Oracle.query(state.greeter_oracle, message, 10, RelativeTTL(50), RelativeTTL(50))
       let caller_address : string = Address.to_str(Call.caller)
-      let new_greets = (caller_address, query) :: state.greets
-      put(state{greets = new_greets})
+      put(state{greets @ g = (caller_address, query) :: g})
       true
 
   stateful entrypoint respond_to_greets() =
-    respond_to_greets'(state.greets)
+    [ respond_to_greet(caller_addr, query) | (caller_addr, query) <- state.greets ]
 
   entrypoint get_oracle(): oracle(string, string) =
     state.greeter_oracle
-
-  stateful function respond_to_greets'(greets : list((string * oracle_query(string, string)))) =
-    switch(greets)
-      (caller_address, query) :: rest =>
-        respond_to_greet(caller_address, query)
-        respond_to_greets'(rest)
-      [] =>
-        0
 
   entrypoint get_balance() : int =
     Contract.balance
