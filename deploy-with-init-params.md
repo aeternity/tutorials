@@ -10,7 +10,7 @@ You have completed [this tutorial](smart-contract-deployment-in-aeproject.md) th
 
 ## Create a project and run your aeproject node
 
-We would need a local node to compile and deploy on. The easiest option is to spawn one from aeproject. Follow the below steps to create a project, initialize the project, and test the project using aeproject on your CLI:
+We would need a local node to compile and deploy on. The easiest option is to spawn one from aeproject. Follow the below steps to create a project, open your command line if you are on windows and your terminal if you are on  Mac or Linux, initialize the project, and test the project using aeproject on your CLI by using the following commands:
 
 ```
 mkdir aeproject-init
@@ -68,9 +68,9 @@ contract ExampleContract =
   entrypoint savedNumber() : int = state.savedNumber
 ```
 
-As you can see the contract now has a state variable `savedNumber` of type int. The initial value will be passed by the init function. We've also added a read function for this value.
+As you can see the contract now has a state variable `savedNumber` of type int. We pass a variable called`num`of type int  to the init function so it can can be used to update the `savedNumber` state variable. We've also added a read function for this value.
 
-Run aeproject compile to verify that your contract compiles successfully
+Run aeproject compile in that same directory to verify that your contract compiles successfully
 
 ```
 aeproject compile
@@ -87,7 +87,7 @@ Contract bytecode: "cb_+HRGA6DbtXpvFpQzcO1kecnHs/7Wuq9JXd665XxOzeYZtvRBocC4R6X+R
 
 ## Step 2: Update your deploy.js
 
-Let's add some parameters to our example deploy script which can be found at **deployment/deploy.js**. The parameters of the init functions are always passed as an array. Here is how our new deploy script looks like:
+Let's add some parameters to our example deploy script which can be found at **deployment/deploy.js**. The parameters of the init functions are always passed as the second argument to the `deploy` function in form of an array . Here is how our new deploy script looks like:
 
 ```
 const Deployer = require('aeproject-lib').Deployer;
