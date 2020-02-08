@@ -68,7 +68,7 @@ contract ExampleContract =
   entrypoint savedNumber() : int = state.savedNumber
 ```
 
-As you can see the contract now has a state variable `savedNumber` of type int. We pass a variable called`num`of type int  to the init function so it can can be used to update the `savedNumber` state variable. We've also added a read function for this value.
+As you can see the contract now has a state variable `savedNumber` of type int. We pass a variable called`num`of type int  to the init function so it can can be used to update the `savedNumber` state variable. We've also added a function called `savedNumber` to return the value of the state variable `savedNumber`.
 
 Run aeproject compile in that same directory to verify that your contract compiles successfully
 
