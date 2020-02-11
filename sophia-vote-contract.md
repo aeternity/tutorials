@@ -68,7 +68,7 @@ stateful entrypoint vote(candidate: address) =
 
 We access the transaction initiator’s address by the built in `Call.caller` and prepend it `::` to the current list of voters.
 
-The last step is to create a `get votes count` function.
+The next step is to create a `get votes count` function.
 
 ```sophia
 entrypoint count_votes(candidate : address) : int =
@@ -76,9 +76,9 @@ entrypoint count_votes(candidate : address) : int =
    List.length(candidate_found.voters)
 ```
 
-`Map.lookup_default` will either return the cadidate's record stored in the votes map of the state record if the candidate exist or a candidates's record with an empty list of voters and an exist field with a false value. We then use `List.length` to get the number of voters in the voters's list.
+`Map.lookup_default` will either return the cadidate's record stored in the votes map of the state record if the candidate exist or a candidates's record with an empty list of voters and an exist field with a false value. We then use `List.length` to get the number of voters in the voters's list.You will need to include `List.aes` to use this standard library function.
 
-The final smart contract code looks like this in the end:
+But our contract is not yet finished, presently a user can vote twice with the existing contract and we never want this to happen. To solve this, we will start by creating a new field in our state record called `allVoters` which is going to be a list of voters address and we will give it an initial value in our `init` function.
 
 ```sophia
 contract Vote =
@@ -88,15 +88,63 @@ contract Vote =
       exist: bool}
 
    record state = {
-      votes: map(address, candidates) }
+      votes: map(address, candidates) 
+      allVoters:list(address) }
 
    entrypoint init() : state = {
-      votes = { } }
+      votes = { },allVoters=[] }
+```
+Next we need to add a function called `hasVoted` which will check if a user has already voted
+```sophia
+function hasVoted():bool=
+      switch(List.find(hasAddress,state.allVoters))
+        None => false
+        Some(x)=> true
+        
+function hasAddress(list_address:address)=
+     list_address==Call.caller
+```
+
+
+Then finally we need to update our vote function to check  if a user has voted already and then abort with a mesage, we also need to update our `allVoters` state field to include the address of all users after they have voted.
+
+```sophia
+stateful entrypoint vote(candidate: address) =
+   if(hasVoted())
+        abort("You cant vote twice")
+        
+   if (is_candidate(candidate))
+      let current_votes = state.votes[candidate].voters
+      put(state{ votes[candidate].voters = Call.caller :: current_votes,allVoters=Call.caller::all_voters })
+```
+
+The final smart contract code looks like this in the end:
+
+```sophia
+include "List.aes"
+
+contract Vote =
+
+   record candidates = {
+      voters: list(address),
+      exist: bool}
+
+   record state = {
+      votes: map(address, candidates), 
+      allVoters:list(address)
+      }
+
+   entrypoint init() : state = {
+      votes = { },allVoters=[] }
 
    stateful entrypoint vote(candidate: address) =
+      if(hasVoted())
+        abort("You cant vote twice")
       if (is_candidate(candidate))
         let current_votes = state.votes[candidate].voters
-        put(state{ votes[candidate].voters = Call.caller :: current_votes })
+        let all_voters=state.allVoters
+        put(state{ votes[candidate].voters = Call.caller :: current_votes,allVoters=Call.caller::all_voters  })
+        
 
    entrypoint count_votes(candidate : address) : int =
       let candidate_found = Map.lookup_default(candidate, state.votes, { voters = [], exist = false })
@@ -113,7 +161,18 @@ contract Vote =
    function is_candidate'(candidate: address) : bool =
       let candidate_found = Map.lookup_default(candidate, state.votes, { voters = [], exist = false })
       candidate_found.exist
-
+     
+   entrypoint hasVoted()=
+      switch(List.find(hasAddress,state.allVoters))
+        None => false
+        Some(x)=> true
+      
+   
+   
+   function hasAddress(list_address:address)=
+     list_address==Call.caller
+  
+  
 ```
 
 ## Conclusion
