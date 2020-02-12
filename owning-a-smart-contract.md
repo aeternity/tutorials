@@ -51,7 +51,7 @@ touch ./contracts/Restricted.aes
 
 The following code goes inside this file:
 
-```aes
+```sophia
 contract Restricted =
   // Non access restricted method. Should be callable by any user successfully
   entrypoint nonRestrictedFunction(i : int) : int =
@@ -172,7 +172,7 @@ In order to restrict a method to be called only by the deployer of the smart con
 
 Let's first add state variable for the owner and set it on deploy time. On the second line of Restricted.aes put the following:
 
-```aes
+```sophia
   record state =
     { owner : address }
 
@@ -184,7 +184,7 @@ This snippet initializes the state variable owner to the deployer of the contrac
 
 With this done let's create a function that checks the caller of an arbitrary transaction and throws if it is not the owner:
 
-```aes
+```sophia
   // Method to throw an exception if the expression exp is false
   function requirement(exp : bool, err : string) =
     if(!exp)
@@ -199,7 +199,7 @@ With this done let's create a function that checks the caller of an arbitrary tr
 
 The onlyOwner function checks who has called the current transaction and reverts if it is not the deployer. Let's use it inside our restricted function. Modify the `restrictedFunction` method like this:
 
-```aes
+```sophia
   // Access restricted method. Should be callable only by the owner/deployer
   entrypoint restrictedFunction(i: int) : int =
     onlyOwner()
@@ -247,7 +247,7 @@ Although this is a very cool practice, the main reason for blockchain technology
 
 `contracts/Restricted.aes`:
 
-```aes
+```sophia
 contract Restricted =
 
   record state =
