@@ -76,11 +76,13 @@ entrypoint count_votes(candidate : address) : int =
    List.length(candidate_found.voters)
 ```
 
-`Map.lookup_default` will either return the cadidate's record stored in the votes map of the state record if the candidate exist or a candidates's record with an empty list of voters and an exist field with a false value. We then use `List.length` to get the number of voters in the voters's list.
+`Map.lookup_default` will either return the cadidate's record stored in the votes map of the state record if the candidate exist or a candidates's record with an empty list of voters and an exist field with a false value. We then use `List.length` to get the number of voters in the voters's list. You will need to include `List.aes` to use this standard library function.
 
 The final smart contract code looks like this in the end:
 
 ```sophia
+include "List.aes"
+
 contract Vote =
 
    record candidates = {
