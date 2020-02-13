@@ -76,16 +76,13 @@ entrypoint count_votes(candidate : address) : int =
    List.length(candidate_found.voters)
 ```
 
-`Map.lookup_default` will either return the cadidate's record stored in the votes map of the state record if the candidate exist or a candidates's record with an empty list of voters and an exist field with a false value. We then use `List.length` to get the number of voters in the voters's list.You will need to include `List.aes` to use this standard library function.
+`Map.lookup_default` will either return the cadidate's record stored in the votes map of the state record if the candidate exist or a candidates's record with an empty list of voters and an exist field with a false value. We then use `List.length` to get the number of voters in the voters's list. You will need to include `List.aes` to use this standard library function.
+
 
 But our contract is not yet finished, presently a user can vote twice with the existing contract and we never want this to happen. To solve this, we will start by creating a new field in our state record called `allVoters` which is going to be a list of voters address and we will give it an initial value in our `init` function.
 
 ```sophia
 contract Vote =
-
-   record candidates = {
-      voters: list(address),
-      exist: bool}
 
    record state = {
       votes: map(address, candidates) 
@@ -117,6 +114,7 @@ stateful entrypoint vote(candidate: address) =
       let current_votes = state.votes[candidate].voters
       put(state{ votes[candidate].voters = Call.caller :: current_votes,allVoters=Call.caller::all_voters })
 ```
+
 
 The final smart contract code looks like this in the end:
 
