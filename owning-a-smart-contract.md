@@ -20,18 +20,18 @@ cd ownable-project
 aeproject init
 ```
 
-### 1.2 aeproject node
+### 1.2 aeproject env
 Another thing we would require is a local working environment to develop against. 
 We are going to use the one provided by `aeproject`.
 Just type in the following command:
 
 ```
-aeproject node
+aeproject env
 ```
 
-You can later stop the local node by typing in:
+You can later stop the local environment by typing in:
 ```
-aeproject node --stop
+aeproject env --stop
 ```
 
 ## 2. Writing the contract without access restriction
@@ -152,15 +152,15 @@ Output of `aeproject test`:
 
 
   Restricted
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-    ✓ deploying successfully (6680ms)
+===== Contract: Restricted.aes has been deployed at ct_2Z42iQBz7Bc7uEawLJC5xzAiAvxGZzhKkjDK3HLo5f3vhTskbU =====
+    ✓ deploying successfully (7853ms)
     Calling functions
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-      ✓ Should successfully call the non restricted method (6521ms)
+===== Contract: Restricted.aes has been deployed at ct_fKhQBiNQkDfoZcVF1ZzPzY7Lig6FnHDCLyFYBY33ZjfzGYPps =====
+      ✓ Should successfully call the non restricted method (8068ms)
       1) Should successfully call the restricted method
 
 
-  2 passing (14s)
+  2 passing (17s)
   1 failing
 
   1) Restricted
@@ -229,12 +229,12 @@ Output of `aeproject test`:
 
 
   Restricted
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-    ✓ deploying successfully (6757ms)
+===== Contract: Restricted.aes has been deployed at ct_2JVfaVS61gCcMEWfstZRuj6yAnVTRyvSbVsfFAsvGrxm24b5fd =====
+    ✓ deploying successfully (7109ms)
     Calling functions
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-      ✓ Should successfully call the non restricted method (6828ms)
-      ✓ Should successfully call the restricted method (223ms)
+===== Contract: Restricted.aes has been deployed at ct_2XY9zP2ZgXExKkRqAKoot6gv1ttkcREu1d5LEtY5s9Jka5DqNy =====
+      ✓ Should successfully call the non restricted method (6831ms)
+      ✓ Should successfully call the restricted method (118ms)
 
 
   3 passing (14s)
@@ -259,7 +259,7 @@ The æternity team will keep this tutorial updated with news. If you encounter a
 
 `contracts/Restricted.aes`:
 
-```javascript=
+```sophia
 contract Restricted =
   record state = 
 	  { owner : address }
@@ -290,7 +290,7 @@ contract Restricted =
 
 `test/exampleTest.js`:
 
-```javascript=
+```javascript
 const Deployer = require('aeproject-lib').Deployer;
 const RESTRICTED_CONTRACT_PATH = "./contracts/Restricted.aes";
 
