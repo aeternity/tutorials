@@ -18,15 +18,7 @@ This tutorial will show you how to test your æternity Sophia smart contract pro
 
 **aeproject** is an æternity framework which helps with setting up a Sophia project. The framework makes the development of smart contracts on the æternity network very easy. It provides commands for compilation of smart contracts, running a local æternity node and unit testing the contracts.
 
-Here are the **aeproject** commands we will be using for this particular tutorial:
-
-`aeproject init` - creates an æternity project structure with a few folders that the developer can use to create the contracts, tests and deployment scripts. Docker configuration files are also created, for easy boot up of a local æternity blockchain network.
-
-`aeproject node` - helps developers run their docker-based local network. The local network contains several nodes. Spawning the network takes couple of minutes. At the end of this command, you will be presented with AE accounts (key pairs) that you can use in your unit tests.
-
-`aeproject compile` - compiles a Sophia smart contract. It's recommended to use the .aes file extension. Default directory is `$projectDir/contracts`. The result of the compilation is the contract bytecode printed in the console.
-
-`aeproject test` - helps developers run their unit tests for æternity projects. The command executes the test scripts that are located in the `test` folder of your æternity project.
+For more information on the **aeproject** commands used in this tutorial, please check out this section in the [aeproject documentation](https://aeproject.gitbook.io/aeproject/developer-documentation/aeproject-cli).
 
 ## Unit testing with aeproject
 
@@ -34,61 +26,7 @@ In this tutorial we will focus on the `aeproject test` command.
 
 As rule of thumb, every smart contract should have unit tests covering its logic. It's not a "nice to have" thing, rather it's a "must have" in the immutable blockchain world. Using **aeproject** you get the well-known Mocha testing framework in place.
 
-## Special global variables and modules available for unit tests
-
-**aeproject** exposes a number of global variables and functions that can be used in your unit tests.
-
-### wallets
-
-The global `wallets` array is available for the developer to use. `wallets` has 10 items, all representing the 10 aeproject wallets created on the aeproject node start. Every item has the structure of:
-
-```
-{
-  "publicKey": "ak_fUq2NesPXcYZe...",
-  "secretKey": "7c6e602a94f30e4e..."
-}
-```
-
-This structure makes it very convenient for the creation of SDK client instances:
-```
-// Create client objects
-owner = await Ae({
-	url: "http://localhost:3001/",
-	internalUrl: "http://localhost:3001/internal/",
-	keypair: wallets[0],
-	nativeMode: true,
-	networkId: 'ae_devnet',
-	compilerUrl: 'http://localhost:3080'
-});
-
-nonOwner = await Ae({
-	url: "http://localhost:3001/",
-	internalUrl: "http://localhost:3001/internal/",
-	keypair: wallets[1],
-	nativeMode: true,
-	networkId: 'ae_devnet',
-	compilerUrl: 'http://localhost:3080'
-});
-```
-
-### minerWallet
-
-Similarly to ```wallets``` there is a global variable ```minerWallet``` representing the wallet of the node miner following the same structure. Let's look at an example:
-```
-// Create client objects
-miner = await Ae({
-	url: "http://localhost:3001/",
-	internalUrl: "http://localhost:3001/internal/",
-	keypair: minerWallet,
-	nativeMode: true,
-	networkId: 'ae_devnet',
-	compilerUrl: 'http://localhost:3080'
-});
-```
-
-### aeproject-utils
-
-`aeproject-utils` is a package giving helper functions mainly for working with files and æternity contracts. For more specifics, visit: [aeproject-utils](https://aeproject.gitbook.io/aeproject/developer-documentation/aeproject-utils/utils)
+Check out the [aeproject documentation](https://aeproject.gitbook.io/aeproject/developer-documentation/aeproject-cli/testing#special-global-variables-and-modules-available-for-unit-tests) on special global variables and modules available for unit tests. **aeproject** exposes a number of global variables and functions that can be used in your unit tests.
 
 ## Let's get testing!
 
@@ -173,10 +111,10 @@ describe('Example Contract', () => {
 
 ```
 
-Now fire up our local node:
+Now fire up our local environment:
 
 ```
-aeproject node
+aeproject env
 ```
 
 And finally let's run our tests:
@@ -192,13 +130,13 @@ If successful, you will see the test report below:
 
 
   Example Contract
-===== Contract: ExampleContract.aes has been deployed at [contract address] =====
-    ✓ Deploying Example Contract (7049ms)
+===== Contract: ExampleContract.aes has been deployed at ct_2Z42iQBz7Bc7uEawLJC5xzAiAvxGZzhKkjDK3HLo5f3vhTskbU =====
+    ✓ Deploying Example Contract (6869ms)
     Calling functions
-===== Contract: ExampleContract.aes has been deployed at [contract address] =====
-      ✓ Test get_string function (6606ms)
-===== Contract: ExampleContract.aes has been deployed at [contract address] =====
-      ✓ Updating saved_string with register_string function (11916ms)
+===== Contract: ExampleContract.aes has been deployed at ct_fKhQBiNQkDfoZcVF1ZzPzY7Lig6FnHDCLyFYBY33ZjfzGYPps =====
+      ✓ Test get_string function (6626ms)
+===== Contract: ExampleContract.aes has been deployed at ct_2JVfaVS61gCcMEWfstZRuj6yAnVTRyvSbVsfFAsvGrxm24b5fd =====
+      ✓ Updating saved_string with register_string function (11744ms)
 
 
   3 passing (26s)
