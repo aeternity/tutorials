@@ -1,6 +1,6 @@
 # TUTORIAL: How to Register and Update a Name with the SDK in Javascript
 
-This tutorial explains how to use the æternity javascript SDK to register and update a name using the æternity naming system (AENS).
+This tutorial explains how to use the æternity Javascript SDK to register and update a name using the æternity naming system (AENS).
 
 In the current state the æternity protocol allows for names to end in ".chain", later in development more namespaces may be added. This tutorial should be run on the live æternity network, registering persistent names, but the ".chain" limitation applies.
 
@@ -25,7 +25,7 @@ npm init -y
 npm install --save @aeternity/aepp-sdk
 ```
 
-#### Step 3: Create a example project file `index.js` in this directory
+#### Step 3: Create an example project file `index.js` in this directory
 
 ```
 touch index.js
@@ -99,7 +99,7 @@ Afterwards, the name is registered to the account and can be updated to provide 
 
 ## Execution
 
-Add `main('YOURNAMETOREGISTER.chain');` in the end of the file, then run `node index.js` to run, register, and update the name. Example `main('iloveaeternity.chain');`
+Add `main('YOURNAMETOREGISTER.chain')` in the end of the file, then run `node index.js`. Example: `main('iloveaeternity.chain')`
 
 This may take some time, as it requires the mining of blocks on the live network. It will show an output similar to:
 
