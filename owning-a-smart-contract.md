@@ -20,18 +20,19 @@ cd ownable-project
 aeproject init
 ```
 
-### 1.2 aeproject node
-Another thing we would require is a local working environment to develop against.
+### 1.2 aeproject env
+Another thing we would require is a local working environment to develop against. 
+
 We are going to use the one provided by `aeproject`.
 Just type in the following command:
 
 ```
-aeproject node
+aeproject env
 ```
 
-You can later stop the local node by typing in:
+You can later stop the local environment by typing in:
 ```
-aeproject node --stop
+aeproject env --stop
 ```
 
 ## 2. Writing the contract without access restriction
@@ -147,15 +148,15 @@ Output of `aeproject test`:
 
 
   Restricted Contract
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-    ✓ Deploying Restricted Contract (6470ms)
+===== Contract: Restricted.aes has been deployed at ct_2JVfaVS61gCcMEWfstZRuj6yAnVTRyvSbVsfFAsvGrxm24b5fd =====
+    ✓ Deploying Restricted Contract (8785ms)
     Calling Functions
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-      ✓ Should successfully call the non restricted method (6415ms)
+===== Contract: Restricted.aes has been deployed at ct_2XY9zP2ZgXExKkRqAKoot6gv1ttkcREu1d5LEtY5s9Jka5DqNy =====
+      ✓ Should successfully call the non restricted method (8068ms)
       1) Should successfully call the restricted method
 
 
-  2 passing (13s)
+  2 passing (17s)
   1 failing
 
   1) Restricted Contract
@@ -223,15 +224,15 @@ Output of `aeproject test`:
 
 
   Restricted Contract
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-    ✓ Deploying Restricted Contract (6873ms)
+===== Contract: Restricted.aes has been deployed at ct_GvaesWjbs6bYpNPVNphX3SpzBfdp7JeDqA4Jtwq1hB9cnFgsY =====
+    ✓ Deploying Restricted Contract (8893ms)
     Calling Functions
-===== Contract: Restricted.aes has been deployed at [contract address] =====
-      ✓ Should successfully call the non restricted method (6714ms)
-      ✓ Should successfully call the restricted method (140ms)
+===== Contract: Restricted.aes has been deployed at ct_2gJev7yya8cJvzaRAYKFGn2EooQyxDPpD6oUBXz9FiWzCUSYkz =====
+      ✓ Should successfully call the non restricted method (7912ms)
+      ✓ Should successfully call the restricted method (193ms)
 
 
-  3 passing (14s)
+  3 passing (17s)
 
 There is no sophia test to execute.
 []
