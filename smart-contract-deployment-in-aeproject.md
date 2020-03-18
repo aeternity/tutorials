@@ -4,7 +4,7 @@ This tutorial will walk you through the process of setting up a new æpp project
 ## Prerequisites
 - Installed node.js and npm (node package manager)
 - Installed docker and docker-compose. Installation instructions can be found [here](https://docs.docker.com/compose/install/)
-- The private key of an account that has at least AE tokens (*estimate tx cost/fee - 1579000 AET*)
+- The private key of an account that has at least AE tokens (*estimate tx cost/fee - 87280000000000 ættos*)
 - Installed Visual Studio Code 2017 for Windows users
 ## Installing aeproject
 **aeproject** is an æternity framework which helps with setting up an æpp project. The framework makes the development of smart contracts in the æternity network very easy. It provides commands for compilation of smart contracts, running a local æternity node, unit testing and deployment of smart contracts.
@@ -20,7 +20,7 @@ npm i -g aeproject
 
 You can also clone the repository and install it from source.
 ```
-git clone https://github.com/aeternity/aepp-aeproject-js.git
+git clone https://github.com/aeternity/aepp-aeproject-js
 ```
 Get into the cloned repository with  ```cd aepp-aeproject-js```
 
@@ -43,12 +43,17 @@ Commands:
   init [options]           Initialize AEproject
   compile [options]        Compile contracts
   test [options]           Running the tests
-  node [options]           Running a local node. Without any argument node will be runned with --start argument
+  env [options]            Running a local network. Without any argument node will be run with --start argument
+  node [options]           Running a local node. Without any argument node will be run with --start argument
+  compiler [options]       Running a local compiler. Without any arguments compiler will be run with --start argument
   deploy [options]         Run deploy script
   history [options]        Show deployment history info
   contracts [options]      Running a Contract web aepp locally and connect it to the spawned aeproject node.
   shape <type> [type]      Initialize a web Vue project.
   export-config [options]  Export miner account, few funded accounts  and default node configuration.
+  inspect [options] <tx>   Unpack and verify transaction (verify nonce, ttl, fee, account balance)
+  fire-editor [options]    Download, install and run locally the Fire Editor
+  compatibility [options]  Start env with latest versions and test the current project for compatibility
 ```
 
 ## Generating the æpp project structure
@@ -70,8 +75,30 @@ The init command creates an æpp structure with several folders and scripts:
 - contracts - directory in which the developer can create contracts
     - ExampleContract.aes -  a sample smart contract coming with the init. **We will be deploying this one.**
     ```
-    contract ExampleContract =
-       entrypoint main(x : int) = x
+contract CryptoHamster =
+   datatype event = NewHamster(indexed int, string, hash)
+
+   record state = { hamsters : map(string, hash), next_id : int }
+
+   stateful entrypoint init() = { hamsters = {}, next_id = 0 }
+
+   entrypoint nameExists(name: string) : bool =
+      Map.member(name, state.hamsters)
+
+   stateful entrypoint createHamster(hamsterName: string) =
+      require(!nameExists(hamsterName), "Name is already taken")
+      createHamsterByNameDNA(hamsterName, generateDNA(hamsterName))
+
+   entrypoint getHamsterDNA(hamsterName: string) : hash =
+      require(nameExists(hamsterName), "Hamster does not exist!")
+      state.hamsters[hamsterName]
+
+   stateful function createHamsterByNameDNA(name: string, dna: hash) =
+      put(state{hamsters[name] = dna, next_id = (state.next_id + 1)})
+      Chain.event(NewHamster(state.next_id, name, dna))
+
+   function generateDNA(name : string) : hash =
+      String.sha3(name)
     ```
 - deployment - directory that contains the deployment scripts
     - `deploy.js` - an examplary deployment script coming with the init
@@ -84,11 +111,18 @@ The init command creates an æpp structure with several folders and scripts:
 ## Deploying ExampleContract on the live æternity network
 The **deploy** command helps developers run their deployment scripts for their æpp. The sample deployment script is scaffolded in deployment folder.
 ```
-aeproject deploy [path] [network] [secretKey]
+Usage: deploy [options]
+
+Run deploy script
+
+Options:
+  --path [deploy path]        Path to deployment file (default: "./deployment/deploy.js")
+  -n --network [network]      Select network (default: "local")
+  --networkId [networkId]     Configure your network id
+  -s --secretKey [secretKey]  Wallet secretKey(privateKey)
+  --compiler [compiler_url]   Url to the desired compiler
+  -h, --help                  output usage information
 ```
-- **--path** - path to a deployment file, default value is ```./deployment/deploy.js```
-- **--network** (**-n**) - specify the network (ex. mainnet)
-- **--secretKey** (**-s**) - secret(private) key that will unlock the wallet that will be used to deploy the contract
 
 Deploy ExampleContract.aes on mainnet with the following command: 
 ```
