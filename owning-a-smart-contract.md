@@ -147,11 +147,11 @@ Output of `aeproject test`:
 ===== Starting Tests =====
 
 
-  Restricted
-===== Contract: Restricted.aes has been deployed at ct_2Z42iQBz7Bc7uEawLJC5xzAiAvxGZzhKkjDK3HLo5f3vhTskbU =====
-    ✓ deploying successfully (7853ms)
-    Calling functions
-===== Contract: Restricted.aes has been deployed at ct_fKhQBiNQkDfoZcVF1ZzPzY7Lig6FnHDCLyFYBY33ZjfzGYPps =====
+  Restricted Contract
+===== Contract: Restricted.aes has been deployed at ct_2JVfaVS61gCcMEWfstZRuj6yAnVTRyvSbVsfFAsvGrxm24b5fd =====
+    ✓ Deploying Restricted Contract (8785ms)
+    Calling Functions
+===== Contract: Restricted.aes has been deployed at ct_2XY9zP2ZgXExKkRqAKoot6gv1ttkcREu1d5LEtY5s9Jka5DqNy =====
       ✓ Should successfully call the non restricted method (8068ms)
       1) Should successfully call the restricted method
 
