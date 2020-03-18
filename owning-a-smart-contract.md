@@ -223,16 +223,16 @@ Output of `aeproject test`:
 ===== Starting Tests =====
 
 
-  Restricted
-===== Contract: Restricted.aes has been deployed at ct_2JVfaVS61gCcMEWfstZRuj6yAnVTRyvSbVsfFAsvGrxm24b5fd =====
-    ✓ deploying successfully (7109ms)
-    Calling functions
-===== Contract: Restricted.aes has been deployed at ct_2XY9zP2ZgXExKkRqAKoot6gv1ttkcREu1d5LEtY5s9Jka5DqNy =====
-      ✓ Should successfully call the non restricted method (6831ms)
-      ✓ Should successfully call the restricted method (118ms)
+  Restricted Contract
+===== Contract: Restricted.aes has been deployed at ct_2Z42iQBz7Bc7uEawLJC5xzAiAvxGZzhKkjDK3HLo5f3vhTskbU =====
+    ✓ Deploying Restricted Contract (7597ms)
+    Calling Functions
+===== Contract: Restricted.aes has been deployed at ct_fKhQBiNQkDfoZcVF1ZzPzY7Lig6FnHDCLyFYBY33ZjfzGYPps =====
+      ✓ Should successfully call the non restricted method (7550ms)
+      ✓ Should successfully call the restricted method (176ms)
 
 
-  3 passing (14s)
+  3 passing (16s)
 
 There is no sophia test to execute.
 []
