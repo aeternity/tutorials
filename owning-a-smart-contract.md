@@ -22,6 +22,7 @@ aeproject init
 
 ### 1.2 aeproject env
 Another thing we would require is a local working environment to develop against. 
+
 We are going to use the one provided by `aeproject`.
 Just type in the following command:
 
@@ -51,14 +52,14 @@ touch ./contracts/Restricted.aes
 
 The following code goes inside this file:
 
-```javascript=
+```sophia
 contract Restricted =
   // Non access restricted method. Should be callable by any user successfully
   entrypoint nonRestrictedFunction(i : int) : int =
     i
 
   // Access restricted method. Should be callable only by the owner/deployer
-  entrypoint restrictedFunction(i : int) : int =
+  entrypoint restrictedFunction(i: int) : int =
     i
 ```
 
@@ -77,11 +78,11 @@ The main three unit tests needed are:
 
 Add the following code to your `test/exampleTest.js` file:
 
-```javascript=
+```javascript
 const Deployer = require('aeproject-lib').Deployer;
 const RESTRICTED_CONTRACT_PATH = "./contracts/Restricted.aes";
 
-describe('Restricted', () => {
+describe('Restricted Contract', () => {
 
   let owner;
   let ownerKeyPair = wallets[0];
@@ -89,14 +90,11 @@ describe('Restricted', () => {
   let ownerDeployedContract;
 
   before(async () => {
-  
     // Create client object
     owner = new Deployer('local', ownerKeyPair.secretKey);
-    
   })
 
-  it('deploying successfully', async () => {
-  
+  it('Deploying Restricted Contract', async () => {
     // Deploy it
     ownerDeployedContract = owner.deploy(RESTRICTED_CONTRACT_PATH);
     
@@ -105,20 +103,20 @@ describe('Restricted', () => {
     
   })
 
-  describe('Calling functions', () => {
+  describe('Calling Functions', () => {
   
     it('Should successfully call the non restricted method', async () => {
     
       ownerDeployedContract = await owner.deploy(RESTRICTED_CONTRACT_PATH);
       
       // Call the non restricted method
-      const callNotRestrictedMethod = ownerDeployedContract.nonRestrictedFunction(2);
+      const callNotRestrictedMethod = ownerDeployedContract.nonRestrictedFunction(3);
       
       await assert.isFulfilled(callNotRestrictedMethod, 'Calling the non restricted function failed');
       
       const callResult = await callNotRestrictedMethod;
       
-      await assert.equal(callResult.decodedResult, 2, 'The returned data was not correct')
+      await assert.equal(callResult.decodedResult, 3, 'The returned data was not correct')
       
     })
 
@@ -127,14 +125,12 @@ describe('Restricted', () => {
       const nonOwnerCalling = await ownerDeployedContract.from(nonOwnerKeyPair.secretKey);
       
       // Call the restricted method from non owner
-      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(3);
+      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(2);
       
       // It should be rejected as it is restricted to owner only
       await assert.isRejected(callRestrictedMethod);
     })
-    
   })
-  
 })
 ```
 
@@ -147,7 +143,7 @@ aeproject test
 
 Output of `aeproject test`:
 
-```cmake=
+```
 ===== Starting Tests =====
 
 
@@ -163,8 +159,8 @@ Output of `aeproject test`:
   2 passing (17s)
   1 failing
 
-  1) Restricted
-       Calling functions
+  1) Restricted Contract
+       Calling Functions
          Should successfully call the restricted method:
      AssertionError: expected promise to be rejected but it was fulfilled with { Object (result, decode, ...) }
 ```
@@ -177,35 +173,34 @@ In order to restrict a method to be called only by the deployer of the smart con
 
 Let's first add state variable for the owner and set it on deploy time. On the second line of Restricted.aes put the following:
 
-```javascript=
-  record state = 
-	  { owner : address }
+```sophia
+  record state =
+    { owner : address }
 
-  stateful entrypoint init() = 
+  stateful entrypoint init() =
     { owner = Call.caller } // Initializing the owner to the deployer
-    
 ```
 
 This snippet initializes the state variable owner to the deployer of the contract.
 
 With this done let's create a function that checks the caller of an arbitrary transaction and throws if it is not the owner:
 
-```javascript=
-  // Method to throw an exception if the expression exp is falsey
-  function requirement(exp : bool, err : string) = 
-      if(!exp)
+```sophia
+  // Method to throw an exception if the expression exp is false
+  function requirement(exp : bool, err : string) =
+    if(!exp)
         abort(err)
 
   entrypoint onlyOwner() : bool =
     // Require that the caller of this method
     // is actually the deployer
-    requirement(state.owner == Call.caller, "The caller is different than the owner") 
+    requirement(state.owner == Call.caller, "The caller is different than the owner")
     true
 ```
 
 The onlyOwner function checks who has called the current transaction and reverts if it is not the deployer. Let's use it inside our restricted function. Modify the `restrictedFunction` method like this:
 
-```javascript=
+```sophia
   // Access restricted method. Should be callable only by the owner/deployer
   entrypoint restrictedFunction(i: int) : int =
     onlyOwner()
@@ -224,7 +219,7 @@ aeproject test
 
 Output of `aeproject test`:
 
-```cmake=
+```
 ===== Starting Tests =====
 
 
@@ -245,15 +240,9 @@ There is no sophia test to execute.
 
 All three tests pass successfully now!
 
-## When to use it - Philosophical dilemma 
+## When to use it - Philosophical dilemma
 
 Although this is a very cool practice, the main reason for blockchain technology is to allow for decentralization of systems. Having an access being restricted to a certain user is somewhat similar to having a central point, although it is very well known. Use this technique with caution and think about possible implications of this elevated access.
-
-## Conclusion
-
-It is pretty easy to add access-restriction to your contract methods. In a few simple steps you can have administrative layer functionality. What are some use-cases for you to use it? Feel free to get in touch with us with your ideas!
-
-The æternity team will keep this tutorial updated with news. If you encounter any problems please contact us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
 
 ## Full code
 
@@ -261,11 +250,23 @@ The æternity team will keep this tutorial updated with news. If you encounter a
 
 ```sophia
 contract Restricted =
-  record state = 
-	  { owner : address }
 
-  stateful entrypoint init() = 
+  record state =
+    { owner : address }
+
+  stateful entrypoint init() =
     { owner = Call.caller } // Initializing the owner to the deployer
+
+  // Method to throw an exception if the expression exp is false
+  function requirement(exp : bool, err : string) =
+    if(!exp)
+        abort(err)
+
+  entrypoint onlyOwner() : bool =
+    // Require that the caller of this method
+    // is actually the deployer
+    requirement(state.owner == Call.caller, "The caller is different than the owner")
+    true
 
   // Non access restricted method. Should be callable by any user successfully
   entrypoint nonRestrictedFunction(i : int) : int =
@@ -275,17 +276,6 @@ contract Restricted =
   entrypoint restrictedFunction(i: int) : int =
     onlyOwner()
     i
-
-  // Method to throw an exception if the expression exp is falsey
-  function requirement(exp : bool, err : string) = 
-      if(!exp)
-        abort(err)
-
-  entrypoint onlyOwner() : bool =
-    // Require that the caller of this method
-    // is actually the deployer
-    requirement(state.owner == Call.caller, "The caller is different than the owner") 
-    true
 ```
 
 `test/exampleTest.js`:
@@ -294,7 +284,7 @@ contract Restricted =
 const Deployer = require('aeproject-lib').Deployer;
 const RESTRICTED_CONTRACT_PATH = "./contracts/Restricted.aes";
 
-describe('Restricted', () => {
+describe('Restricted Contract', () => {
 
   let owner;
   let ownerKeyPair = wallets[0];
@@ -302,14 +292,11 @@ describe('Restricted', () => {
   let ownerDeployedContract;
 
   before(async () => {
-  
     // Create client object
     owner = new Deployer('local', ownerKeyPair.secretKey);
-    
   })
 
-  it('deploying successfully', async () => {
-  
+  it('Deploying Restricted Contract', async () => {
     // Deploy it
     ownerDeployedContract = owner.deploy(RESTRICTED_CONTRACT_PATH);
     
@@ -318,20 +305,20 @@ describe('Restricted', () => {
     
   })
 
-  describe('Calling functions', () => {
+  describe('Calling Functions', () => {
   
     it('Should successfully call the non restricted method', async () => {
     
       ownerDeployedContract = await owner.deploy(RESTRICTED_CONTRACT_PATH);
       
       // Call the non restricted method
-      const callNotRestrictedMethod = ownerDeployedContract.nonRestrictedFunction(2);
+      const callNotRestrictedMethod = ownerDeployedContract.nonRestrictedFunction(3);
       
       await assert.isFulfilled(callNotRestrictedMethod, 'Calling the non restricted function failed');
       
       const callResult = await callNotRestrictedMethod;
       
-      await assert.equal(callResult.decodedResult, 2, 'The returned data was not correct')
+      await assert.equal(callResult.decodedResult, 3, 'The returned data was not correct')
       
     })
 
@@ -340,13 +327,17 @@ describe('Restricted', () => {
       const nonOwnerCalling = await ownerDeployedContract.from(nonOwnerKeyPair.secretKey);
       
       // Call the restricted method from non owner
-      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(3);
+      const callRestrictedMethod = nonOwnerCalling.restrictedFunction(2);
       
       // It should be rejected as it is restricted to owner only
       await assert.isRejected(callRestrictedMethod);
     })
-    
   })
-  
 })
 ```
+
+## Conclusion
+
+It is pretty easy to add access-restriction to your contract methods. In a few simple steps you can have administrative layer functionality. What are some use-cases for you to use it? Feel free to get in touch with us with your ideas!
+
+The æternity team will keep this tutorial updated with news. If you encounter any problems please contact us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).

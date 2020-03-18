@@ -8,15 +8,15 @@ This tutorial will walk you through the deployment of smart contracts with init 
 
 You have completed [this tutorial](smart-contract-deployment-in-aeproject.md) that teaches you how to deploy a contract without init parameters.
 
-## Create a project and run your aeproject node
+## Create a project and run your aeproject environment
 
-We would need a local node to compile and deploy on. The easiest option is to spawn one from aeproject. Follow the below steps to create a project, initialize the project, and test the project using aeproject on your CLI:
+We would need a local node to compile and deploy on. The easiest option is to spawn one from aeproject. Follow the below steps to create a project, open your command line if you are on windows and your terminal if you are on  Mac or Linux, initialize the project, and test the project using aeproject on your CLI by using the following commands:
 
 ```
 mkdir aeproject-init
 cd aeproject-init
 aeproject init
-aeproject node
+aeproject env
 ```
 
 #### Output of `aeproject init`:
@@ -25,7 +25,6 @@ aeproject node
 ===== Initializing AEproject =====
 ===== Installing aepp-sdk =====
 ===== Installing AEproject locally =====
-===== Installing yarn locally =====
 ===== Creating project file & dir structure =====
 ===== Creating contracts directory =====
 ===== Creating tests directory =====
@@ -36,21 +35,31 @@ aeproject node
 ===== AEproject was successfully initialized! =====
 ```
 
-#### Output of `aeproject node`:
+#### Output of `aeproject env`:
 
 ```
-===== Starting node =====
-...............
+===== Starting node and compiler =====
+Creating network "aeproject-init_default" with the default driver
+
+.Creating aeproject-init_node1_1 ... 
+Creating aeproject-init_node1_1    ... done
+Creating aeproject-init_compiler_1 ... 
+
+Creating aeproject-init_proxy_1    ... done
+
+
+..............
 ===== Node was successfully started! =====
+===== Compiler was successfully started! =====
 ===== Funding default wallets! =====
 [List of wallet public keys, private keys, and balances]
-===== Default wallets was successfully funded! =====
+===== Default wallets were successfully funded! =====
 ```
 
 Do not forget to stop it once you are done developing
 
 ```
-aeproject node --stop
+aeproject env --stop
 ```
 
 ## Step 1: Update your ExampleContract.aes
@@ -68,9 +77,9 @@ contract ExampleContract =
   entrypoint savedNumber() : int = state.savedNumber
 ```
 
-As you can see the contract now has a state variable `savedNumber` of type int. The initial value will be passed by the init function. We've also added a read function for this value.
+As you can see the contract now has a state variable `savedNumber` of type int. We pass a variable called`num`of type int  to the init function so it can can be used to update the `savedNumber` state variable since the init function always returns State. We've also added a function called `savedNumber` to return the value of the state variable `savedNumber`.
 
-Run aeproject compile to verify that your contract compiles successfully
+Run aeproject compile in that same directory to verify that your contract compiles successfully
 
 ```
 aeproject compile
@@ -81,19 +90,19 @@ aeproject compile
 ```
 ===== Compiling contracts =====
 
-Contract '[your directory path]/aeproject-init/contracts/ExampleContract.aes has been successfully compiled'
-Contract bytecode: "cb_+HRGA6DbtXpvFpQzcO1kecnHs/7Wuq9JXd665XxOzeYZtvRBocC4R6X+RNZEHwA3AQc3AAwBACcMAhoCggEDP/7it2wBADcABygsAIIAnS8CEUTWRB8RaW5pdBHit2wBLXNhdmVkTnVtYmVygi8AhTQuMC4wAN6kD9k="
+Contract '[your directory path]/contracts/ExampleContract.aes has been successfully compiled'
+Contract bytecode: "cb_+G1GA6DbtXpvFpQzcO1kecnHs/7Wuq9JXd665XxOzeYZtvRBocC4QJ7+RNZEHwA3AQc3ABoGggABAz/+4rdsAQA3AAcBAoKdLwIRRNZEHxFpbml0EeK3bAEtc2F2ZWROdW1iZXKCLwCFNC4yLjAAfJ0fFw=="
 ```
 
 ## Step 2: Update your deploy.js
 
-Let's add some parameters to our example deploy script which can be found at **deployment/deploy.js**. The parameters of the init functions are always passed as an array. Here is how our new deploy script looks like:
+Let's add some parameters to our example deploy script which can be found at **deployment/deploy.js**. The parameters of the init functions are always passed as the second argument to the `deploy` function in form of an array . Here is how our new deploy script looks like:
 
 ```
 const Deployer = require('aeproject-lib').Deployer;
 
-const deploy = async (network, privateKey, compiler) => {
-    let deployer = new Deployer(network, privateKey, compiler)
+const deploy = async (network, privateKey, compiler, networkId) => {
+    let deployer = new Deployer(network, privateKey, compiler, networkId)
 
     let contract = await deployer.deploy("./contracts/ExampleContract.aes", [42])
 
@@ -118,7 +127,7 @@ aeproject deploy
 You will see the following output which includes our init parameter of `42`:
 
 ```
-===== Contract: ExampleContract.aes has been deployed at [contract address] =====
+===== Contract: ExampleContract.aes has been deployed at ct_HVb6d4kirgqzY1rShmzRTRwukcsXobjHcpLVD2EggoHmn6wt2 =====
 42
 Your deployment script finished successfully!
 ```
