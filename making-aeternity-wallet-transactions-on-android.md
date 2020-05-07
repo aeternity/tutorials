@@ -1,7 +1,7 @@
-# Tutorials How to make wallet transactions on Android
+# TUTORIAL: How to make wallet transactions on Android
 
 ## Tutorial Overview
-This tutorial is mend for android developers who want to begin to build interesting applications on the aeternity blockchain.
+This tutorial is meant for android developers who want to begin to build interesting applications on the aeternity blockchain.
 In this tutorial we will cover the following:
 - Wallet Creation
 - Checking Wallet Balance
@@ -33,6 +33,13 @@ Now, in your app level build.gradle file, add the code below just after the clos
         exclude 'lib/x86_64/freebsd/libscrypt.so'
         exclude 'lib/x86_64/linux/libscrypt.so'
     }
+```
+also make sure that Jcenter is present in the repository section of your Top level build.gradle file
+```gradle
+repositories {
+        jcenter()
+
+}
 ```
 
 and finally add this dependency to the dependency section of your project and click ``sync now``
@@ -140,7 +147,7 @@ fun getAeBalance(var publicAddress:String){
   - This tutorial was done using the gradle pugin 3.6.0 and Gradle build tools version 5.4.6
   - BigDecimal and BigInteger are used instead of  double, float and int for a higher precision while making calculation
   - It is important to remember to put most of this operations in another thread using Coroutines, Thread or AsyncTasks
-  - You can always check out the documentation here https://kryptokrauts.gitbook.io/aepp-sdk-java/use-the-sdk/overview-structure
+  - You can always check out the documentation here https://kryptokrauts.gitbook.io/aepp-sdk-java
     to understand any class better
     
  
