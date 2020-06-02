@@ -73,8 +73,8 @@ aeproject init
 The init command creates an æpp structure with several folders and scripts:
 
 - contracts - directory in which the developer can create contracts
-    - ExampleContract.aes -  a sample smart contract coming with the init. **We will be deploying this one.**
-    ```
+   - ExampleContract.aes -  a sample smart contract coming with the init. **We will be deploying this one.**
+```
 contract CryptoHamster =
    datatype event = NewHamster(indexed int, string, hash)
 
@@ -99,7 +99,7 @@ contract CryptoHamster =
 
    function generateDNA(name : string) : hash =
       String.sha3(name)
-    ```
+```
 - deployment - directory that contains the deployment scripts
     - `deploy.js` - an examplary deployment script coming with the init
     
