@@ -2,36 +2,38 @@
 ## Tutorial Overview
 This tutorial series will teach you how to build a To-do list Æpp. You will learn how to:
 - Develop a ToDoManager Sophia smart contract and write unit tests for it;
-- Use the **forgae** framework to build æpps: configuration of the project structure, compilation, deployment, running tests;
+- Use the **aeproject** framework to build æpps: configuration of the project structure, compilation, deployment, running tests;
 - Communicate between the frontend(SPA with Vue.js) and the Sophia smart contract;
 
 The To-do list Æpp will be able to:
 - create new tasks;
 - list existing tasks;
-- complete tasks;
-- check tasks status;
+- edit task name;
+- change task status;
+- delete task;
 
 Once finished it will look like this:
 
-![To-do list Æpp](https://raw.githubusercontent.com/VladislavIvanov/to-do-list-aepp/master/to-do-list-aepp.png)
+![To-do list Æpp](https://raw.githubusercontent.com/aeternity/aepp-aeproject-shape-vue/master/shape-project.png)
 
 ## Prerequisites
-- Installed the **forgae** framework (take a look over [installing forgae](https://dev.aepps.com/tutorials/smart-contract-deployment-in-forgae.html) section)
-- Some familiarity with the **forgae** framework and development of Sophia smart contracts. If you are not there yet, we recommend checking some of these [development tutorials](https://dev.aepps.com/tutorials/README.html).
+- Installed  **aeproject** framework (take a look over [installing aeproject](smart-contract-deployment-in-aeproject.md) section)
+- Some familiarity with the **aeproject** framework and development of Sophia smart contracts. If you are not there yet, we recommend checking some of these [development tutorials](README.md).
 - Installed **git** ([installing git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
-- Account with testnet funds ([How to Get Testnet Funds](https://dev.aepps.com/tutorials/get-testnet-tokens.html) - referencing tutorial)
+- Account with testnet funds ([How to Get Testnet Funds](get-testnet-tokens.md) - referencing tutorial)
 
 ## Plan
 
-This part of the tutorial series will show you how to develop a *ToDoManager* Sophia smart contract and write unit tests for it, using the **forgae** framework.
-The [second part](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-2.md) will focus on the communication between the frontend and the *ToDoManager* smart contract.   
+This part of the tutorial series will show you how to develop a *ToDoManager* Sophia smart contract and write unit tests for it, using the **aeproject** framework.
+The [second part](build-to-do-list-aepp-2.md) will focus on the communication between the frontend and the *ToDoManager* smart contract.
+
 ## Initialize the smart contract project
 
-First, open your terminal, create a new directory ```to-do-contract``` and bootstrap new **forgae** project:
+First, open your terminal, create a new directory ```to-do-contract``` and bootstrap new **aeproject** project:
 ```
 mkdir to-do-contract
 cd to-do-contract
-forgae init
+aeproject init
 ```
 
 ## Creating the ```ToDoManager.aes``` smart contract
@@ -44,405 +46,362 @@ Now we need to start coding our smart contract.
 
 The entire code of our simple ```ToDoManager.aes``` is:
 ```
-contract ToDoManager = 
+contract ToDoManager =
+
+  record todo = {
+    name: string,
+    is_completed: bool}
+
   record state = {
-    index_counter : int,
-    m_index_to_do : map(int, string),
-    m_to_do_done: map(int, bool)}
-  
-  public entrypoint  init() ={ 
-    index_counter = 0,
-    m_index_to_do = {},
-    m_to_do_done = {} }
-  
-  public entrypoint get_task_count() : int =
-    state.index_counter
-  
-  public stateful entrypoint add_to_do(_to_do : string) : string =
-    put(state{m_index_to_do[state.index_counter] = _to_do})
-    put(state{m_to_do_done[state.index_counter] = false})
-    put(state{index_counter = state.index_counter + 1})
-    _to_do
-  
-  public stateful entrypoint complete_task(_index: int) : bool =
-    put(state{m_to_do_done[_index] = true})
-    true
-  
-  
-  public entrypoint get_task_by_index(_index: int) : string =
-    switch(Map.lookup(_index, state.m_index_to_do))
-      None  => ""
+    map_user_todos: map(address, map(int, todo)),
+    map_user_todo_count: map(address, int),
+    map_user_todo_id: map(address, int)}
+
+
+  stateful entrypoint init() =
+    { map_user_todos = {},
+      map_user_todo_count = {},
+      map_user_todo_id = {}}
+
+  entrypoint get_todo_count(user: address) : int =
+    Map.lookup_default(user, state.map_user_todo_count, 0)
+
+  private function get_todo_id(user: address) : int =
+    Map.lookup_default(user, state.map_user_todo_id, 0)
+
+  stateful entrypoint add_todo(todo_name: string) : int =
+    let new_todo : todo = {
+      name = todo_name,
+      is_completed = false}
+
+    let count = get_todo_count(Call.caller) + 1
+    let id = get_todo_id(Call.caller) + 1
+
+    put(state{map_user_todos[Call.caller = {}][id] = new_todo})
+    put(state{map_user_todo_count[Call.caller] = count})
+    put(state{map_user_todo_id[Call.caller] = id})
+
+    id
+
+  stateful entrypoint edit_todo_state(todo_id: int, is_completed: bool) =
+
+    let current_todo : todo = get_todo_by_id'(Call.caller, todo_id)
+    let edited_todo : todo = {
+      name = current_todo.name,
+      is_completed = is_completed}
+
+    put(state{map_user_todos[Call.caller][todo_id] = edited_todo})
+
+  stateful entrypoint edit_todo_name(todo_id: int, todo_name: string) =
+
+    let current_todo : todo = get_todo_by_id'(Call.caller, todo_id)
+    let edited_todo : todo = {
+      name = todo_name,
+      is_completed = current_todo.is_completed}
+
+    put(state{map_user_todos[Call.caller][todo_id] = edited_todo})
+
+  stateful entrypoint delete_todo(todo_id: int) =
+    let todos: map(int,todo) = Map.lookup_default(Call.caller, state.map_user_todos, {})
+    let updated_todos = Map.delete(todo_id, todos)
+
+    put(state{map_user_todos[Call.caller] = updated_todos})
+
+    let count = get_todo_count(Call.caller) - 1
+    put(state{map_user_todo_count[Call.caller] = count})
+
+  entrypoint get_todo_by_id(id: int) : todo =
+    let todos: map(int,todo) = Map.lookup_default(Call.caller, state.map_user_todos, {})
+    let result = switch(Map.lookup(id, todos))
+      // None => {}
       Some(x) => x
 
-  public entrypoint task_is_completed(_index : int) : bool =
-    switch(Map.lookup(_index, state.m_to_do_done))
-      None  => false
+    result
+
+  entrypoint get_todos() =
+
+    let user_todos = Map.lookup_default(Call.caller, state.map_user_todos, {})
+    let todos = Map.to_list(user_todos)
+    todos
+
+  private function convert_bool_to_string(expression: bool) : string =
+    switch(expression)
+      true => "true"
+      false => "false"
+
+  private function get_todo_by_id'(user: address, id: int) : todo =
+    let todos: map(int,todo) = Map.lookup_default(user, state.map_user_todos, {})
+
+    let result = switch(Map.lookup(id, todos))
+      // None => {}
       Some(x) => x
-  
+
+    result
 ```
 
-As you can see, the contract stores the total number of tasks, a map that stores tasks by their index and an additional map which helps us to monitor the tasks statuses.
+As you can see, the contract stores users tasks by their index, a map that stores users total number of tasks, and an additional map which helps us get a user todo id.
 
-We can create task using the ```add_to_do``` function and complete a task with ```complete_task```. In addition, we can check the total number of tasks with ```get_task_count```, check the status of the particular task with ```task_is_completed``` and get the name of a task by its index via ```get_task_by_index``` function.
-
-### Compiling the contract
-
-Please compile the contract with ```testnet``` network selected:
-```
-forgae compile -n testnet
-```
+A user can create task using the ```add_todo``` function and change a task status with ```edit_todo_state```. In addition, a user can check the total number of tasks with ```get_todo_count```, edit a task name with ```edit_todo_name```, delete a task with ```delete_todo```, and get a task by its index via ```get_todo_by_id``` function.
 
 ## Writing unit tests for the smart contract
 
-Although we have finished the code of the smart contract, we are not done yet. We still need to deploy the smart contract and verify than it’s working.
+Although we have finished the code of the smart contract, we are not done yet. We still need to deploy the smart contract and verify that it’s working.
 
 Let's go to the ```test``` folder of the project and create a new test file.
 ```
 touch ./toDoManagerTests.js
 ```
 
-In our tests we will deploy the contract to the local network spawned by **forgae** and interact with the deployed contract.
+In our tests we will deploy the contract to the local network spawned by **aeproject** and interact with the deployed contract.
 We will test the contract functionalities as follows:
-- create a task;
-- get the count of tasks;
-- complete a task and check the task status;
-- get the name of the task by task id;
+- Create a task;
+	- Should create a task successfully
+- Get tasks;
+	- Should get tasks count successfully
+	- Should get all tasks successfully
+- Complete a  tasks;
+	- Should add a task and return false if the task is not completed successfully
+	- Should add a task and return true if the task is completed successfully
+- Edit a task;
+	- Should get a task name by task id successfully
+	- Should change a task name by task id successfully
+- Delete a task;
+	- Should delete a task successfully
 
 The final version of the test script file - ```toDoManagerTests.js``` is:
 ```javascript=
-const Ae = require('@aeternity/aepp-sdk').Universal;
-
-const config = {
-	host: "http://localhost:3001/",
-	internalHost: "http://localhost:3001/internal/",
-	gas: 200000,
-	ttl: 55
-};
+const Deployer = require('aeproject-lib').Deployer;
+const TODOMANAGER_CONTRACT_PATH = "./contracts/ToDoManager.aes";
 
 describe('ToDoManager Contract', () => {
+  
+  let deployer;
+  let ownerKeyPair = wallets[0];
+  
+  before(async () => {
+    deployer = new Deployer('local', ownerKeyPair.secretKey)
+  })
 
-	let owner;
-	let contractSource
+  it('Deploying ToDoManager Contract', async () => {
+    const deployedPromise = deployer.deploy(TODOMANAGER_CONTRACT_PATH) // Deploy it
 
-	before(async () => {
-		const ownerKeyPair = wallets[0];
-		owner = await Ae({
-			url: config.host,
-			internalUrl: config.internalHost,
-			keypair: ownerKeyPair,
-			nativeMode: true,
-			networkId: 'ae_devnet'
-		});
+    await assert.isFulfilled(deployedPromise, 'Could not deploy the ToDoManager Smart Contract'); // Check whether it's deployed
+  })
 
-	});
-
-	it('Deploying ToDoManager Contract', async () => {
-		contractSource = utils.readFileRelative('./contracts/ToDoManager.aes', "utf-8"); // Read the aes file
-
-		const compiledContract = await owner.contractCompile(contractSource, { // Compile it
-			gas: config.gas
-		});
-
-		const deployPromise = compiledContract.deploy({ // Deploy it
-			options: {
-				ttl: config.ttl,
-			}
-		});
-
-		assert.isFulfilled(deployPromise, 'Could not deploy the ToDoManager Smart Contract'); // Check it is deployed
-	});
 
 	describe('Interact with contract', () => {
-		let deployedContract;
-		let compiledContract;
-
-		beforeEach(async () => {
-			compiledContract = await owner.contractCompile(contractSource, {})
-			deployedContract = await compiledContract.deploy({
-				options: {
-					ttl: config.ttl
-				},
-				abi: "sophia"
-			});
-		});
-
 		describe('Contract functionality', () => {
+      let instance;
+
+      beforeEach(async () => {
+        const deployedContract = deployer.deploy(TODOMANAGER_CONTRACT_PATH);
+        instance = await Promise.resolve(deployedContract)
+      });
 
 			describe('Create a task', () => {
-				it('should create a task successfully', async () => {
-					//Arrange
-					const taskName = 'Task A';
+        it('Should create a task successfully', async () => {
+          //Arrange
+          let taskName = 'Task A';
 
-					//Act
-					const addTaskPromise = deployedContract.call('add_to_do', {
-						args: `("${taskName}")`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(addTaskPromise, 'Could not call add_to_do');
-					const taskCreationResult = await addTaskPromise;
+          //Act
+          let addTask = await instance.add_todo(taskName);
 
-					//Assert
-					const taskCreationResultDecoded = await taskCreationResult.decode("string");
-					assert.equal(taskCreationResultDecoded.value, taskName)
+          //Assert
+          assert.isOk(addTask)
+        })
+      });
+      
+      describe('Get tasks', () => {
+				it('Should get tasks count successfully', async () => {
+          //Arrange
+					let taskName = 'Task A';
+					let secondTaskName = 'Task B';
+          let expectedTasksCount = 2;
+          
+          //Act
+          await instance.add_todo(taskName);
+          await instance.add_todo(secondTaskName);
+          let taskCount = (await instance.get_todo_count(ownerKeyPair.publicKey)).decodedResult
+
+          //Assert
+					assert.equal(taskCount, expectedTasksCount)
+        });
+        it('Should get all tasks successfully', async () => {
+          //Arrange
+					let taskName = 'Task A';
+					let secondTaskName = 'Task B';
+          
+          //Act
+          await instance.add_todo(taskName);
+          await instance.add_todo(secondTaskName);
+          let allTask = await instance.get_todos(ownerKeyPair.publicKey)
+
+          //Assert
+					assert.isOk(allTask)
 				});
+      });
+      
+      describe('Complete a tasks', () => {
+				it('Should add a task and return false if the task is not completed successfully', async () => {
+          //Arrange
+					let taskName = 'Task A';
 
-			});
+          //Act
+          let addTask = (await instance.add_todo(taskName)).decodedResult;
+          let getTask = (await instance.get_todo_by_id(addTask)).decodedResult.is_completed;
 
-			describe('Get tasks count', () => {
-				it('should get tasks count successfully', async () => {
-					//Arrange
-					const taskName = 'Task A';
-					const secondTaskName = 'Task B';
-					const expectedTasksCount = 2;
-
-					//Add first task
-					const addFirstTaskPromise = deployedContract.call('add_to_do', {
-						args: `("${taskName}")`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(addFirstTaskPromise, 'Could not call add_to_do');
-					await addFirstTaskPromise;
-
-					//Add second task
-					const addSecondTaskPromise = deployedContract.call('add_to_do', {
-						args: `("${secondTaskName}")`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(addSecondTaskPromise, 'Could not call add_to_do');
-					await addSecondTaskPromise;
-
-					//Act
-					const getTasksCountPromise = deployedContract.call('get_task_count', {
-						args: `()`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(getTasksCountPromise, 'Could not call add_to_do');
-					const getTasksCountResult = await getTasksCountPromise;
-
-					//Assert
-					const getTasksCountResultDecoded = await getTasksCountResult.decode("int");
-
-					assert.equal(getTasksCountResultDecoded.value, expectedTasksCount)
+          //Assert
+					assert.isOk(!getTask)
 				});
-			});
+        it('Should add a task and return true if the task is completed successfully', async () => {
+          //Arrange
+					let taskName = 'Task A';
 
-			describe('Complete tasks and check task status', () => {
-				it('should complete a task successfully', async () => {
-					const taskName = 'Task A';
+          //Act
+          let addTask = (await instance.add_todo(taskName)).decodedResult;
+          await instance.edit_todo_state(addTask, true)
+          let getTask = (await instance.get_todo_by_id(addTask)).decodedResult.is_completed;
 
-					//Act
-					const addTaskPromise = deployedContract.call('add_to_do', {
-						args: `("${taskName}")`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(addTaskPromise, 'Could not call add_to_do');
-					await addTaskPromise;
-
-					const completeTaskPromise = deployedContract.call('complete_task', {
-						args: `(0)`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(completeTaskPromise, 'Could not call complete_task');
-					const completeTaskResult = await completeTaskPromise;
-
-					//Assert
-					const completeTaskResultDecoded = await completeTaskResult.decode("bool");
-					assert.equal(completeTaskResultDecoded.value, true)
+          //Assert
+					assert.isOk(getTask)
 				});
+      });
 
-				it('should get task status successfully', async () => {
-					const taskName = 'Task A';
+      describe('Edit a task', () => {
+				it('Should get a task name by task id successfully', async () => {
+          //Arrange
+					let taskName = 'Task A';
 
-					// Add task
-					const addTaskPromise = deployedContract.call('add_to_do', {
-						args: `("${taskName}")`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(addTaskPromise, 'Could not call add_to_do');
-					await addTaskPromise;
+          //Act
+          let addTask = (await instance.add_todo(taskName)).decodedResult;
+          let getTask = (await instance.get_todo_by_id(addTask)).decodedResult.name;
 
-					// Check status before
-					const taskIsCompleteBeforePromise = deployedContract.call('task_is_completed', {
-						args: `(0)`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(taskIsCompleteBeforePromise, 'Could not call complete_task');
-					const taskIsCompleteBeforeResult = await taskIsCompleteBeforePromise;
-
-					//Assert
-					const taskIsCompleteBeforeResultDecoded = await taskIsCompleteBeforeResult.decode("bool");
-					assert.equal(taskIsCompleteBeforeResultDecoded.value, false);
-
-					// Complete task
-					const completeTaskPromise = deployedContract.call('complete_task', {
-						args: `(0)`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(completeTaskPromise, 'Could not call complete_task');
-					const completeTaskResult = await completeTaskPromise;
-
-					//Assert
-					const completeTaskResultDecoded = await completeTaskResult.decode("bool");
-					assert.equal(completeTaskResultDecoded.value, true)
-
-					// Check status after
-					const taskIsCompleteAfterPromise = deployedContract.call('task_is_completed', {
-						args: `(0)`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(taskIsCompleteAfterPromise, 'Could not call complete_task');
-					const taskIsCompleteAfterResult = await taskIsCompleteAfterPromise;
-
-					//Assert
-					const taskIsCompleteAfterResultDecoded = await taskIsCompleteAfterResult.decode("bool");
-					assert.equal(taskIsCompleteAfterResultDecoded.value, true);
+          //Assert
+					assert.equal(getTask, taskName)
 				});
-			});
+        it('Should change a task name by task id successfully', async () => {
+          //Arrange
+          let taskName = 'Task A';
+          let newTaskName = 'Task B';
 
-			describe('Get task name by index', () => {
-				it('should get task name by index successfully', async () => {
-					//Arrange
-					const taskName = 'Task A';
-					const secondTaskName = 'Task B';
-					const secondTaskIndex = 1;
+          //Act
+          let addTask = (await instance.add_todo(taskName)).decodedResult;
+          await instance.edit_todo_name(addTask, newTaskName)
+          let getTask = (await instance.get_todo_by_id(addTask)).decodedResult.name;
 
-					//Add first task
-					const addFirstTaskPromise = deployedContract.call('add_to_do', {
-						args: `("${taskName}")`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(addFirstTaskPromise, 'Could not call add_to_do');
-					await addFirstTaskPromise;
-
-					//Add second task
-					const addSecondTaskPromise = deployedContract.call('add_to_do', {
-						args: `("${secondTaskName}")`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(addSecondTaskPromise, 'Could not call add_to_do');
-					await addSecondTaskPromise;
-
-					// Get task name by index
-					const getTaskNamePromise = deployedContract.call('get_task_by_index', {
-						args: `(${secondTaskIndex})`,
-						options: {
-							ttl: config.ttl
-						}
-					});
-					assert.isFulfilled(getTaskNamePromise, 'Could not call get_task_by_index');
-					const getTaskNameResult = await getTaskNamePromise;
-
-					//Assert
-					const getTaskNameResultDecoded = await getTaskNameResult.decode("string");
-					assert.equal(getTaskNameResultDecoded.value, secondTaskName);
+          //Assert
+					assert.equal(getTask, newTaskName)
 				});
+      });
+      
+      describe('Delete a task', () => {
+				it('Should delete a task successfully', async () => {
+          //Arrange
+					let taskName = 'Task A';
+          
+          //Act
+          let addTask = (await instance.add_todo(taskName)).decodedResult;
+          let deleteTask = await instance.delete_todo(addTask)
 
-			})
+          //Assert
+					assert.isOk(deleteTask)
+				});
+      });
 		})
 	});
-
 });
 ```
 
-Next step is to run our local network with the following command:
+## Compiling the contract
+
+Next step is to run our local network and compiler on docker with the following command:
 ```
-forgae node
+aeproject env
 ```
 
-Let's run the tests with the ```forgae test``` command and wait for the result. It should look like this:
+## Compiling the contract
+
+Now let's compile the contract with the following command:
+```
+aeproject compile
+```
+
+## Testing the contract
+
+Let's run the tests with the ```aeproject test``` command and wait for the result. It should look like this:
 ```
 ===== Starting Tests =====
 
 
   ToDoManager Contract
-    ✓ Deploying ToDoManager Contract (51ms)
+    ✓ Deploying ToDoManager Contract (7018ms)
     Interact with contract
       Contract functionality
         Create a task
-          ✓ should create a task successfully (5269ms)
-        Get tasks count
-          ✓ should get tasks count successfully (10743ms)
-        Complete tasks and check task status
-          ✓ should complete a task successfully (10464ms)
-          ✓ should get task status successfully (20929ms)
-        Get task name by index
-          ✓ should get task name by index successfully (15708ms)
+          ✓ Should create a task successfully (5333ms)
+        Get tasks
+          ✓ Should get tasks count successfully (10935ms)
+          ✓ Should get all tasks successfully (10914ms)
+        Complete a tasks
+          ✓ Should add a task and return false if the task is not completed successfully (5610ms)
+          ✓ Should add a task and return true if the task is completed successfully (10910ms)
+        Edit a task
+          ✓ Should get a task name by task id successfully (5598ms)
+          ✓ Should changing a task name by task id successfully (10896ms)
+        Delete a task
+          ✓ Should delete a task successfully (10640ms)
 
 
-  6 passing (1m)
+  9 passing (2m)
 ```
 
-## Deploy the contract to testnet
+If you get an error saying ```Cannot find module 'aeproject-utils'```, execute the below command on your project directory and re-execute the *aeproject test* command.
+```
+npm install aeproject-utils prompts aeproject-logger
+```
+
+## Deploying the contract to testnet
 The testnet is a wonderful place where you can experiment with the To-do list Æpp without worrying that a mistake will cost you real tokens.
 
-We will use **forgae** to deploy our contract to the testnet. The sample deployment script is scaffolded in deployment folder - ```deploy.js```.
+We will use **aeproject** to deploy our contract to the testnet. The sample deployment script is scaffolded in deployment folder - ```deploy.js```.
 Let’s configure our deployment script. We have to change the contract path from ```./contracts/ExampleContract.aes``` to ```./contracts/ToDoManager.aes```. The ```deploy.js``` file should look like this:
 ```
-const Deployer = require('forgae').Deployer;
+const Deployer = require('aeproject-lib').Deployer;
 
-const deploy = async (network, privateKey) => {
-    let deployer = new Deployer(network, privateKey);
+const deploy = async (network, privateKey, compiler, networkId) => {
+	let deployer = new Deployer(network, privateKey, compiler, networkId)
 
-    await deployer.deploy("./contracts/ToDoManager.aes");
+	await deployer.deploy("./contracts/ToDoManager.aes")
 };
 
 module.exports = {
-	deploy
+  deploy
 };
 ```
 
 The deploy command is:
 ```
-forgae deploy -n testnet -s <yourPrivateKeyHere>
+aeproject deploy -n testnet
 
 ```
 
 The expected result should be similar to this:
 ```
-===== Contract: ToDoManager.aes has been deployed =====
-{ owner: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
-  transaction: 'th_2onSadWAGFEu5b6JUHgLegMsNescnkPKdDnzr1j9drJ1ojTsiD',
-  address: 'ct_5VMNq1bmVMyRqAraPVmzu1LDmj2R8a4WFDHo5cqjcyHJddkxn',
-  call: [Function],
-  callStatic: [Function],
-  createdAt: 2019-01-29T14:27:54.745Z }
+===== Contract: ToDoManager.aes has been deployed at ct_28HXSRkYyQDr4nRzYuUTDyRxy9NGJRYuTpi5LUiyvb7oG9tJaj =====
 Your deployment script finished successfully!
 ```
 
-Please save the deployed contract address. In my case - ```ct_5VMNq1bmVMyRqAraPVmzu1LDmj2R8a4WFDHo5cqjcyHJddkxn```. We will use it in the [second part](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-2.md) of the tutorial series.
+Please save the deployed contract address. In my case - ```ct_28HXSRkYyQDr4nRzYuUTDyRxy9NGJRYuTpi5LUiyvb7oG9tJaj```. We will use it in the [second part](build-to-do-list-aepp-2.md) of the tutorial series.
 
 ## Conclusion
 Let’s briefly recap what we did during this tutorial. We created a basic ```ToDoManager.aes``` contract that can:
-- represent a task;
-- create new task;
+- create a new task;
 - read a specific task;
-- check a task status;
+- edit a specific task;
+- delete a specific task;
+- get all tasks;
 - get total tasks count;
 - get task by index;
 
-We wrote basic unit tests for the contract. Then we compiled it with ```testnet``` network selected and deployed it to the ```testnet```. The deployed contract address will be used in the next tutorial.
-We still don’t have a frontend for our To-do list Æpp and this is our *ToDo (pun intended)* for the [second part](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-2.md) of the tutorial series.
+We wrote basic unit tests for the contract. Then we compiled it and deployed it to the ```testnet```. The deployed contract address will be used in the next tutorial.
+We still don’t have a frontend for our To-do list Æpp and this is our *ToDo (pun intended)* for the [second part](build-to-do-list-aepp-2.md) of the tutorial series.
