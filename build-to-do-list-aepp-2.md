@@ -3,309 +3,360 @@
 This tutorial will teach you how to develop the communication process between the client side and the *ToDoManager* smart contract. We will setup the basic infrastructure in order to interact with the smart contract from the frontend.
 
 ## Prerequisites
-- Before we go any further, please make sure you have followed the [first part](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-1.md) of *How to build a To-do list Æpp*.
-- Installed **yarn** package manager ([installation](https://yarnpkg.com/lang/en/docs/install))
+- Before we go any further, please make sure you have followed the [first part](build-to-do-list-aepp-1.md) of *How to build a To-do list Æpp*.
 
 ## Plan
 I have published the simple frontend project in Github. We will start with cloning the github repository and I will explain the most important segments of the *To-do list Æpp*.
 
 ## To-do list Æpp content
-The tutorial is created to showcase the aeternity SDK implementation for both Base/Wallet Aepp and simple To-do list Æpp "depending" on a base (Wallet/Identity) Aepp.
+The tutorial is created to showcase the aeternity SDK implementation for simple To-do list Æpp "depending" on an Identity Aepp.
 The To-do list Æpp consists of two parts:
-- Wallet/Identity Base Aepp;
-- To-do list Æpp dependent on a wallet/identity aepp;
+- Identity Aepp;
+- To-do list Æpp;
 
 ## Getting started 
-Clone the Github repository and install the required dependencies with the following sequence of commands:
+Clone the Github repository and open your IDE at the directory:
 ```
-git clone https://github.com/VladislavIvanov/to-do-list-aepp.git
-cd to-do-list-aepp/identity
-yarn install
+git clone https://github.com/aekiti/to-do-list-aepp.git
 ```
 
-The Base/Wallet Aepp is started via:
+### Identity App
+Install the required dependencies on the identity aepp with the following sequence of commands:
 ```
-yarn run start:dev
+cd ./identity
+npm install
 ```
 
-The Aepp runs at http://localhost:9000.
-
-Repeat the above steps for the ```aepp-origin```.
+The Identity Aepp is started via:
 ```
-cd to-do-list-aepp/aepp-origin
-yarn install
+npm run serve
+```
+The Identity Aepp runs at http://localhost:8080.
+
+### ToDo App
+Repeat the above steps for the ```aepp```.
+```
+cd ./aepp
+npm install
 ```
 
 The To-do list Æpp is started via:
 ```
-yarn run start:dev
+npm run serve
 ```
 
-It runs at http://localhost:9001.
+It runs at http://localhost:8081.
 
-## Base-aepp and Wallet/Identity Aepp
-### Base-aepp
-The most appropriate way to provide identity is the integration between the [base-aepp](https://identity.aepps.com/) and your Æpp. We will release an integration functionality to the base-aepp soon.
-The next steps describe how to integrate your Æpp with the test base-aepp:
-- go to the following link - https://feature-sdk-intergation.origin.aepps.com/#/ ;
-- simulate iPhone X mobile device with Device Mode in Chrome DevTools and refresh the page;
-- use the *Recover* button if you have an account, otherwise create a new account;
-- after successful login, go to *Browser* menu and select *Add an aepp*;
-- you have to provide your aepp url and add the aepp;
+## Identity Aepp and To-do list Æpp
 
-The completed integration should look similar to this:
+### Identity Aepp
+The alternative identity provider is the custom identity aepp. We will use it just for simplicity and showing the app development process. The Identity Aepp expects our To-do list Aepp to be loaded into an iFrame contained in the aepp. The essential part of the app is instantiation of the wallet. The implementation is shown here:
+```
+~/identity/src/components/Home.vue
+```
+```js
+  async created() {
+    this.client = await Wallet({
+      url: this.url,
+      internalUrl: this.internalUrl,
+      compilerUrl: this.compilerUrl,
+      accounts: [MemoryAccount({ keypair: { secretKey: this.priv, publicKey: this.pub } })],
+      address: this.pub,
+      onTx: this.confirmDialog,
+      onChain: this.confirmDialog,
+      onAccount: this.confirmDialog,
+      onContract: this.confirmDialog
+    })
 
-![base-aepp integration](https://raw.githubusercontent.com/VladislavIvanov/to-do-list-aepp/master/base-aepp-integration.png)
+    if (!this.runningInFrame) this.$refs.aepp.src = this.aeppUrl
+    else window.parent.postMessage({ jsonrpc: '2.0', method: 'ready' }, '*')
 
-
-*Additional notes*:
-The test base-aepp is running over HTTPS. We have to expose our local web server to the internet over HTTPS too. 
-We can achieve this behavior with [ngrok](https://ngrok.com/docs) tool.
-The following command exposes the identity app:
-```
-ngrok http --host-header=rewrite 9000
-```
-The expected output is:
-```
-Session Status                online                                                                                                                                                                                                                                                                                                                                                                                                   
-Session Expires               7 hours, 34 minutes                                                                                                                                                                                                                                                                                                                                                                                      
-Version                       2.2.8                                                                                                                                                                                                                                                                                                                                                                                                    
-Region                        United States (us)                                                                                                                                                                                                                                                                                                                                                                                       
-Web Interface                 http://127.0.0.1:4040                                                                                                                                                                                                                                                                                                                                                                                    
-Forwarding                    http://47bc15a2.ngrok.io -> localhost:9000                                                                                                                                                                                                                                                                                                                                                               
-Forwarding                    https://47bc15a2.ngrok.io -> localhost:9000                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-Connections                   ttl     opn     rt1     rt5     p50     p90                                                                                                                                                                                                                                                                                                                                           
-                              7       0       0.00    0.00    5.38    15.23
-```
-Our aepp url over HTTPS in this case is - ```https://47bc15a2.ngrok.io```. 
-
-We have to run the same command for the aepp-origin:
-```
-ngrok http --host-header=rewrite 9001
-```
-```
-...
-
-Forwarding                    https://87aa9a1f.ngrok.io -> localhost:9001 
-
-...
-```
-Finally, change the **aeppUrl** configuration property placed in ~/to-do-list-aepp/identity/src/settings.js:
-```aeppUrl: '//0.0.0.0:9001'``` => ```aeppUrl: 'https://87aa9a1f.ngrok.io'``` 
-
-## Wallet/Identity Aepp
-The alternative identity provider is the custom identity aepp. We will use it just for simplicity and showing the app development process.
-The Wallet/Identity Aepp that expects our Aepp to be loaded into an iFrame contained into this base aepp.
-The essential part of the app is instantiation of the wallet. The implementation is shown here:
-```
-~/to-do-list-aepp/identity/src/components/Home.vue
-```
-```
-      Wallet({
-        url: settingData.host,
-        internalUrl: settingData.host,
-        accounts: [MemoryAccount({ keypair: { secretKey: this.priv, publicKey: this.pub } })],
-        address: this.pub,
-        onTx: this.confirmDialog,
-        onChain: this.confirmDialog,
-        onAccount: this.confirmDialog,
-        onContract: this.confirmDialog,
-        networkId: settingData.networkId
-      }).then(ae => {
-        this.client = ae;
-        console.log('status', this.client.api.getTopBlock())
-        console.log('version', this.client.api.getStatus())
-        this.$refs.aepp.src = this.aeppUrl
-
-        ae.height().then(height => {
-          console.log('height', height)
-          this.height = height
-        })
-
-        ae.balance(this.pub).then(balance => {
-          console.log('balance', balance)
-          this.balance = balance
-        }).catch(e => {
-          this.balance = 0
-        })
-      })
+    this.height = await this.client.height()
+    this.balance = await this.client.balance(this.pub).catch(() => 0)
+  }
 ```
 We have attached the confirmation dialog to the following events: 
 ```
-        onTx: this.confirmDialog,
-        onChain: this.confirmDialog,
-        onAccount: this.confirmDialog,
-        onContract: this.confirmDialog,
+  onTx: this.confirmDialog,
+  onChain: this.confirmDialog,
+  onAccount: this.confirmDialog,
+  onContract: this.confirmDialog
 ```
-When embedded Aepp triggers some of the above events, the Wallet/Identity Aepp should to approve the executed action.
 
-The configuration settings are placed in ```~/to-do-list-aepp/identity/src/settings.js```. For example:
-```
+When embedded Aepp triggers some of the above events, Identity Aepp should approve the executed action. The configuration settings are placed in ```~/to-do-list-aepp/identity/src/account.js```. For example:
+```js
 export default {
-  pub: 'ak_2EdPu7gJTMZSdFntHK5864CnsRykW1GUwLGC2KeC8tjNnFBjBx',
-  priv: '195675e7ef31c689f92eb86fc67e31124b3b124889906607f63ee9d323834039a2a39512ab47c05b764883c04466533e0661007061a4787dc34e95de96b7b8e7',
-  aeppUrl: '//0.0.0.0:9001',
-  host: 'https://sdk-testnet.aepps.com',
-  networkId: 'ae_uat'
+  pub: 'ak_2mwRmUeYmfuW93ti9HMSUJzCk1EYcQEfikVSzgo6k2VghsWhgU',
+  priv: 'bb9f0b01c8c9553cfbaf7ef81a50f977b1326801ebf7294d1c2cbccdedf27476e9bbf604e611b5460a3b3999e9771b6f60417d73ce7c5519e12f7e127a1225ca',
+  url: 'https://sdk-testnet.aepps.com',
+  internalUrl: 'https://sdk-testnet.aepps.com',
+  compilerUrl: 'https://compiler.aepps.com',
+  aeppUrl: '//0.0.0.0:8081'
 }
-
 ```
-
-The ```settings.js``` file contains the information for:
+The ```account.js``` file contains the information for:
 - the public key;
 - the private key;
 - the link to the embedded Aepp;
-- the network we want to connect to;
-- the networkId of the selected network;
+- the middleware we want to connect to;
+- the compiler we want to connect to;
 
-We want to test our *To-do list Æpp* on the testnet. The host property should be ```https://sdk-testnet.aepps.com``` and the networkId is ```ae_uat```.
-As you can see the ```aeppUrl``` property points to the To-do list Æpp url - ```//0.0.0.0:9001```.
-This property is used for the embedding of the To-do list Æpp inside Base/Wallet Aepp:
-```
-<iframe v-show="aeppUrl" ref="aepp" class="w-full h-screen border border-black border-dashed bg-grey-light mx-auto mt-4 shadow" src="about:blank" frameborder="1"></iframe>
+We want to test our *To-do list Æpp* on the testnet. The url and the internalUrl property should be ```https://sdk-testnet.aepps.com```  for the newtork and the compilerUrl is ```https://compiler.aepps.com```.
+As you can see the ```aeppUrl``` property points to the To-do list Æpp url - ```//0.0.0.0:8081```.
+This property is used for the embedding of the To-do list Æpp inside Identity Aepp:
+```html
+<iframe v-show="aeppUrl" ref="aepp" class="" src="about:blank" frameborder="1"></iframe>
 ```
 
-## To-do list Æpp
-Here is the structure of the *src* directory for the ```aepp-origin``` project:
+### To-do list Æpp
+Here is the structure of the *src* directory for the ```aepp``` project:
 ```
 .
-├── App.vue
+├── assets
+│   └── logo.png
+│   └── logo-small.png
 ├── components
-│   └── Home.vue
-├── index.js
-├── main.css
-├── router.js
-├── settings.js
-└── store.js
+│   └── Header.vue
+│   └── ToDo.vue
+├── store
+│   └── store.js
+│   └── toDo.module.js
+├── App.vue
+├── contractDetails.js
+├── main.js
 ```
 
-In this tutorial we will focus on the **Home.vue** and **settings.js** files. These two files contain the essence of our project. Тhe other files are specific to the configuration of the frontend framework you have chosen - in our case - *Vue.js*. 
+## Application flow
+
+In this tutorial we will focus on the **ToDo.vue** and **contractDetails.js** files. These two files contain the essence of our project. Тhe other files are specific to the configuration of the frontend framework you have chosen - in our case - *Vue.js*. 
 
 This tutorial will not deal with creation of the ui components and styling them
 
-*Мost of the code is crammed into the ```Home.vue``` file. That is so, as for the purpose of this tutorial, good separation is not essential. Please do follow the VUE best practices once you start developing outside of this tutorial.*
+*Мost of the code is crammed into the ```ToDo.vue``` file. That is so, as for the purpose of this tutorial, good separation is not essential. Please do follow the VUE best practices once you start developing outside of this tutorial.*
 
-### Configuration file
-The ```settings.js``` file contains the information for the deployed contract address. For instance:
+### contractDetails.js file
+The ```contractDetails.js``` file contains the information for the contract and the deployed contract address. For instance:
 
-```
+```js
 export default {
-  deployedContractAddress: 'ct_2XA3aXMZvH46CG5Ld387Z7Ac1QfTRQKpKNcgVaYVYDm3EKowNP',
+  contractAddress: 'ct_28HXSRkYyQDr4nRzYuUTDyRxy9NGJRYuTpi5LUiyvb7oG9tJaj',
+  contractSource: `contract ToDoManager =
+
+  record todo = {
+    name: string,
+    is_completed: bool}
+
+  record state = {
+    map_user_todos: map(address, map(int, todo)),
+    map_user_todo_count: map(address, int),
+    map_user_todo_id: map(address, int)}
+
+
+  stateful entrypoint init() =
+    { map_user_todos = {},
+      map_user_todo_count = {},
+      map_user_todo_id = {}}
+
+  entrypoint get_todo_count(user: address) : int =
+    Map.lookup_default(user, state.map_user_todo_count, 0)
+
+  private function get_todo_id(user: address) : int =
+    Map.lookup_default(user, state.map_user_todo_id, 0)
+
+  stateful entrypoint add_todo(todo_name: string) : int =
+    let new_todo : todo = {
+      name = todo_name,
+      is_completed = false}
+
+    let count = get_todo_count(Call.caller) + 1
+    let id = get_todo_id(Call.caller) + 1
+
+    put(state{map_user_todos[Call.caller = {}][id] = new_todo})
+    put(state{map_user_todo_count[Call.caller] = count})
+    put(state{map_user_todo_id[Call.caller] = id})
+
+    id
+
+  stateful entrypoint edit_todo_state(todo_id: int, is_completed: bool) =
+
+    let current_todo : todo = get_todo_by_id'(Call.caller, todo_id)
+    let edited_todo : todo = {
+      name = current_todo.name,
+      is_completed = is_completed}
+
+    put(state{map_user_todos[Call.caller][todo_id] = edited_todo})
+
+  stateful entrypoint edit_todo_name(todo_id: int, todo_name: string) =
+
+    let current_todo : todo = get_todo_by_id'(Call.caller, todo_id)
+    let edited_todo : todo = {
+      name = todo_name,
+      is_completed = current_todo.is_completed}
+
+    put(state{map_user_todos[Call.caller][todo_id] = edited_todo})
+
+  stateful entrypoint delete_todo(todo_id: int) =
+    let todos: map(int,todo) = Map.lookup_default(Call.caller, state.map_user_todos, {})
+    let updated_todos = Map.delete(todo_id, todos)
+
+    put(state{map_user_todos[Call.caller] = updated_todos})
+
+    let count = get_todo_count(Call.caller) - 1
+    put(state{map_user_todo_count[Call.caller] = count})
+
+  entrypoint get_todo_by_id(id: int) : todo =
+    let todos: map(int,todo) = Map.lookup_default(Call.caller, state.map_user_todos, {})
+    let result = switch(Map.lookup(id, todos))
+      // None => {}
+      Some(x) => x
+
+    result
+
+  entrypoint get_todos() =
+
+    let user_todos = Map.lookup_default(Call.caller, state.map_user_todos, {})
+    let todos = Map.to_list(user_todos)
+    todos
+
+  private function convert_bool_to_string(expression: bool) : string =
+    switch(expression)
+      true => "true"
+      false => "false"
+
+  private function get_todo_by_id'(user: address, id: int) : todo =
+    let todos: map(int,todo) = Map.lookup_default(user, state.map_user_todos, {})
+
+    let result = switch(Map.lookup(id, todos))
+      // None => {}
+      Some(x) => x
+
+    result`
 }
-
 ```
 
-In the [previous tutorial](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-1.md) we have deployed the ```ToDoManager.aes``` contract to the testnet, we will use the deployed contract address as  a ```deployedContractAddress``` property.
+In the [previous tutorial](build-to-do-list-aepp-1.md) we have deployed the ```ToDoManager.aes``` contract to the testnet, we will use the deployed contract address as a ```contractAddress``` property.
 
-## Authenticate
-The application flow starts with the authentication step. The code placed in the ```created``` lifecycle hook waits for the 'parent' identity provider Aepp to provide the connected client. 
+### Todo.vue file
+The application flow starts with the authentication step. The code placed in the ```getClient``` lifecycle hook waits for the 'parent' identity Aepp to provide the connected client. 
 
-```
-    created() {
-      Aepp().then(ae => {
-        this.client = ae
-        console.log(this.client);
-        ae.address()
-          .then(address => {
-            this.account.pub = address
-            console.log(address);
-            this.getContractTasks()
-          })
-          .catch(e => {
-            this.account.pub = `Rejected: ${e}`
-          })
-      })
-    }
+```js
+  this.client = await Aepp({
+    parent: this.runningInFrame ? window.parent : await this.getReverseWindow()
+  });
+
+  this.$store.dispatch('setAccount', this.client);
 ```
 
-## Calling a contract function
-In order to interact with the contract functions, we will use two functions:
-- ```callContract``` - calling a contract function that changes the state of the contract (has ```stateful``` modifier);
-- ```callStatic``` - calling a contract function that just read from the contract, without changing the state;
-
-```
-callContract(func, args, options) {
-    console.log(`calling a function on a deployed contract with func: ${func}, args: ${args} and options:`, options)
-    return this.client.contractCall(this.contractAddress, 'sophia-address', this.contractAddress, func, { args, options })
-}
-```
-```
-callStatic(func, args) {
-    console.log(`calling static func ${func} with args ${args}`)
-    return this.client.contractCallStatic(this.contractAddress, 'sophia-address', func, { args })
-}
+#### Calling a contract function
+In order to interact with the contract functions, we will create a contractInstance so we can use the ```.call``` method to execute a contract funtion that either reads from the contract without chaning the state or a contract function the changes the state of the contract.
+```js
+  this.contractInstance = await this.client.getContractInstance(contractDetails.contractSource, { contractAddress: contractDetails.contractAddress });
 ``` 
 
-The connected client allows us to call ```contractCall``` and ```contractCallStatic```. Calling a stateful function requires passing a deployed contract address, ```sophia-address``` constant, deployed contract address again, function name and function arguments. Invoking a static function requires a contract address, ```sophia-address``` constant, function name and arguments.
+#### Get all tasks
+The first step after successful authentication is to take all the tasks in the contract, if any. Тhis is achieved by calling the ```get_todos``` function of our ```ToDoManager``` contract. Finally we will store the results in the ```toDos``` array and visualize it in the frontend template.
 
-```onCallDataAndFunctionAsync``` and ```onCallStatic``` functions wrap the above functions, process their responses and visualize the useful information about their execution in the browser.
-
-## Get all tasks
-The first step after successful authentication is to take all the tasks in the contract, if any. Тhis is achieved by calling three static functions. The first one will give us the total number of tasks created in the contract state - ```get_task_count```. We will iterate them with a for loop and for every task will call - ```get_task_by_index``` which returns the task name and ```task_is_completed``` which checks the task status. Finally we will store the results in the ```todos``` array and visualize it in the frontend template.
-
-```
+```js
   async getContractTasks() {
-    const taskCount = await this.onCallStatic('get_task_count', '()', 'int')
-    let taskName
-    let taskCompleted
-
-    for (let i = 0; i < taskCount; i++) {
-      taskName = await this.onCallStatic('get_task_by_index', `(${i})`, 'string')
-      taskCompleted = await this.onCallStatic('task_is_completed', `(${i})`, 'bool')
-      console.log(taskCompleted)
-      const task = {
-        title: taskName,
-        done: !!taskCompleted
-      }
-      this.todos.push(task)
-      console.log(this.todos)
+    const allToDosResponse = await this.contractInstance.call("get_todos", []);
+    const allToDos = await allToDosResponse.decode();
+    const parsedToDos = this.convertSophiaListToTodos(allToDos);
+    
+    this.$store.dispatch('setToDos', parsedToDos);
+  },
+  convertToTODO(data) {
+    return {
+      title: data.name,
+      isCompleted: data.is_completed
     }
-  }
-```
+  },
 
-## Create a task 
-Creating a task is done by calling the ```add_to_do``` function of our ```ToDoManager``` contract. Here we will use the call to a stateful function:
-```
-  async createTask () {
-    if (this.createTaskInput) {
-      const taskName = await this.onCallDataAndFunctionAsync('add_to_do', `("${this.createTaskInput}")`, 'string')
-      const task = {
-        title: taskName.value,
-        done: false
-      }
-      this.todos.push(task)
+  convertSophiaListToTodos(data) {
+    let tempCollection = [];
+    let taskId;
+
+    for (let dataIndex in data) {
+      let todoInfo = data[dataIndex];
+
+      taskId = todoInfo[0];
+      let todo = this.convertToTODO(todoInfo[1]);
+      todo.id = taskId;
+
+      tempCollection.push(todo);
     }
+
+    return tempCollection;
   }
 ```
 
-## Mark a task as completed
-Completing a task is done by calling the ```complete_task``` function. We will use the above approach:
+#### Create a task 
+Creating a task is done by calling the ```add_todo``` function of our ```ToDoManager``` contract. Here we will use the ```.call``` to change the contract state:
+```js
+  async addTodo() {
+    this.$store.dispatch('toggleLoading');
+    try {
+      const value = this.newTodo && this.newTodo.trim()
+      if (!value) {
+        return
+      }
+
+      const allToDos = this.allToDos;
+
+      allToDos.push({
+        id: allToDos.length > 0 ? allToDos.length : 0,
+        title: value,
+        completed: false
+      });
+
+      await this.contractInstance.call('add_todo', [value]);
+
+      await this.getContractTasks();
+
+      this.$store.dispatch('toggleLoading');
+      this.newTodo = ''
+    } catch (e) {
+      console.log(e);
+      this.$store.dispatch('toggleLoading');
+    }
+  },
 ```
-  async completeTask (taskIndex) {
-    const completed = await this.onCallDataAndFunctionAsync('complete_task', `(${taskIndex})`, 'bool')
-    console.log(completed.value)
-    this.todos[taskIndex].done = true
-  }
+
+#### Change task status
+Changing a task status is done by calling the ```edit_todo_state``` function of our ```ToDoManager``` contract.
+```js
+  async toggleTaskStatus(key) {
+    this.$store.dispatch('toggleLoading');
+
+    try {
+      await this.contractInstance.call('edit_todo_state', [this.allToDos[key - 1].id, !this.allToDos[key - 1].isCompleted]);
+      this.$store.dispatch('toggleTaskStatus', key);
+      this.$store.dispatch('toggleLoading');
+    } catch (err) {
+      this.$store.dispatch('toggleLoading');
+      console.log(err);
+    }
+  },
 ```
 
 ## Conclusion
 Let’s briefly recap what we did during this tutorial series. 
-In the [first part](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-1.md) we created a basic ```ToDoManager.aes``` contract that can:
-- represent a task;
-- create new task;
+In the [first part](build-to-do-list-aepp-1.md) we created a basic ```ToDoManager.aes``` contract that can:
+- create a new task;
 - read a specific task;
-- check a task status;
+- edit a specific task;
+- delete a specific task;
+- get all tasks;
 - get total tasks count;
 - get task by index;
 
 We wrote basic unit tests for the contract. Compile it with ```testnet``` network selected and deploy the contract to the ```testnet```. The deployed contract address and contract bytecode will be used in the next tutorial.
-The [second part](https://github.com/aeternity/tutorials/blob/master/build-to-do-list-aepp-2.md) shows us how to communicate with the previously deployed contract.
+The [second part](build-to-do-list-aepp-2.md) shows us how to communicate with the previously deployed contract.
 The included features are:
 - connecting the account with testnet;
 - getting the account's balance;
 - getting all the task and visualize them in the browser;
-- creating a task by typing name in a input field and click a button;
-- completing a task by a button click;
+- creating a task by typing name in a input field and press enter;
+- chaning a task status by a button click;
 
 You can now create a own awesome **Æpp**.
 
