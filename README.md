@@ -28,6 +28,7 @@ title: Tutorials
 * [TUTORIAL: How to build a To-do list Æpp - Part 2](build-to-do-list-aepp-2.md)
 * [TUTORIAL: AEproject has made it simple to build Æpps with the front-end framework](aeproject-shape-vue-command.md)
 * [TUTORIAL: How to make wallet transactions on Android using aepp-java-sdk](making-aeternity-wallet-transactions-on-android.md)
+* [TUTORIAL: How to make wallet transactions on the Web using aepp-sdk-js](making-aeternity-wallet-transactions-with-aepp-sdk-js.md)
 
 Get support in [the Forum](https://forum.aeternity.com/c/development).
 
