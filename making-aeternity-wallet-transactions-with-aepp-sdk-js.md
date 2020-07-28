@@ -49,7 +49,7 @@ With the above done, we are set to start doing wonders with the aeternity javasc
  ### KeyPair Creation with an existing private key
  Lets see how this is done, write the following code in the `index.js` file created earlier:
  ```javascript
- function generateKeyPairWithiExistingPrivateKey(secretKey){
+ function generateKeyPairWithExistingPrivateKey(secretKey){
     const hexBuffer = Ae.Crypto.hexStringToByte(secretKey);   
       const keyPair =  Ae.Crypto.generateKeyPairFromSecret(hexBuffer)   
       const publicKey=Ae.Crypto.aeEncodeKey(keyPair.publicKey);
