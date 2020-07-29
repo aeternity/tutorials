@@ -12,7 +12,7 @@ In this tutorial we will cover the following:
 - Basic understanding of some blockchain terminologies
 
 ## Setup And Configuration
-Create a new folder and create an index.html file in it then include the CDN link for the javascript SDK, I will be using version 7.3.1 of the aeternity javascript SDK in this tutorial, and add a link to the Node.js Buffer for web CDN like it is done below, also head over to this [url](https://github.com/MikeMcl/bignumber.js/blob/master/bignumber.js), click on raw and download then right click and click on save as to download the bignumber.js file. and then include it in your project directory, this file contains a library that will give us a much more accurate precision when dealing with numbers
+Create a new folder and create an index.html file in it then include the CDN link for the javascript SDK, I will be using version 7.3.1 of the aeternity javascript SDK in this tutorial, and add a link to the Node.js Buffer for web CDN like it is done below, also head over to this [url](https://github.com/MikeMcl/bignumber.js/blob/master/bignumber.js), click on raw, then right click and click on save as to download the bignumber.js file. and then include it in your project directory, this file contains a library that will give us a much more accurate precision when dealing with numbers
 
 ```html
 <html>
