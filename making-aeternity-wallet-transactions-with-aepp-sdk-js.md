@@ -92,9 +92,8 @@ To create an SDK instance, we need to specify a Node Url `NODE_URL` which states
 
 ```javascript
   async function getAccountBalance(publicKey,sdkInstance){
-    let height=await sdkInstance.height();
     try{
-        let balance=await sdkInstance.balance(publicKey,{height:+height,hash:null});
+        let balance=await sdkInstance.balance(publicKey);
         console.log(balance);
         balance=parseFloat(balance)/1000000000000000000;
         return balance.toFixed(2)+ 'AE tokens';
