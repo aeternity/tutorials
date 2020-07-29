@@ -12,13 +12,14 @@ In this tutorial we will cover the following:
 - Basic understanding of some blockchain terminologies
 
 ## Setup And Configuration
-Create a new folder and create an index.html file in it then include the CDN link for the javascript SDK, I will be using version 7.3.1 of the aeternity javascript SDK in this tutorial, also add a link to the Node.js Buffer for web CDN like it is done below
+Create a new folder and create an index.html file in it then include the CDN link for the javascript SDK, I will be using version 7.3.1 of the aeternity javascript SDK in this tutorial, and add a link to the Node.js Buffer for web CDN like it is done below, also head over to this [url](https://github.com/MikeMcl/bignumber.js/blob/master/bignumber.js), click on raw and download then right click and click on save as to download the bignumber.js file. and then include it in your project directory, this file contains a library that will give us a much more accurate precision when dealing with numbers
 
 ```html
 <html>
     <head>
         <script src="https://unpkg.com/@aeternity/aepp-sdk@7.3.1/dist/aepp-sdk.browser-script.js"></script>
         <script src="https://bundle.run/buffer@5.6.0"></script>
+       <script src="./bignumber.js"></script>
     </head>
 </html>
 ```
@@ -33,6 +34,7 @@ full head of the index.html file
         <title>Wallet Web Tutorial</title>
         <script src="https://unpkg.com/@aeternity/aepp-sdk@7.3.1/dist/aepp-sdk.browser-script.js"></script>
         <script src="https://bundle.run/buffer@5.6.0"></script>
+       <script src="./bignumber.js"></script>
         <script src="./index.js"></script>
     </head>
     <body>
@@ -95,7 +97,7 @@ To create an SDK instance, we need to specify a Node Url `NODE_URL` which states
     try{
         let balance=await sdkInstance.balance(publicKey);
         console.log(balance);
-        balance=parseFloat(balance)/1000000000000000000;
+        balance=new BigNumber(balance).dividedBy(BigNumber(1000000000000000000));
         return balance.toFixed(2)+ 'AE tokens';
     }catch(err){
          console.error(err);
@@ -103,7 +105,7 @@ To create an SDK instance, we need to specify a Node Url `NODE_URL` which states
      }   
 }
 ```
-What we do in the function above is quite simple, we get the height using the sdkInstance, we use the `balance` function on the `sdkInstance` to get the total balance. Then we return it. Note the use of try and catch block because if the amount in that account is 0 aettos, it will return an error so we simply return 0 and log the error.
+What we do in the function above is quite simple, we get the height using the sdkInstance, we use the `balance` function on the `sdkInstance` to get the total balance. Then we return it. Note the use of try and catch block because if the amount in that account is 0 aettos, it will return an error so we simply return 0 and log the error.We also use the BigNumber library we downloaded earlier for a more accurate precision while displaying the balance
 
 
 ## Token Transfer
