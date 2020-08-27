@@ -297,4 +297,5 @@ contract Source =
 ---
 ### Recommendation
 To interact with the contract described in the tutorial, you can use the contract editor through the following URL: /http://studio.aepps.com/, or the GUI designed for it, the step by step is in the following document: oracle_en
+
  - [Vídeo](https://youtu.be/GSDED3qliYk)
