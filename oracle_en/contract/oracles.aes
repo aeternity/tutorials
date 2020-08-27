@@ -1,0 +1,80 @@
+contract Oracles =
+
+  record state = {  									// Key values ​​to save
+    weather_oracle : oracle(string, string),
+    id_query : map(address, oracle_query(string, string)),
+    question_answer : map(string, string)}
+
+  stateful entrypoint init() : state =  						//Start Function
+    let weather_oracle : oracle(string, string) = registerOracle(10,200)
+    { weather_oracle = weather_oracle, id_query = {}, question_answer  = {} }
+
+  stateful entrypoint registerOracle(      						// Function to Register the Oracle of the Contract
+                           qfee : int,     						//Minimum payment fee
+                           rttl : int) : oracle(string, string) =   			//oracle expiration time blocks
+    Oracle.register(Contract.address, qfee, RelativeTTL(rttl))
+
+  entrypoint get_oracle(): oracle(string, string) = 					 //Consult direction of the oracle
+    state.weather_oracle
+
+  entrypoint get_query(): oracle_query(string, string) =  				//Get query id
+    switch(Map.lookup(Call.caller, state.id_query))
+      None    => abort("No query")
+      Some(x) => x
+
+  entrypoint get_answer(stranswer : string) =  						//Check if there is an answer
+    switch(Map.lookup(stranswer, state.question_answer))
+      None    => abort("No Resitrado")
+      Some(x) => x
+
+  payable stateful entrypoint quest_answer(quest : string, answ : string) : bool =  		//Record response function
+    let val = Call.value
+    if(val > 0)
+      false
+    else
+      put(state{question_answer[quest] = answ })
+      true
+
+  entrypoint queryFee(o : oracle(string, string)) : int =  					//get minimum payment of oracle
+    Oracle.query_fee(o)
+
+  payable stateful entrypoint createQuery(      						//Make the consultation to the oracle
+                                          o    : oracle(string, string),    			//oracle direction
+                                          q    : string,      					//question
+                                          qfee : int,         					//fee
+                                          qttl : int,         					//TTL of oracle
+                                          rttl : int) : oracle_query(string, string) =    	//rTTL of oracle
+    require(qfee =< Call.value, "insufficient value for qfee")    //verifica el pago
+    let query : oracle_query(string, string) = Oracle.query(o, q, qfee, RelativeTTL(qttl), RelativeTTL(rttl))    //records the query to the oracle, shows the id
+    let query_answer = get_answer(q)
+    Oracle.respond(o, query, query_answer)
+    put(state{id_query[Call.caller] = query })
+    query
+
+  stateful entrypoint extendOracle(  				//Extend the time of the oracle
+                                    o   : oracle(string, string),
+                                    ttl : int) : unit =
+    Oracle.extend(o, RelativeTTL(ttl))
+
+  stateful entrypoint respond(  					// Add the answer to the question they ask the oracle
+                              o    : oracle(string, string),  //oracle direction
+                              q    : oracle_query(string, string),  //id of query in oracle
+                              r    : string) =  //reply
+    Oracle.respond(o, q, r)        
+
+  entrypoint getQuestion(  //see the question they asked the oracle according to id
+                          o : oracle(string, string),    //oracle direction
+                          q : oracle_query(string, string)) : string =    //id of query in oracle
+    Oracle.get_question(o, q)      
+
+  entrypoint hasAnswer(  //Check if the question has an answer
+                       o : oracle(string, string),
+                       q : oracle_query(string, string)) =
+    switch(Oracle.get_answer(o, q))
+      None    => false
+      Some(_) => true
+
+  entrypoint getAnswer(  //Show the answer to a question
+                       o : oracle(string, string),  //oracle direction
+                       q : oracle_query(string, string)) : option(string) =    //id of query in oracle
+    Oracle.get_answer(o, q)
