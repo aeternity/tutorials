@@ -39,7 +39,7 @@ This code session allows the oracle operator to register the oracle, for this it
 
 ---
 ~~~
-  stateful entrypoint registerOracle(      						
+  stateful entrypoint register_oracle(      						
     qfee : int,     	                   //Minimum payment fee
     rttl : int) : oracle(string, string) =  //oracle expiration time blocks
     let register: oracle(string, string) =  Oracle.register(Contract.address, qfee, RelativeTTL(rttl))
@@ -61,7 +61,7 @@ This code session allows the oracle operator to extend the life time of the orac
 
 ---
 ~~~
-  stateful entrypoint extendOracle(  							
+  stateful entrypoint extend_oracle(  							
                                     o   : oracle(string, string),			//oracle address
                                     ttl : int) : unit =					//oracle expiration time blocks 
     Oracle.extend(o, RelativeTTL(ttl))
@@ -84,7 +84,7 @@ This code session allows the operator of the oracle to register the questions an
 ##### Check the question that was asked to the oracle according to id.
 ---
 ~~~
-  entrypoint getQuestion(  								
+  entrypoint get_question(  								
                           o : oracle(string, string),    				//oracle address
                           q : oracle_query(string, string)) : string =    		//id of query in oracle
     Oracle.get_question(o, q)      							//show the question
@@ -93,7 +93,7 @@ This code session allows the operator of the oracle to register the questions an
 ##### Query function if the question has an answer
 ---
 ~~~
-  entrypoint hasAnswer(  								
+  entrypoint has_answer(  								
                        o : oracle(string, string),
                        q : oracle_query(string, string)) =
     switch(Oracle.get_answer(o, q))
@@ -104,7 +104,7 @@ This code session allows the operator of the oracle to register the questions an
 ##### Shows the answer to a question
 ---
 ~~~
-  entrypoint getAnswer(  
+  entrypoint get_answer(  
                        o : oracle(string, string),  					//oracle address
                        q : oracle_query(string, string)) : option(string) =    		//id of query in oracle
     Oracle.get_answer(o, q)  								//show the answer
@@ -135,7 +135,7 @@ Functions that allow users (clients) to interact with oracle
 
 ---
 ~~~
-  entrypoint queryFee(o : oracle(string, string)) : int = 	//oracle address 				
+  entrypoint query_fee(o : oracle(string, string)) : int = 	//oracle address 				
     Oracle.query_fee(o)
 ~~~
 ---
@@ -144,7 +144,7 @@ This session of the code allows the user of the oracle, to consume the value of 
 
 ---
 ~~~
-  payable stateful entrypoint createQuery(      					
+  payable stateful entrypoint create_query(      					
                                           o    : oracle(string, string),    		//oracle address
                                           q    : string,      				//question
                                           qfee : int,         				//fee
@@ -185,7 +185,7 @@ Functions that allow both the operator and the users of the oracle to obtain int
 ##### Returns True if the oracle exists and has the expected type
 ---
 ~~~
-  entrypoint getCheck(
+  entrypoint get_check(
                        o : oracle(string, string)) =  					//oracle address
     Oracle.check(o)  									//show the answer
 ~~~
@@ -211,7 +211,7 @@ contract Source =
       id_query = {}, 
       question_answer  = {} }
 
-  stateful entrypoint registerOracle(      						
+  stateful entrypoint register_oracle(      						
         qfee : int,     						 //Minimum payment fee
         rttl : int) : oracle(string, string) =   //oracle expiration time blocks
     let register: oracle(string, string) =  Oracle.register(Contract.address, qfee, RelativeTTL(rttl))
@@ -223,7 +223,7 @@ contract Source =
       None    => abort("Not registered")
       Some(x) => x
 
-  stateful entrypoint extendOracle(  							
+  stateful entrypoint extend_oracle(  							
                                 o   : oracle(string, string),	//oracle address
                                 ttl : int) : unit =		//oracle expiration time blocks 
     Oracle.extend(o, RelativeTTL(ttl))
@@ -236,19 +236,19 @@ contract Source =
       put(state{question_answer[quest] = answ })
       true
 
-  entrypoint getQuestion(  								
+  entrypoint get_question(  								
                 o : oracle(string, string),    		            //oracle address
                 q : oracle_query(string, string)) : string =    //id of query in oracle
     Oracle.get_question(o, q)      							    //show the question
 
-  entrypoint hasAnswer(  								
+  entrypoint has_answer(  								
                        o : oracle(string, string),
                        q : oracle_query(string, string)) =
     switch(Oracle.get_answer(o, q))
       None    => false
       Some(_) => true
 
-  entrypoint getAnswer(  
+  entrypoint get__answer(  
         o : oracle(string, string),  					        //oracle address
         q : oracle_query(string, string)) : option(string) =    //id of query in oracle
     Oracle.get_answer(o, q)  								   //show the answer
@@ -261,9 +261,10 @@ contract Source =
       None    => abort("No query")
       Some(x) => x
 
-  entrypoint queryFee(o : oracle(string, string)) : int = 	//oracle address 			Oracle.query_fee(o)
+  entrypoint query_fee(o : oracle(string, string)) : int = 	//oracle address 			
+    Oracle.query_fee(o)
 
-  payable stateful entrypoint createQuery(      					
+  payable stateful entrypoint create_query(      					
         o    : oracle(string, string),    	//oracle address
         q    : string,      				//question
         qfee : int,         				//fee
@@ -287,7 +288,7 @@ contract Source =
             r    : string) =  			           //reply
     Oracle.respond(o, q, r)        				   //reply
 
-  entrypoint getCheck(
+  entrypoint get_check(
                     o : oracle(string, string)) =  	    //oracle address
     Oracle.check(o)  									//show the answer
 
