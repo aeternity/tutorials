@@ -1,87 +1,99 @@
 const contractSource = `
-contract Oracles =
+contract Source =
   record state = {  									
     source_oracle : map(address, oracle(string, string)),
     id_query : map(address, oracle_query(string, string)),
     question_answer : map(string, string)}
+
   stateful entrypoint init() : state =  						 
     { source_oracle = {},
       id_query = {}, 
       question_answer  = {} }
-  stateful entrypoint registerOracle(      						
+
+  stateful entrypoint register_oracle(      						
         qfee : int,     						 //Minimum payment fee
         rttl : int) : oracle(string, string) =   //oracle expiration time blocks
     let register: oracle(string, string) =  Oracle.register(Contract.address, qfee, RelativeTTL(rttl))
     put(state{ source_oracle[Contract.address] = register })
     register
+
   entrypoint get_oracle(): oracle(string, string) =  					
     switch(Map.lookup(Contract.address, state.source_oracle))
       None    => abort("Not registered")
       Some(x) => x
-  stateful entrypoint extendOracle(  							
+
+  stateful entrypoint extend_oracle(  							
                                 o   : oracle(string, string),	//oracle address
                                 ttl : int) : unit =		//oracle expiration time blocks 
     Oracle.extend(o, RelativeTTL(ttl))
-  payable stateful entrypoint quest_answer(quest : string, answ : string) : bool = 
-    let val = Call.value
-    if(val > 0)
-      false
-    else
-      put(state{question_answer[quest] = answ })
-      true
-  entrypoint getQuestion(  								
+
+  stateful entrypoint quest_answer(quest : string, answ : string) : bool = 
+    put(state{question_answer[quest] = answ })
+    true
+
+  entrypoint get_question(  								
                 o : oracle(string, string),    		            //oracle address
                 q : oracle_query(string, string)) : string =    //id of query in oracle
     Oracle.get_question(o, q)      							    //show the question
-  entrypoint hasAnswer(  								
+
+  entrypoint has_answer(  								
                        o : oracle(string, string),
                        q : oracle_query(string, string)) =
     switch(Oracle.get_answer(o, q))
       None    => false
       Some(_) => true
-  entrypoint getAnswer(  
+
+  entrypoint get__answer(  
         o : oracle(string, string),  					        //oracle address
         q : oracle_query(string, string)) : option(string) =    //id of query in oracle
     Oracle.get_answer(o, q)  								   //show the answer
+
   stateful entrypoint contract_balance() = 
     Contract.balance
+
   entrypoint get_query(): oracle_query(string, string) =  
     switch(Map.lookup(Call.caller, state.id_query))
       None    => abort("No query")
       Some(x) => x
-  entrypoint queryFee(o : oracle(string, string)) : int = 
-    Oracle.query_fee(o)			
-  payable stateful entrypoint createQuery(      					
-                                          o    : oracle(string, string),    	//oracle address
-                                          q    : string,      				//question
-                                          qfee : int,         				//fee
-                                          qttl : int,         				//last height oracle to post a reply
-                                          rttl : int) : oracle_query(string, string) =  //time stays on the chain
+
+  entrypoint query_fee(o : oracle(string, string)) : int = 	//oracle address 			
+    Oracle.query_fee(o)
+
+  payable stateful entrypoint create_query(      					
+        o    : oracle(string, string),    	//oracle address
+        q    : string,      				//question
+        qfee : int,         				//fee
+        qttl : int,         				//last height oracle to post a reply
+        rttl : int) : oracle_query(string, string) =  //time stays on the chain
     require(qfee =< Call.value, "insufficient value for qfee")    	//check the fee
     let query : oracle_query(string, string) = Oracle.query(o, q, qfee, RelativeTTL(qttl), RelativeTTL(rttl))
     let query_answer = get_answer(q)
     Oracle.respond(o, query, query_answer)
     put(state{id_query[Call.caller] = query })
     query
+
   entrypoint get_answer(stranswer : string) =  	//Check if there is an answer
     switch(Map.lookup(stranswer, state.question_answer))
       None    => abort("Not registered")
       Some(x) => x
+
   stateful entrypoint respond(  
             o    : oracle(string, string),  	   //oracle address
             q    : oracle_query(string, string),   //id of query in oracle
             r    : string) =  			           //reply
     Oracle.respond(o, q, r)        				   //reply
-  entrypoint getCheck(
+
+  entrypoint get_check(
                     o : oracle(string, string)) =  	    //oracle address
     Oracle.check(o)  									//show the answer
+
   stateful entrypoint contract_creator() = 
     Contract.creator
 `;
 
 //Address of the  smart contract on the testnet of the aeternity blockchain
 //Dirección del contrato inteligente en el testnet de la blockchain de aeternity
-const contractAddress = 'ct_WMdMuoDod4tgT9VLBe1gjqi5j8kKy3AuYsJKNDPCCPEhudWf6';
+const contractAddress = 'ct_2bGHMEH7HGEejv8CpVFMZRmwP4a6NsASGg6GZpq7CyjnhEbWLD';
 
 //Create variable for client so it can be used in different functions
 //Crear la variable cliente para las funciones
