@@ -72,13 +72,9 @@ This code session allows the operator of the oracle to register the questions an
 
 ---
 ~~~
-  payable stateful entrypoint quest_answer(quest : string, answ : string) : bool = 
-    let val = Call.value
-    if(val > 0)
-      false
-    else
-      put(state{question_answer[quest] = answ })
-      true
+  stateful entrypoint quest_answer(quest : string, answ : string) : bool = 
+    put(state{question_answer[quest] = answ })
+    true
 ~~~
 ---
 ##### Check the question that was asked to the oracle according to id.
@@ -228,13 +224,9 @@ contract Source =
                                 ttl : int) : unit =		//oracle expiration time blocks 
     Oracle.extend(o, RelativeTTL(ttl))
 
-  payable stateful entrypoint quest_answer(quest : string, answ : string) : bool = 
-    let val = Call.value
-    if(val > 0)
-      false
-    else
-      put(state{question_answer[quest] = answ })
-      true
+  stateful entrypoint quest_answer(quest : string, answ : string) : bool = 
+    put(state{question_answer[quest] = answ })
+    true
 
   entrypoint get_question(  								
                 o : oracle(string, string),    		            //oracle address
