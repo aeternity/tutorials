@@ -360,4 +360,4 @@ The included features are:
 
 You can now create a own awesome **Æpp**.
 
-The æternity team will keep this tutorial updated. If you encounter any problems please contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).
+The æternity team will keep this tutorial updated. If you encounter any problems please check out the [video tutorial](https://www.youtube.com/watch?v=C516YVBWzRY&list=PLVz98HTQCJzRmy8naIh49mAW306kGyGXA) on YouTube or contract us through the [æternity dev Forum category](https://forum.aeternity.com/c/development).

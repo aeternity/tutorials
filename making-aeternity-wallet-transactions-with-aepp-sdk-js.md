@@ -113,6 +113,6 @@ All we do in the function above is just one line of code we access the `spend` f
  - There is also a showcase that can be found [here](https://jesulonimi21.github.io/Aeternity-Web-Wallet-ShowCase/), it explains the above including how to connect to a smart contract, you can find the source code [here](https://github.com/Jesulonimi21/Aeternity-Web-Wallet-ShowCase)
  
 ## Conclusion
-  If you have any problem, please make sure to post it on the [Aeternity Dev Forum](https://forum.aeternity.com/c/development)
+  If you have any problem, please check out the [video tutorial](https://www.youtube.com/watch?v=AztwYKJpCK4&list=PLVz98HTQCJzRmy8naIh49mAW306kGyGXA) on YouTube or make sure to post it on the [Aeternity Dev Forum](https://forum.aeternity.com/c/development)
 
   
