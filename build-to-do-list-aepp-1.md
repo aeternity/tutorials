@@ -403,4 +403,5 @@ Let’s briefly recap what we did during this tutorial. We created a basic ```To
 - get total tasks count;
 - get task by index;
 
+We wrote basic unit tests for the contract. Then we compiled it and deployed it to the ```testnet```. The deployed contract address will be used in the next tutorial.
 We still don’t have a frontend for our To-do list Æpp and this is our *ToDo (pun intended)* for the [second part](build-to-do-list-aepp-2.md) of the tutorial series. If you encounter any problems please check out the [video tutorial](https://www.youtube.com/watch?v=9fMpejyECC0&list=PLVz98HTQCJzRmy8naIh49mAW306kGyGXA) on YouTube.
