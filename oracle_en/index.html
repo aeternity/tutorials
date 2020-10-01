@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>Oracle</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-sm-12 text-center div-center">
+
+          <div id="title-div">
+            <img src="oracle.png">
+            <h1 style="color:white;">Oracle</h1>
+          </div>
+
+          <!-- div for used by a loading animation -->
+          <!-- div usado para la animación de cargando.... -->
+          <div id="message">
+            <div id="loader" class="alert alert-secondary">
+              <img src="loading.gif">
+              <div><b>LOADING</b></div>
+            </div>
+          </div>
+
+          <!-- div for form registration and consult of the oracle -->
+          <!-- div formulario para registrar y consultar el oráculo -->
+          <div>
+         
+		  <li class="list-group-item">
+          <h4>Operator Functions</h4>
+		  <form>
+			  <div class="form-row">
+                <div class="col-12">
+					<textarea id="messages" class="form-control" disabled>message</textarea>
+                </div>
+                <div class="col-6">
+					<label class="text-left">qfee</label>
+					<input type="number" id="qfee" class="form-control" placeholder="Number">
+                </div>
+                <div class="col-6">
+					<label class="text-left">ttl</label>
+					<input type="number" id="ttl" class="form-control" placeholder="Number">
+                </div>
+              </div>
+          </form>
+			  <button id="registerOracleBtn" class="btn btn-block">Register Oracle</button>
+			  <button id="addressOracleBtn" class="btn btn-block">Address Oracle</button>
+			  <button id="extendOracleBtn" class="btn btn-block">Extend Oracle</button>
+          <form>
+			  <div class="form-row">
+                <div class="col-12">
+					<label class="text-left">Question</label>
+					<input type="text" id="question" class="form-control"
+					placeholder="String">
+                </div>
+                <div class="col-12">
+					<label class="text-left">Answer</label>
+					<input type="text" id="answer" class="form-control"
+					placeholder="String">
+                </div>
+              </div>
+          </form>
+			  <button id="quest_answerBtn" class="btn btn-block">Register Question Answer</button>
+    		  <div class="form-row">
+                <div class="col-12">
+					<label class="text-left">Id Query</label>
+					<textarea id="idquery" class="form-control">Id</textarea>
+                </div>
+                <div class="col-12">
+					<textarea id="messages2" class="form-control" disabled>result</textarea>
+                </div>
+              </div>
+            <button id="getQuestionBtn" class="btn btn-block">Question</button>
+            <button id="hasAnswerBtn" class="btn btn-block">Check Answer</button>
+            <button id="getAnswerBtn" class="btn btn-block">Answer</button>
+            <button id="balanceBtn" class="btn btn-block">Balance</button>
+    		  <div class="form-row">
+                <div class="col-4">
+                  <input type="number" id="messages3" class="form-control" disabled>
+                </div>
+              </div>
+		  </li>
+		  </br>
+		  <li class="list-group-item">
+          <h4>User Functions</h4>
+    		  <div class="form-row">
+                <div class="col-12">
+					<label class="text-left">Address Oracle</label>
+					<textarea id="address" class="form-control" disabled>Address</textarea>
+                </div>
+              </div>
+			  <button id="queryFeeBtn" class="btn btn-block">Fee Query</button>
+          <form>
+              <div class="form-row">
+                <div class="col-8">
+				  <label class="text-left">Consult Oracle: String</label>
+                  <input type="text" id="string" class="form-control"
+                  placeholder="String">
+                </div>
+                <div class="col-4">
+ 				  <label class="text-left">Payment</label>
+                  <input type="number" id="fee" class="form-control" disabled>
+                </div>
+              </div>
+	      </form>
+            <button id="createQueryBtn" class="btn btn-block">Create Query</button>
+    		  <div class="form-row">
+                <div class="col-12">
+					<label class="text-left">Result</label>
+					<textarea id="messages4" class="form-control" disabled>Result</textarea>
+                </div>
+              </div>
+          </li></br>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://unpkg.com/@aeternity/aepp-sdk@6.1.2/dist/aepp-sdk.browser-script.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.js"></script>
+  <script src="index.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"></script>
+  </body>
+</html>
