@@ -44,7 +44,7 @@ stateful function register_oracle() : oracle(string, string) =
 
  **A few things to pay attention to here:**
 
-* the function is `stateful`. This means that it will modify the state of the contract. Since the function doesn't have an entrypoint keyword prefixed to it, it cannot only be called within the contract itself.
+* the function is `stateful`. This means that it will modify the state of the contract. Since the function doesn't have an entrypoint keyword prefixed to it, it can only be called within the contract itself.
 * the return type of the function is `oracle(string, string)`, this way we are saying that the `Oracle.register` call in this function will return an oracle of that type.
 Alternatively, `Oracle.register(Contract.address, 10, RelativeTTL(200)) : oracle(string, string)` could be used instead, if we wanted to avoid the use of a separate function for registering the oracle.
 * the `Oracle.register` function normally takes 4 parameters, one of them being optional. The optional parameter is a signature that proves that the contract may register the provided address as an oracle operator, but since we are going to be registering the contract itself (having `Contract.address` as the first parameter), we don't need to provide that signature.
